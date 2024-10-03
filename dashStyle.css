@@ -1,0 +1,149 @@
+/* Styling for dashboard */
+
+.col-2 {
+    background-color: #FC783F;
+    height: 100vh;
+}
+
+.col-10 {
+    background-color: skyblue;
+    height: 100vh;
+}
+
+.sidebar {
+    padding: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.topbar {
+    height: 12vh;
+    background-color: purple;
+}
+
+.btns {
+    margin: 5em 5em 0 5em; 
+}
+
+.content {
+    height: 65vh;
+    background-color: azure;
+    margin: 0em 5em 5em 5em; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+.nav-item{
+    padding-top: 4px;
+}
+img{
+    padding-bottom: -4px;
+}
+.item {
+    list-style: none;
+} 
+
+.btn {
+    font-weight: bold;
+}
+
+.side {
+    font-family: 'Poppins', sans-serif; 
+    font-weight: bold;
+    font-size: 35px;
+    color: white;
+}
+
+.nav-btn {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5em;
+}
+
+li:hover {
+    background-color: #ffff;
+}
+
+.nav-btn > li {
+    margin-bottom: 0.5em;
+    border-radius: 5px;
+    padding: 0.5em 0.5em 0.5em 3em;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+}
+ul li a {
+    display: flex;
+    align-items: center; /* Align text and images vertically */
+    text-decoration: none;
+    color: white; /* Default color */
+    transition: color 0.3s ease; /* Transition for color change */
+}
+
+ul li a img {
+    margin-right: 10px;
+    transition: filter 0.3s ease; /* Transition for filter change */
+}
+
+/* Hover effects for main navigation items */
+.nav-btn > li:hover a {
+    color: #FC783F; /* Change anchor tag color on hover */
+}
+
+.nav-btn > li:hover a img {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%); /* Adjust filter for vector color change */
+}
+
+.sub-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease; 
+    padding-left: 2em;
+    list-style: none;
+    margin-top: 0;
+    margin-left: -40px;
+    margin-bottom: -10px;    
+}
+
+.rotate {
+    transform: rotate(180deg); 
+    transition: transform 0.3s ease;
+}
+
+.vec {
+    display: inline-block; 
+    width: 15px; 
+    margin-left: 15px;
+    height: 20px; 
+    transform-origin: center; 
+    transition: transform 0.3s ease;
+    position: relative; 
+    top: 0; 
+}
+.sub-menu li {
+    display: flex;
+    align-items: center;
+    margin: 0.2em 0em 0em 0em;
+}
+
+.sub-menu li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+.invenSvg > img{
+    height: 24px;
+    width: 24px;
+}
+.nav-btn > li {
+    margin-bottom: 0.5em; 
+    padding: 0.5em 0.5em 0.5em 3em; 
+}
+
+.sub-menu li img {
+    margin-right: 10px;
+}
