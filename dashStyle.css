@@ -1,5 +1,4 @@
 /* Styling for dashboard */
-
 .col-2 {
     background-color: #FC783F;
     height: 100vh;
@@ -35,12 +34,15 @@
     justify-content: center;
     border-radius: 10px;
 }
-.nav-item{
+
+.nav-item {
     padding-top: 4px;
 }
-img{
+
+img {
     padding-bottom: -4px;
 }
+
 .item {
     list-style: none;
 } 
@@ -76,6 +78,7 @@ li:hover {
     font-weight: bold;
     font-size: 18px;
 }
+
 ul li a {
     display: flex;
     align-items: center; /* Align text and images vertically */
@@ -124,26 +127,10 @@ ul li a img {
     position: relative; 
     top: 0; 
 }
+
 .sub-menu li {
     display: flex;
     align-items: center;
     margin: 0.2em 0em 0em 0em;
 }
 
-.sub-menu li a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-}
-.invenSvg > img{
-    height: 24px;
-    width: 24px;
-}
-.nav-btn > li {
-    margin-bottom: 0.5em; 
-    padding: 0.5em 0.5em 0.5em 3em; 
-}
-
-.sub-menu li img {
-    margin-right: 10px;
-}
