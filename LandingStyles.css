@@ -252,6 +252,7 @@ li.nav-item {
     text-shadow: 1px 1px 5px gray;
   }
 
+  /* Underline */
   .convenience-text h1::after {
     content: "";
     display: block;

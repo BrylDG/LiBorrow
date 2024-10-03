@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liborrow - Sign In</title>
+    <title>Liborrow - Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="LoginStyles.css">
+    <link rel="stylesheet" href="RegisterStyles.css">
 </head>
 <body>
     <!-- NAVBAR SECTION -->
@@ -22,26 +22,28 @@
     <section class="main-section">
         <!-- Left Column: Slogan -->
         <div class="col-3 left-column">
-            <h1>Your Next <span class="highlight">Chapter</span> Awaits<span class="highlight">.</span></h1>
-            <p>Start Borrowing Today: Your next favorite book is waiting.</p>
-        </div>
+       </div>
 
         <!-- Center Column: Sign-in Form and Image -->
         <div class="col-5 center-column">
             <div class="login-form-container"   >
-                <h3 class="text-center">Welcome Back!</h3>
+                <h3 class="text-center">Create Account</h3>
+                <h4 class="text-center" >Join our community in just a few steps!</h4>
                 <form>
-                    <div class="mb-5 email-input input-container">
-                        <input type="email" class="form-control" id="email" placeholder="Email Address" required>
+                    <h5 class="center">Personal Information</h5>
+                    <div class="mb-4 text-input input-container">
+                        <input type="text" class="form-control" required>
+                        <label for="text">Full name</label>
+                    </div>
+
+                    <h5 class="center">Contact Information</h5>
+                    <div class="mb-4 email-input input-container">
+                        <input type="email" class="form-control" required>
                         <label for="email">Email Address</label>
+                        <input type="number" class="form-control" required>
+                        <label for="number">Phone Number</label>
                     </div>
-                    <div class="mb-3 password-input input-container">
-                        <input type="password" class="form-control" id="password" placeholder="Password" required>
-                        <label for="password">Password</label>
-                        <span class="password-toggle" onclick="togglePassword()">
-                            <i id="eye-icon" class="bi bi-eye"></i>
-                        </span>
-                    </div>
+
                     <div class="text-end mb-3">
                         <a href="#" class="forgot-password">Forgot Password?</a>
                     </div>
@@ -53,9 +55,6 @@
 
         <!-- Right Column: Image-->
         <div class="col-4 right-column">
-            <div class="image-container">
-                <img src="Images/gilBrowsingLaptop.png" alt="Person working on laptop" class="img-fluid character-image" />
-            </div>
         </div>
     </section>
 
