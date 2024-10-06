@@ -20,13 +20,13 @@
     </nav>
 
     <section class="main-section">
-        <!-- Left Column: Slogan -->
+        <!-- Left Column: Space -->
         <div class="col-3 left-column">
        </div>
 
-        <!-- Center Column: Sign-in Form and Image -->
+        <!-- Center Column: Sign-up Form -->
         <div class="col-5 center-column">
-            <div class="login-form-container"   >
+            <div class="login-form-container">
                 <h3 class="text-center">Create Account</h3>
                 <h4 class="text-center" >Join our community in just a few steps!</h4>
                 <form>
@@ -48,6 +48,34 @@
                         </div>
                     </div>
 
+                    <h5 class="center">Address</h5>
+                    <div class="mb-4 contact-input input-container">
+                            <input type="text" class="form-control" id="address" required>
+                            <label for="address">Address</label>
+                    </div>
+
+                    <h5 class="center">Account Information</h5>
+                    <div class="mb-4 contact-input input-container">
+                        <div class="input-wrapper">
+                            <input type="text" class="form-control" id="username" required>
+                            <label class="mt-1" for="username">Username</label>
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="password" class="form-control" id="password" required>
+                            <label class="mt-1" for="password">Password</label>
+                            <span class="password-toggle" onclick="togglePassword()">
+                                <i id="eye-icon1" class="bi bi-eye"></i>
+                            </span>
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="password" class="form-control" id="confirmpassword" required>
+                            <label class="mt-1"for="confirmpassword">Confirm Password</label>
+                            <span class="password-toggle" onclick="toggleConfirmPassword()">
+                                <i id="eye-icon2" class="bi bi-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+
                     <div class="text-end mb-3">
                         <a href="#" class="forgot-password">Forgot Password?</a>
                     </div>
@@ -57,7 +85,7 @@
             </div>
         </div>
 
-        <!-- Right Column: Image-->
+        <!-- Right Column: Space-->
         <div class="col-4 right-column">
         </div>
     </section>
@@ -78,7 +106,7 @@
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('eye-icon');
+            const eyeIcon = document.getElementById('eye-icon1');
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';  // Show password
@@ -92,6 +120,24 @@
                 eyeIcon.style.color = '#aaa';  // Change color to gray
             }
         }
+
+        function toggleConfirmPassword() {
+            const passwordInput = document.getElementById('confirmpassword');  // Corrected id
+            const eyeIcon = document.getElementById('eye-icon2');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';  // Show password
+                eyeIcon.classList.remove('bi-eye');
+                eyeIcon.classList.add('bi-eye-slash');  // Change icon to "eye-slash"
+                eyeIcon.style.color = '#FF6600';  // Change color to orange
+            } else {
+                passwordInput.type = 'password';  // Hide password
+                eyeIcon.classList.remove('bi-eye-slash');
+                eyeIcon.classList.add('bi-eye');  // Change icon back to "eye"
+                eyeIcon.style.color = '#aaa';  // Change color to gray
+            }
+        }
+
 
         document.querySelectorAll('input').forEach((input) => {
             input.addEventListener('input', function() {
