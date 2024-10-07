@@ -37,8 +37,8 @@ li.nav-item {
 
 /* Search */
 .navbar .search-bar {
-    position: relative;
-    margin-left: 630px;
+    position: absolute;
+    margin-left: 620px;
 }
 
 .navbar .search-bar input {
@@ -252,6 +252,7 @@ li.nav-item {
     text-shadow: 1px 1px 5px gray;
   }
 
+  /* Underline */
   .convenience-text h1::after {
     content: "";
     display: block;
@@ -301,6 +302,7 @@ li.nav-item {
     margin-top: 13%;
     margin-left: 5%;
     margin-right: 3%;
+    flex-direction: row-reverse;
 }
 
 
@@ -315,6 +317,7 @@ li.nav-item {
     padding-left: 40px;
     max-width: 50%;
     margin-bottom: 10%;
+    order: 2;
 }
 
 .end-section h1 {
@@ -364,8 +367,9 @@ li.nav-item {
 .end-section .image-content {
     flex: 1; 
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
+    order: 1;
 }
 
 .end-section .image-content img {
@@ -419,8 +423,14 @@ footer a:hover {
         position: relative;
         margin-left: 500px;
     }
-
 }
+
+@media (max-width: 1817px) {
+    .slogan-text h1 {
+        font-size: 85px;
+    }
+}
+
 @media (min-width: 1441px) {
     .slogan-text {
         flex: 1;
@@ -429,6 +439,7 @@ footer a:hover {
     .slogan-text h1 {
         max-width: 100%;
     }
+
     .slogan-text p {
         max-width: 100%;
     }

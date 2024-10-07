@@ -1,0 +1,348 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #F2F0F0;
+    display:flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.navbar {
+    background-color: transparent;
+    padding: 20px;
+}
+
+.liborrow-logo {
+    font-weight: 900;
+    font-size: 64px;
+    color: black;
+    display: inline-block;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 5px gray;
+}
+
+.dot {
+    color: #FF6600;
+}
+
+.main-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-left: 3%;
+    padding-right: 0%;
+    margin-bottom: 5%;
+    height: auto;
+    flex-grow: 1;
+    width: 100%;
+}
+
+.left-column {
+    max-width: 100%;
+    margin-left: 1%;
+    margin-right: 1%;
+    height: auto;
+}
+
+.left-column h1 {
+    font-size: 90px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    color: black;
+    line-height: 1.2;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 5px gray;
+    max-width: 100%;
+}
+
+.left-column p {
+    /* max-width: 350px; */
+    font-size: 30px;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 1rem;
+    margin-bottom: 30px;
+    color: #666;
+    font-weight: 100;
+}
+
+.highlight {
+    color: #FF6600;
+}
+
+.center-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+    margin-left: 3%;
+    width: 666px;
+    height: auto;
+}
+
+/* General styling for inputs */
+.input-container {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ccc;
+    color: #FF6600;
+    border-radius: 20px;
+    outline: none;
+    font-size: 16px;
+    transition: border-color 0.3s ease-in-out;
+    padding-right: 40px; /* Adjust for the eye icon */
+    padding-left: 23px;
+}
+
+.input-container::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin-top: 3%;
+    background-color: #4B4646;
+    opacity: 0.5;
+}
+
+/* On focus, the border color will change */
+.input-container input:focus {
+    border-color: #ff6600; /* Accent color */
+    outline: none;
+    box-shadow: none;
+}
+
+/* Keep the input border orange if it has content */
+.input-container input.has-content {
+    border-color: #ff6600;
+}
+
+.input-container label {
+    position: absolute;
+    top: 20%; /* Adjust starting position */
+    left: 23px; /* Adjust to align with input padding */
+    color: #aaa;
+    background-color: white;
+    padding: 0 5px;
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+input:focus::placeholder {
+    opacity: 0; /* Makes the placeholder invisible */
+}
+
+/* When input is focused or has value, the label moves above */
+.input-container input:focus + label,
+.input-container input.has-content + label {
+    top: -10px;
+    left: 20px;
+    font-size: 12px;
+    color: #ff6600;
+}
+
+/* Smooth transition for when user clicks into input */
+.input-container input:focus + label {
+    color: #ff6600; /* Accent color on focus */
+    offset: none;
+}
+.contact-input {
+    display: flex;
+    flex-direction: column; /* Ensures inputs are stacked vertically */
+}
+
+/* Style for the eye icon */
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper label {
+    position: absolute;
+    top: 12px; /* Adjust as needed */
+    left: 23px; /* Align with input padding */
+    color: #aaa;
+    background-color: white;
+    padding: 0 5px;
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.input-wrapper input:focus + label,
+.input-wrapper input.has-content + label {
+    top: -10px;
+    left: 20px;
+    font-size: 12px;
+    color: #ff6600;
+}   
+
+/* Optional: If you need more spacing between inputs */
+.input-wrapper + .input-wrapper {
+    margin-top: 15px; /* Adjust as necessary */
+}
+
+.password-toggle i {
+    font-size: 20px;
+    color: gray; /* Default: gray when password is hidden */
+}
+
+/* When the password is visible, change the icon color to orange */
+.password-visible i {
+    color: #FF6600;
+}
+
+
+form {
+    margin-left: 10%;
+    margin-top: 10%;
+    margin-bottom: 5%;
+    align-items: center;
+    width:467px;
+    max-width: 100%;
+    justify-content: center;
+}
+
+.login-form-container {
+    background-color: white;
+    flex-direction: row;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0px 5px 3px 0px gray;
+    width: 666px;
+    text-align: center;
+}
+
+
+.login-form-container h3 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    margin-top: 7%;
+    color: #333;
+}
+
+.login-form-container h4{
+    font-size: 20px;
+    font-weight: 100;
+    color: #191921;
+    margin-top: -2%;
+    opacity: 0.5;
+}
+
+.login-form-container h5{
+    margin-bottom: 2.5%;
+    font-size: 18px;
+    font-weight: 100;
+    color: #4B4646;
+    opacity: 0.5;
+    text-align: left;
+}
+
+.form-control {
+    font-size: 16px;
+    border-radius: 50px;
+    border: 2px solid #FF6600;
+    margin-bottom: 10px;
+    width: 467px;   
+    height: 54px;
+    outline: none;
+    color: #333;
+}
+
+.form-text {
+    font-size: 12px;
+    color: red;
+    margin-top: 0;
+    text-align: left;
+}
+
+.forgot-password {
+    font-size: 14px;
+    color: #FF6600;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 15px;
+    margin-right: 2%;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.btn-primary {
+    background-color: #FF6600;
+    border: none;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 50px;
+    width: 200px;
+    height: 50px;
+    margin-top: 20px;
+}
+
+.btn-primary:hover {
+    background-color: #E65B00;
+}
+
+.sign-up {
+    color: #FF6600;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.sign-up:hover {
+    text-decoration: underline;
+}
+
+.character-image {
+    max-width: 100%;
+    height: auto;
+}
+
+.image-container {
+    align-items: end;
+    text-align: end;
+}
+
+/* Footer Section */
+footer {
+    position: relative; 
+    background-color: #ff6b35;  
+    color: white;  
+    text-align: center;  
+    padding: 10px 0;
+    width: 100%; 
+    display: flex;
+    justify-content: center;
+}
+
+footer p {
+    position: absolute; 
+    bottom: 10px;
+    left: 10px; 
+    font-size: 16px;
+    color: white;
+    margin: 0;  
+}
+
+footer a {
+    color: white; 
+    margin: 0 60px;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline; 
+}
