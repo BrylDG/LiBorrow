@@ -29,46 +29,75 @@
             <div class="login-form-container">
                 <h3 class="text-center">Create Account</h3>
                 <h4 class="text-center" >Join our community in just a few steps!</h4>
-                <form>
+                <form action="register.php" method="post">
+                    <?php
+                    include("connection.php");
+
+                    $query = "INSERT INTO users(fullname, email, phoneno, address, username, password, isAdmin) VALUES(?, ?, ?, ?, ?, ?, 0)";
+                    
+                    if (isset($_POST["submit"])) {
+                        $fullname = $_POST["fullname"];
+                        $email = $_POST["email"];
+                        $phoneno = $_POST["phoneno"];
+                        $address = $_POST["address"];
+                        $username = $_POST["username"];
+                        $password = $_POST["password"];
+                        $confirmpass = $_POST["confirmpassword"];
+                        
+                        if($confirmpass <> $password) {
+                            echo "<script>alert('Password not match!')</script>";
+                        } elseif($conn->connect_error){
+                            die('Connection failed : ' .$conn->connect_error);
+                        }
+                        else {
+                            $stmt = $conn->prepare($query);
+                            $stmt->bind_param("ssisss", $fullname, $email, $phoneno, $address, $username, $password);
+                            $stmt->execute();
+                            echo "<script>alert('Registered Successfully')</script>";
+                            $stmt->close();
+                            $conn->close();
+                        }
+                    }
+                    ?>
                     <h5 class="center">Personal Information</h5>
                     <div class="mb-4 text-input input-container">
-                        <input type="text" class="form-control" required>
+                        <input type="text" class="form-control" name="fullname" required>
                         <label for="text">Full name</label>
                     </div>
 
                     <h5 class="center">Contact Information</h5>
                     <div class="mb-4 contact-input input-container">
                         <div class="input-wrapper">
-                            <input type="email" class="form-control" id="email" required>
+                            <input type="email" class="form-control" id="email" name="email" required>
                             <label class="mt-1" for="email">Email Address</label>
                         </div>
                         <div class="input-wrapper">
-                            <input type="text" class="form-control" id="number" required>
+                            <input type="tel" class="form-control" id="number" pattern="[0-9]{11}" name="phoneno" required>
                             <label class="mt-1" for="number">Phone Number</label>
                         </div>
                     </div>
 
                     <h5 class="center">Address</h5>
                     <div class="mb-4 contact-input input-container">
-                            <input type="text" class="form-control" id="address" required>
+                            <input type="text" class="form-control" id="address" name="address" required>
                             <label for="address">Address</label>
                     </div>
 
                     <h5 class="center">Account Information</h5>
                     <div class="mb-4 contact-input input-container">
                         <div class="input-wrapper">
-                            <input type="text" class="form-control" id="username" required>
+                            <input type="text" class="form-control" id="username" name="username" required>
                             <label class="mt-1" for="username">Username</label>
                         </div>
                         <div class="input-wrapper">
-                            <input type="password" class="form-control" id="password" required>
+                            <input type="password" class="form-control" id="password" name="password" required>
                             <label class="mt-1" for="password">Password</label>
                             <span class="password-toggle" onclick="togglePassword()">
                                 <i id="eye-icon1" class="bi bi-eye"></i>
                             </span>
                         </div>
                         <div class="input-wrapper">
-                            <input type="password" class="form-control" id="confirmpassword" required>
+                            <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" required>
                             <label class="mt-1"for="confirmpassword">Confirm Password</label>
                             <span class="password-toggle" onclick="toggleConfirmPassword()">
                                 <i id="eye-icon2" class="bi bi-eye"></i>
@@ -79,7 +108,7 @@
                     <div class="text-end mb-3">
                         <a href="#" class="forgot-password">Forgot Password?</a>
                     </div>
-                    <button type="submit" class="btn btn-primary">Sign-In</button>
+                    <input type="submit" class="btn btn-primary" name="submit" value="Sign-In"/>
                 </form>
                 <p class="text-center mt-3">Don't have an Account? <a href="#" class="sign-up">Sign-up!</a></p>
             </div>
