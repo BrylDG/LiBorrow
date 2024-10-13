@@ -1,0 +1,106 @@
+.reader-info {
+    width: 100%;
+    padding: 20px;
+}
+
+.reader-details {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.reader-details h2 {
+    margin-bottom: 10px;
+}
+
+.reader-details p {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #777;
+}
+
+.reader-details p a {
+    color: #ff6b3d;
+    text-decoration: none;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+}
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.info {
+    margin-top: 20px;
+}
+
+.info p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.update-btn {
+    padding: 10px 20px;
+    background-color: #ff6b3d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.ban-btn, .suspend-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #ff6b3d;
+    color: #fff;
+}
+
+.suspend-btn {
+    background-color: #ffb03d;
+}
+
+.transaction-history {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-history h2 {
+    margin-bottom: 20px;
+}
+
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.transaction-table th, .transaction-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.transaction-table th {
+    background-color: #f4f4f4;
+}
+
+.transaction-table td {
+    color: #555;
+}

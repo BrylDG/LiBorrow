@@ -1,149 +1,182 @@
-body {
-    font-family: Arial, sans-serif;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
     background-color: #f4f4f4;
 }
 
 .container {
     display: flex;
+    width: 100%;
 }
 
 .sidebar {
     width: 250px;
-    background-color: #ff7f50;
+    background-color: #ff6b3d;
+    color: #fff;
     padding: 20px;
-    color: white;
 }
 
-.sidebar h2 {
-    color: white;
+.logo {
+    font-size: 24px;
+    margin-bottom: 40px;
 }
 
 .sidebar ul {
     list-style: none;
-    padding: 0;
 }
 
 .sidebar ul li {
-    margin: 15px 0;
-    cursor: pointer;
+    margin: 20px 0;
 }
 
-.sidebar ul li.active {
+.sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.sidebar ul li.active a {
     font-weight: bold;
 }
 
-.main-content {
-    flex: 1;
-    padding: 20px;
-    background-color: white;
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.greeting {
-    font-size: 24px;
-    margin: 20px 0;
-}
-
-.date-time {
-    font-size: 14px;
-    color: #888;
-}
-
-.stats {
-    display: flex;
-    justify-content: space-between;
-    margin: 20px 0;
-}
-
-.stat-box {
-    border: 1px solid #ddd;
-    padding: 20px;
-    text-align: center;
-    flex: 1;
-    margin: 0 10px;
-}
-
-.transaction-overview {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.pie-chart {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    position: relative;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: conic-gradient(
-        #ff6384 0% 60%, 
-        #36a2eb 60% 70%, 
-        #ffce56 70% 90%, 
-        #4bc0c0 90% 100%
-    );
-}
-
-.book-genre-chart {
-    margin-top: 20px;
-}
-
-.bar-chart {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-}
-
-.bar {
-    width: 30px;
-    background-color: #4a90e2;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    color: white;
-    transition: height 0.3s ease;
+.sub-menu {
+    margin-left: 20px;
+    margin-top: 10px;
 }
 
 .readers-list {
+    width: 100%;
     padding: 20px;
-    background-color: white;
-    margin-top: 20px;
 }
 
-.search-bar {
-    width: 100%;
-    padding: 10px;
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 20px;
 }
 
-.table-container {
-    overflow-x: auto;
+.user-info p {
+    margin: 0;
 }
 
-table {
+.user-settings {
+    position: relative;
+}
+
+.user-dropdown {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.user-dropdown img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.user-dropdown span {
+    margin-left: 10px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: #fff;
+    color: #000;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.user-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #000;
+}
+
+.table-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table-section h2 {
+    margin-bottom: 20px;
+}
+
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.sort-button, .filter-button {
+    padding: 10px 20px;
+    background-color: #ff6b3d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.readers-table {
     width: 100%;
     border-collapse: collapse;
+    margin-bottom: 20px;
 }
 
-th, td {
-    padding: 10px;
+.readers-table th, .readers-table td {
+    padding: 15px;
     text-align: left;
-    border: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }
 
-th {
+.readers-table th {
     background-color: #f4f4f4;
+}
+
+.readers-table a {
+    color: #ff6b3d;
+    text-decoration: none;
 }
 
 .pagination {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination a, .pagination span {
+    padding: 10px 15px;
+    margin: 0 5px;
+    background-color: #f4f4f4;
+    text-decoration: none;
+    color: #333;
+    border-radius: 5px;
+}
+
+.pagination .previous, .pagination .next {
+    font-weight: bold;
 }
