@@ -27,8 +27,8 @@
 
                 <!-- BUTTONS -->
                 <div class="d-none d-lg-block">
-                    <a href="#" class="btn sign-in">Sign-In</a>
-                    <a href="#" class="btn btn-get-started">Get Started</a>
+                    <a href="login.php" class="btn sign-in">Sign-In</a>
+                    <a href="register.php" class="btn btn-get-started">Get Started</a>
                 </div>
 
                 <!-- BURGER MENU -->
@@ -43,7 +43,7 @@
                             <a href="#" class="nav-link">Sign-In</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Get Started</a>
+                            <a href="register.php" class="nav-link">Get Started</a>
                         </li>
                     </ul>
                 </div>
@@ -59,7 +59,7 @@
                     <div class="col-xxl-12 slogan-text">
                         <h1>Your Next <span class="highlight">Chapter</span> Awaits<span class="highlight">.</span></h1>
                         <p>Start Borrowing Today: Your next favorite book is waiting.</p>
-                        <a href="#" class="btn btn-warning btn-lg">Start Reading</a>
+                        <a href="register.php" class="btn btn-warning btn-lg">Start Reading</a>
                     </div>
 
                     <!-- TRENDING BOOKS -->
@@ -127,7 +127,7 @@
                     <div class="col-md-12 text-content order-md-1">
                         <h1>Embark on a new <span class="highlight">reading</span> adventure<span class="highlight">.</span></h1>
                         <p>Start your journey today. Borrow your next book now!</p>
-                        <a href="#" class="btn btn-warning btn-lg cta-button">Start Reading</a>
+                        <a href="register.php" class="btn btn-warning btn-lg cta-button">Start Reading</a>
                     </div>
 
                 </div>
