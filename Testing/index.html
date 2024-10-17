@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Content Example with Sidebar</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        nav {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-right: 1px solid #ccc;
+        }
+        nav button {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+        }
+        nav button:hover {
+            background-color: #0056b3;
+        }
+        #main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        #content {
+            display: grid;
+            background-color: lightblue;
+            height: 600px;
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+        }
+        .random-content {
+            padding: 15px;
+            border: 1px solid #ccc;
+            background-color: #e9ecef;
+            margin-bottom: 20px;
+        }
+        .box {
+            width: 100px;
+            height: 100px;
+            margin: 10px; /* Added margin for spacing */
+        }
+        #box1 { background-color: red; }
+        #box2 { background-color: green; }
+        #box3 { background-color: blue; }
+        #box4 { background-color: black; }
+        #box5 { background-color: purple; }
+    </style>
+</head>
+<body>
+    <nav>
+        <h3>Navigation</h3>
+        <button id="button1">Show Content 1</button>
+        <button id="button2">Show Content 2</button>
+    </nav>
+
+    <div id="main-content">
+        <h1>Welcome to My Website</h1>
+        <div class="random-content" id="random-content">
+            <h2>Random Content</h2>
+            <p>This section contains random information that may change often.</p>
+        </div>
+        <button id="change-random-content">Change Random Content</button>
+
+        <div id="content">
+            <p>Click a button to load content.</p>
+            <div class="box" id="box1"></div>
+            <div class="box" id="box2"></div>
+            <div class="box" id="box3"></div>
+            <div class="box" id="box4"></div>
+            <div class="box" id="box5"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("button1").addEventListener("click", function() {
+            fetch('content1.html') // Fetch content from content1.html
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("content").innerHTML = data; // Update content div
+                })
+                .catch(error => {
+                    console.error('Error fetching content:', error);
+                });
+        });
+
+        document.getElementById("button2").addEventListener("click", function() {
+            fetch('content2.html') // Fetch content from content2.html
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("content").innerHTML = data; // Update content div
+                })
+                .catch(error => {
+                    console.error('Error fetching content:', error);
+                });
+        });
+
+        document.getElementById("change-random-content").addEventListener("click", function() {
+            const randomContentArray = [
+                "Bananas are berries, but strawberries aren't.",
+                "Octopuses have three hearts.",
+                "The Eiffel Tower can be 15 cm taller during the summer.",
+                "A group of flamingos is called a 'flamboyance.'",
+                "Cows have best friends and get stressed when separated."
+            ];
+
+            // Get a random index from the array
+            const randomIndex = Math.floor(Math.random() * randomContentArray.length);
+            const newRandomContent = randomContentArray[randomIndex];
+
+            // Replace the content in the random-content div
+            document.getElementById("random-content").innerHTML = `
+                <h2>Random Content</h2>
+                <p>${newRandomContent}</p>
+            `;
+        });
+    </script>
+</body>
+</html>
