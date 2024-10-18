@@ -12,6 +12,7 @@ body, html {
     background-color: #FC783F;
     height: 100vh;
     padding: 1em;
+    justify-items: center;
 }
 
 #sidebar img {
@@ -27,6 +28,7 @@ body, html {
     font-weight: bold;
     font-size: 35px;
     color: white;
+    padding-top: 10%;
 }
 
 #nav-list {
@@ -41,13 +43,14 @@ body, html {
     text-decoration: none;
     color: white;
     font-weight: bold;
-    padding: 0.5em 1em;
+    padding: 1em 7em 1em 1em;
     transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 #nav-list li a img {
     filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
     transition: filter 0.3s ease;
+    margin-right: 10%;
 }
 
 #nav-list li:not(#submenu-list):hover a {
@@ -145,7 +148,7 @@ body, html {
 }
 
 #submenu-toggle-icon {
-    margin-left:10%;
+    margin-left:20%;
 }
 
 #submenu-list li {
@@ -159,7 +162,7 @@ body, html {
     background-color: white;
     height: 12vh;
     padding: 0 2em;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5); /* Add this line for the bottom border */
 }
 
 .separator {
@@ -182,6 +185,35 @@ body, html {
 
 #notification {
     margin-right: 1em; 
+}
+
+.notification-dropdown {
+    display: none;
+    position: absolute;
+    top: 80px; /* Adjust as needed */
+    width: 200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    padding: 1em;
+    z-index: 100;
+}
+
+.notification-options {
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-item {
+    text-decoration: none;
+    color: black;
+    padding: 0.5em;
+    transition: background-color 0.3s ease;
+}
+
+.notification-item:hover {
+    background-color: #f0f0f0;
+    border-radius: 5px;
 }
 
 #profile {
