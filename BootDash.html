@@ -34,7 +34,7 @@
                         </a>
                     </li>
                     <li id="submenu-list">
-                        <a href="#" onclick="toggleSubmenu()" id="submenu-title">
+                        <a id="button3" href="#" id="submenu-title">
                             <img src="./Images/TransacIcon.svg" alt="Transactions Icon" width="24" height="24"> Transactions
                             <img id="submenu-toggle-icon" src="./Images/Vec.svg" alt="Toggle">
                         </a>
@@ -135,6 +135,8 @@
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
+                    document.title = "Readers List"; // Change the page title
+                    document.getElementById("page-title").innerText = "Readers List"; // Change the displayed title
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
@@ -145,10 +147,40 @@
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
+                    document.title = "Inventory"; // Change the page title
+                    document.getElementById("page-title").innerText = "Inventory"; // Change the displayed title
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
-    
+
+        document.querySelector("#button3").addEventListener("click", function(event) {
+            event.preventDefault();
+
+            // Toggle the submenu
+            const submenu = document.getElementById('submenu');
+            const icon = document.getElementById('submenu-toggle-icon');
+
+            if (submenu.style.maxHeight === "0px" || submenu.style.maxHeight === "") {
+                submenu.style.maxHeight = submenu.scrollHeight + "px";
+                icon.classList.add('rotate');
+            } else {
+                submenu.style.maxHeight = "0px";
+                icon.classList.remove('rotate');
+            }
+
+            // Fetch and load Transactions content
+            fetch('./TransactionsDash.html') 
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data; // Update the content div
+                    document.title = "Transactions"; // Change the page title
+                    document.getElementById("page-title").innerText = "Transactions"; // Change the displayed title
+                })
+                .catch(error => {
+                    console.error('Error fetching content:', error);
+                });
+        });
+
         document.querySelectorAll('#submenu li a').forEach(function(submenuItem) {
             submenuItem.addEventListener('click', function() {
                 document.querySelectorAll('#submenu li a').forEach(function(item) {
