@@ -33,11 +33,26 @@
                 </tr>
             </thead>
             <tbody>
+                <?php
+                    include("connection.php");
+                    
+                    $query = "SELECT idno, fullname, email FROM users";
+                    $result = $conn->query($query);
+
+                    if ($result->num_rows > 0) {
+                        while($row = $result->fetch_assoc()) {
+                            echo "<tr><td>" . $row["idno"]. "</td><td>" . $row["fullname"]. "</td><td>" . $row["email"]. "</td><td><a href='#' class='view-more'>View more</a></td></tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='3'>No data found</td></tr>";
+                    }
+                ?>
+                <!--
                 <tr>
                     <td>1</td>
                     <td>John Doe</td>
                     <td>JohnDoe@gmail.com</td>
-                    <td><a href="#" class="view-more">View more</a></td>
+                    <td><a href='#' class='view-more'>View more</a></td>
                 </tr>
                 <tr>
                     <td>2</td>
@@ -62,7 +77,7 @@
                     <td>Juna Mae</td>
                     <td>JunaMae@gmail.com</td>
                     <td><a href="#" class="view-more">View more</a></td>
-                </tr>
+                </tr>-->
             </tbody>
         </table>
 

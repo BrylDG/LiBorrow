@@ -110,7 +110,7 @@
                     </div>
                     <input type="submit" class="btn btn-primary" name="submit" value="Sign-In"/>
                 </form>
-                <p class="text-center mt-3">Don't have an Account? <a href="#" class="sign-up">Sign-up!</a></p>
+                <p class="text-center mt-3">Don't have an Account? <a href="login.php" class="sign-up">Sign-up!</a></p>
             </div>
         </div>
 

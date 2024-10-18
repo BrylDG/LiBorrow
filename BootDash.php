@@ -78,7 +78,7 @@
             <div id="main-content" class="col-10">
                 <div id="topbar">
                   <h3 id="page-title">Readers List</h3>
-                  <div id="profile-section" class="col-3" >
+                  <div id="profile-section" class="col-3">
                       <div id="notification">
                           <a href="#">
                               <img src="./Images/Bell_pin.svg" alt="Notifications" height="30px" width="30px">
@@ -97,7 +97,42 @@
                   </div>
                 </div>            
                 <div id="body-content" class="col-10">
-                    CONTENT
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                include("connection.php");
+                                
+                                $query = "SELECT idno, fullname, email FROM users";
+                                $result = $conn->query($query);
+            
+                                if ($result->num_rows > 0) {
+                                    while($row = $result->fetch_assoc()) {
+                                        echo "<tr><td>" . $row["idno"]. "</td><td>" . $row["fullname"]. "</td><td>" . $row["email"]. "</td><td><a href='#' class='view-more'>View more</a></td></tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='3'>No data found</td></tr>";
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <a href="#">Previous</a>
+                        <a href="#">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#">4</a>
+                        <a href="#">...</a>
+                        <a href="#">50</a>
+                        <a href="#">Next</a>
+                    </div>
                 </div>
             </div>
         </div>
