@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./dashStyle.css">
     <link rel="stylesheet" href="./ReaderStyle.css">
     <link rel="stylesheet" href="./InventoryStyle.css">
+    <link rel="stylesheet" href="./HistoryStyle.css">
     <title>LiBorrow Dashboard</title>
 </head>
 <body>
@@ -62,7 +63,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#" onclick="changeContent('History')">
+                        <a href="#" id="button4">
                             <img src="./Images/HistoryIcon.svg" alt="History Icon" width="25" height="25"> History
                         </a>
                     </li>
@@ -167,11 +168,23 @@
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data; // Update the content div
                     document.title = "Transactions"; // Change the page title
-                    document.getElementById("page-title").innerText = "Transactions"; // Change the displayed title
+                    document.getElementById("page-title").innerText = "Pending"; // Change the displayed title
                 })
                 .catch(error => {
                     console.error('Error fetching content:', error);
                 });
+        });
+
+        document.getElementById("button4").addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./HistoryDash.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "History"; // Change the page title
+                    document.getElementById("page-title").innerText = "History"; // Change the displayed title
+                })
+                .catch(error => console.error('Error fetching content:', error));
         });
 
         document.querySelectorAll('#submenu li a').forEach(function(submenuItem) {
