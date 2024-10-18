@@ -14,6 +14,12 @@ body, html {
     padding: 1em;
 }
 
+#sidebar img {
+    margin-right:2%;
+}
+
+
+
 #brand-name {
     font-weight: bold;
     font-size: 35px;
@@ -90,6 +96,10 @@ body, html {
 
 #submenu-toggle-icon.rotate {
     transform: rotate(180deg);
+}
+
+#submenu-toggle-icon {
+    margin-left:45%;
 }
 
 #topbar {
