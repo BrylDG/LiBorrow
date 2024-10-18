@@ -64,29 +64,27 @@ hr {
     margin-bottom: 20px; 
 
 }
-
 .search-bar {
     position: relative;
 }
 
 .search-bar input {
     width: 300px;
-    height: 40px; 
-    padding: 10px 40px 10px 15px; 
+    height: 40px;
+    padding: 10px 40px 10px 15px;
     border: 1px solid #7d6966;
     border-radius: 20px;
     font-size: 16px;
     outline: none;
-    background-color: #fff;
     color: #7d6966;
     transition: border-color 0.3s ease;
 }
 
 .search-bar .search-icon {
     position: absolute;
-    left: 10px;
-    top: 50%; 
-    transform: translateY(-50%); 
+    left: 90%;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .sort-btn {
