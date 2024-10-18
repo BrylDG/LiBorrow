@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiBorrow Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./dashStyle.css">
-    <link rel="stylesheet" type="text/css" href="./ReaderStyle.css"> 
-    <link rel="stylesheet" type="text/css" href="./InventoryStyle.css"> 
+    <link rel="stylesheet" href="./ReaderStyle.css">
+    <link rel="stylesheet" href="./InventoryStyle.css">
     <title>LiBorrow Dashboard</title>
 </head>
 <body>
@@ -19,114 +20,92 @@
                 <ul id="nav-list">
                     <li>
                         <a href="#">
-                            <img src="./Images/DashIcon.svg" alt="Dashboard Icon" width="24" height="24">
-                            Dashboard
+                            <img src="./Images/DashIcon.svg" alt="Dashboard Icon" width="24" height="24"> Dashboard
                         </a>
                     </li>
                     <li>
                         <a href="#" id="button1">
-                            <img src="./Images/ReaderIcon.svg" alt="Readers Icon" width="24" height="24">
-                            Readers List
-                        </a>  
-                    </li>                    
+                            <img src="./Images/ReaderIcon.svg" alt="Readers Icon" width="24" height="24"> Readers List
+                        </a>
+                    </li>
                     <li>
                         <a href="#" id="button2">
-                            <img src="./Images/InventoryIcon.svg" alt="Inventory Icon" width="24" height="24">
-                            Inventory
+                            <img src="./Images/InventoryIcon.svg" alt="Inventory Icon" width="24" height="24"> Inventory
                         </a>
                     </li>
                     <li id="submenu-list">
                         <a href="#" onclick="toggleSubmenu()" id="submenu-title">
-                            <img src="./Images/TransacIcon.svg" alt="Transactions Icon" width="24" height="24">
-                            Transactions
+                            <img src="./Images/TransacIcon.svg" alt="Transactions Icon" width="24" height="24"> Transactions
                             <img id="submenu-toggle-icon" src="./Images/Vec.svg" alt="Toggle">
                         </a>
                         <ul id="submenu">
-                          <li>
-                              <a href="#">
-                                  <img src="./Images/Vector.svg" alt="Pending Icon" width="18" height="18">
-                                  Pending
-                              </a>
-                          </li>
-                          <li>
-                              <a href="#">
-                                  <img src="./Images/Vector.svg" alt="Borrowed Icon" width="18" height="18">
-                                  Borrowed
-                              </a>
-                          </li>
-                          <li>
-                              <a href="#">
-                                  <img src="./Images/Vector.svg" alt="Returned Icon" width="18" height="18">
-                                  Returned
-                              </a>
-                          </li>
-                          <li>
-                              <a href="#">
-                                  <img src="./Images/Vector.svg" alt="Overdue Icon" width="18" height="18">
-                                  Overdue
-                              </a>
-                          </li>
-                      </ul>
+                            <li>
+                                <a href="#">
+                                    <img src="./Images/Vector.svg" alt="Pending Icon" width="18" height="18"> Pending
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="./Images/Vector.svg" alt="Borrowed Icon" width="18" height="18"> Borrowed
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="./Images/Vector.svg" alt="Returned Icon" width="18" height="18"> Returned
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="./Images/Vector.svg" alt="Overdue Icon" width="18" height="18"> Overdue
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a href="#" onclick="changeContent('History')">
-                            <img src="./Images/HistoryIcon.svg" alt="History Icon" width="25" height="25">
-                            History
+                            <img src="./Images/HistoryIcon.svg" alt="History Icon" width="25" height="25"> History
                         </a>
                     </li>
                 </ul>
             </div>
+
             <div id="main-content" class="col-10">
                 <div id="topbar">
-                  <h3 id="page-title">Readers List</h3>
-
-                          <div id="profile-section" class="col-3">
-                            <div id="notification">
-                                <a href="#">
-                                    <img src="./Images/Bell_pin.svg" alt="Notifications" height="30px" width="30px">
-                                </a>
-                            </div>
-                            <div class="separator"></div>
-                            <div id="profile" class="col-4">
-                                <a href="#" class="info-column">
-                                    <img src="./Images/Profile.svg" id="profile-image" alt="Profile" height="60px" width="60px">
-                                    <div id="profile-info">
-                                        <span>Daisy Lyn Laygan</span>
-                                        <h5>Librarian</h5>
-                                    </div>
-                                </a>
-                            </div>
+                    <h3 id="page-title">Readers List</h3>
+                    <div id="profile-section" class="col-3">
+                        <div id="notification">
+                            <a href="#">
+                                <img src="./Images/Bell_pin.svg" alt="Notifications" height="30" width="30">
+                            </a>
                         </div>
-
-                        
-                        <div id="profile-dropdown" class="profile-dropdown">
-                            <div class="profile-options">
-                                <a href="#" class="settings">
-                                    <img src="./Images/settings.svg" alt="Settings Icon">
-                                    Settings
-                                </a>
-                                <a href="#" class="logout">
-                                    <img src="./Images/signin.svg" alt="Logout Icon">   
-                                    Log Out
-                                </a>
-                            </div>
+                        <div class="separator"></div>
+                        <div id="profile" class="col-4">
+                            <a href="#" class="info-column">
+                                <img src="./Images/Profile.svg" id="profile-image" alt="Profile" height="60" width="60">
+                                <div id="profile-info">
+                                    <span>Daisy Lyn Laygan</span>
+                                    <h5>Librarian</h5>
+                                </div>
+                            </a>
                         </div>
+                    </div>
 
-
-
-                      </div>
-                  </div>
-                </div>  
-                          
+                    <div id="profile-dropdown" class="profile-dropdown">
+                        <div class="profile-options">
+                            <a href="#" class="settings">
+                                <img src="./Images/settings.svg" alt="Settings Icon"> Settings
+                            </a>
+                            <a href="#" class="logout">
+                                <img src="./Images/signin.svg" alt="Logout Icon"> Log Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 <div id="body-content" class="col-10">
                     CONTENT
                 </div>
             </div>
         </div>
-
-
-
-
     </div>
 
     <script>
@@ -144,68 +123,55 @@
         }
     
         document.getElementById("button1").addEventListener("click", function(event) {
-            event.preventDefault(); 
-            fetch('./ReaderDash.html') 
+            event.preventDefault();
+            fetch('./ReaderDash.html')
                 .then(response => response.text())
                 .then(data => {
-                    document.getElementById("body-content").innerHTML = data; // Update the content div
+                    document.getElementById("body-content").innerHTML = data;
                 })
-                .catch(error => {
-                    console.error('Error fetching content:', error);
-                });
-        });
-        document.getElementById("button2").addEventListener("click", function(event) {
-            event.preventDefault(); 
-            fetch('./InventoryDash.html') 
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("body-content").innerHTML = data; // Update the content div
-                })
-                .catch(error => {
-                    console.error('Error fetching content:', error);
-                });
+                .catch(error => console.error('Error fetching content:', error));
         });
     
-        // Add active class on submenu item click
+        document.getElementById("button2").addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./InventoryDash.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                })
+                .catch(error => console.error('Error fetching content:', error));
+        });
+    
         document.querySelectorAll('#submenu li a').forEach(function(submenuItem) {
             submenuItem.addEventListener('click', function() {
-                // Remove active class from all submenu items
                 document.querySelectorAll('#submenu li a').forEach(function(item) {
                     item.classList.remove('active');
                 });
-    
-                // Add active class to the clicked submenu item
                 submenuItem.classList.add('active');
             });
         });
 
-        // Toggle the profile dropdown
         document.querySelector(".info-column").addEventListener("click", function(event) {
-            event.preventDefault(); // Prevent default action
-
+            event.preventDefault();
             const dropdown = document.getElementById("profile-dropdown");
 
-            // Toggle dropdown visibility
             if (dropdown.style.display === "none" || dropdown.style.display === "") {
-                dropdown.style.display = "block"; // Show the dropdown
+                dropdown.style.display = "block";
             } else {
-                dropdown.style.display = "none"; // Hide the dropdown
+                dropdown.style.display = "none";
             }
         });
 
-        // Optional: Hide dropdown when clicking outside
         document.addEventListener("click", function(event) {
             const dropdown = document.getElementById("profile-dropdown");
             const profileSection = document.querySelector(".info-column");
 
-            // Check if the click is outside the profile section or dropdown
             if (!profileSection.contains(event.target) && !dropdown.contains(event.target)) {
-                dropdown.style.display = "none"; // Hide the dropdown
+                dropdown.style.display = "none";
             }
         });
-
     </script>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>
