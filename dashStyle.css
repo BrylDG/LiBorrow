@@ -18,7 +18,10 @@ body, html {
     margin-right:2%;
 }
 
-
+#submenu img {
+    height: 12px;
+    width: 17px;
+}
 
 #brand-name {
     font-weight: bold;
@@ -30,10 +33,6 @@ body, html {
     list-style: none;
     padding-left: 0;
     margin-top: 5em;
-}
-
-#nav-list li {
-    margin-bottom: 1em;
 }
 
 #nav-list li a {
@@ -51,15 +50,52 @@ body, html {
     transition: filter 0.3s ease;
 }
 
-#nav-list li:hover a {
+#nav-list li:not(#submenu-list):hover a {
     color: #FC783F;
     background-color: #fff;
     border-radius: 5px;
 }
 
-#nav-list li:hover a img {
+
+/* Specific hover effect for the images within the links */
+#nav-list li:not(#submenu-list):hover a img {
     filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
 }
+
+#submenu-list:hover > a {
+    color: #FC783F;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+/* Ensures the submenu list items are not affected when hovering over #submenu-list */
+#submenu-list:hover > ul {
+    background-color: inherit; /* Prevent submenu contents from being affected */
+}
+
+#submenu-list:hover > a img {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
+    transition: filter 0.3s ease;
+}
+
+/* Prevent submenu items from changing when #submenu-list is hovered */
+#submenu li a {
+    background-color: transparent; /* Keep background transparent */
+    color: white; /* Submenu item text color remains white */
+}
+
+/* Hover effect on the submenu items themselves */
+#submenu li:hover a {
+    background-color: white;
+    color: #FC783F;
+    border-radius: 5px;
+}
+
+#submenu li:hover a img {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
+    transition: filter 0.3s ease;
+}
+
 
 #submenu {
     max-height: 0;
@@ -85,7 +121,7 @@ body, html {
 }
 
 #submenu li:hover a {
-    background-color: white;
+    background-color: WHITE;
     color: #FC783F;
     border-radius: 5px;
 }
@@ -94,12 +130,26 @@ body, html {
     filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
 }
 
+/* #submenu li a.active {
+    background-color: white;
+    color: #FC783F;
+    border-radius: 5px;
+}
+
+#submenu li a.active img {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
+} */
+
 #submenu-toggle-icon.rotate {
     transform: rotate(180deg);
 }
 
 #submenu-toggle-icon {
-    margin-left:45%;
+    margin-left:10%;
+}
+
+#submenu-list li {
+    padding-top: 10px;
 }
 
 #topbar {
@@ -109,7 +159,7 @@ body, html {
     background-color: white;
     height: 12vh;
     padding: 0 2em;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); 
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
 }
 
 .separator {
@@ -209,8 +259,86 @@ span {
     justify-content: center;
 }
 #body-content{
-    margin-top: 3em;
+    margin-top: 4em;
     width: 100%;
-    height: 65vh;
+    height: 62vh;
     background-color: gray;
+}
+
+/* Profile Dropdown */
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 80px; /* Adjust according to the profile section's height */
+    right: 10px; /* Align it to the right side */
+    width: 200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    padding: 1em;
+    z-index: 100;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 1em;
+}
+
+.profile-details span {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.profile-details h5 {
+    font-size: 12px;
+    color: gray;
+}
+
+.profile-camera-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.profile-options {
+    display: flex;
+    flex-direction: column;
+    padding: 1em 0;
+}
+
+.profile-options a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    padding: 0.5em;
+    transition: background-color 0.3s ease;
+}
+
+.profile-options a img {
+    margin-right: 10px;
+}
+
+.profile-options a:hover {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+.profile-options .logout {
+    color: orange;
 }

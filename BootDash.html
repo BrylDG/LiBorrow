@@ -35,8 +35,8 @@
                             Inventory
                         </a>
                     </li>
-                    <li>
-                        <a href="#" onclick="toggleSubmenu()">
+                    <li id="submenu-list">
+                        <a href="#" onclick="toggleSubmenu()" id="submenu-title">
                             <img src="./Images/TransacIcon.svg" alt="Transactions Icon" width="24" height="24">
                             Transactions
                             <img id="submenu-toggle-icon" src="./Images/Vec.svg" alt="Toggle">
@@ -79,29 +79,54 @@
             <div id="main-content" class="col-10">
                 <div id="topbar">
                   <h3 id="page-title">Readers List</h3>
-                  <div id="profile-section" class="col-3" >
-                      <div id="notification">
-                          <a href="#">
-                              <img src="./Images/Bell_pin.svg" alt="Notifications" height="30px" width="30px">
-                          </a>
-                      </div>
-                      <div class="separator"></div>
-                      <div id="profile" class="col-4">
-                          <a href="#" class="info-column">
-                              <img src="./Images/Profile.svg" id="profile-image" alt="Profile" height="60px" width="60px">
-                              <div id="profile-info">
-                                  <span>Daisy Lyn Laygan</span>
-                                  <h5>Librarian</h5>
-                              </div>
-                          </a>
+
+                          <div id="profile-section" class="col-3">
+                            <div id="notification">
+                                <a href="#">
+                                    <img src="./Images/Bell_pin.svg" alt="Notifications" height="30px" width="30px">
+                                </a>
+                            </div>
+                            <div class="separator"></div>
+                            <div id="profile" class="col-4">
+                                <a href="#" class="info-column">
+                                    <img src="./Images/Profile.svg" id="profile-image" alt="Profile" height="60px" width="60px">
+                                    <div id="profile-info">
+                                        <span>Daisy Lyn Laygan</span>
+                                        <h5>Librarian</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        
+                        <div id="profile-dropdown" class="profile-dropdown">
+                            <div class="profile-options">
+                                <a href="#" class="settings">
+                                    <img src="./Images/settings.svg" alt="Settings Icon">
+                                    Settings
+                                </a>
+                                <a href="#" class="logout">
+                                    <img src="./Images/signin.svg" alt="Logout Icon">   
+                                    Log Out
+                                </a>
+                            </div>
+                        </div>
+
+
+
                       </div>
                   </div>
-                </div>            
+                </div>  
+                          
                 <div id="body-content" class="col-10">
                     CONTENT
                 </div>
             </div>
         </div>
+
+
+
+
     </div>
 
     <script>
@@ -129,7 +154,6 @@
                     console.error('Error fetching content:', error);
                 });
         });
-<<<<<<< Updated upstream
         document.getElementById("button2").addEventListener("click", function(event) {
             event.preventDefault(); 
             fetch('./InventoryDash.html') 
@@ -140,7 +164,7 @@
                 .catch(error => {
                     console.error('Error fetching content:', error);
                 });
-=======
+        });
     
         // Add active class on submenu item click
         document.querySelectorAll('#submenu li a').forEach(function(submenuItem) {
@@ -153,8 +177,33 @@
                 // Add active class to the clicked submenu item
                 submenuItem.classList.add('active');
             });
->>>>>>> Stashed changes
         });
+
+        // Toggle the profile dropdown
+        document.querySelector(".info-column").addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent default action
+
+            const dropdown = document.getElementById("profile-dropdown");
+
+            // Toggle dropdown visibility
+            if (dropdown.style.display === "none" || dropdown.style.display === "") {
+                dropdown.style.display = "block"; // Show the dropdown
+            } else {
+                dropdown.style.display = "none"; // Hide the dropdown
+            }
+        });
+
+        // Optional: Hide dropdown when clicking outside
+        document.addEventListener("click", function(event) {
+            const dropdown = document.getElementById("profile-dropdown");
+            const profileSection = document.querySelector(".info-column");
+
+            // Check if the click is outside the profile section or dropdown
+            if (!profileSection.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.style.display = "none"; // Hide the dropdown
+            }
+        });
+
     </script>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
