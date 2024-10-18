@@ -20,7 +20,7 @@
                 <h3 id="brand-name">LiBorrow.</h3>
                 <ul id="nav-list">
                     <li>
-                        <a href="#">
+                        <a href="#" id="button0">
                             <img src="./Images/DashIcon.svg" alt="Dashboard Icon" width="24" height="24"> Dashboard
                         </a>
                     </li>
@@ -129,7 +129,19 @@
                 icon.classList.remove('rotate');
             }
         }
-    
+
+        document.getElementById("button0").addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./Dashboard.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "Dashboard"; // Change the page title
+                    document.getElementById("page-title").innerText = "Dashboard"; // Change the displayed title
+                })
+                .catch(error => console.error('Error fetching content:', error));
+        });
+
         document.getElementById("button1").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./ReaderDash.html')
