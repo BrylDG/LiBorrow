@@ -160,9 +160,9 @@ hr {
 /* .reader-table tr:last-child {
     border-bottom: none; 
 } */
-.act{
+.act a{
     color: #e55a00;
-    text-decoration: underline;
+    
 }
 .Reader-pagination {
     display: flex;
