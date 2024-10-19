@@ -39,3 +39,27 @@ h1 {
 canvas {
     display: block;
 }
+
+#dashboard {
+    background-color: #fff;
+    width: 100%;
+    height: auto;
+    padding: 20px;
+}
+
+#top, #body-side {
+    padding: 0;
+}
+
+#top {
+    margin-bottom: 20px;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.col-md-4 {
+    margin-right: 20px;
+}
