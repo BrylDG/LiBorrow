@@ -114,7 +114,6 @@
                     </div>
                 </div>
                 <div id="body-content" class="col-10">
-                    CONTENT
                 </div>
             </div>
         </div>
@@ -132,6 +131,18 @@
                 submenu.style.maxHeight = "0px";
                 icon.classList.remove('rotate');
             }
+        }
+        
+        function loadDashboard() {
+            fetch('./Dashboard.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "Dashboard"; // Change the page title
+                    document.getElementById("page-title").innerText = "Dashboard"; // Change the displayed title
+                    renderCharts();
+                })
+                .catch(error => console.error('Error fetching content:', error));
         }
 
         document.getElementById("button0").addEventListener("click", function(event) {
@@ -174,44 +185,78 @@ new Chart(pieCtx, {
 });
 
 // Bar Chart Data
-const barCtx = document.getElementById('myBarChart').getContext('2d');
-const barData = {
-    labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5', 'Category 6', 'Category 7', 'Category 8'],
-    datasets: [
-        {
-            label: '2021',
-            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1,
-            data: [225, 170, 430, 35, 36, 10, 10, 1]
-        },
-        {
-            label: '2022',
-            backgroundColor: 'rgba(75, 192, 192, 0.6)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1,
-            data: [25, 18, 394, 37, 37, 10, 10, 1]
-        }
-    ]
-};
-
-// Create Bar Chart
-new Chart(barCtx, {
+const ctx = document.getElementById('myBarChart').getContext('2d');
+const myBarChart = new Chart(ctx, {
     type: 'bar',
-    data: barData,
+    data: {
+        labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5', 'Category 6', 'Category 7', 'Category 8'],
+        datasets: [
+            {
+                backgroundColor: '#5f76e8',
+                hoverBackgroundColor: '#3949ab',
+                data: [222, 177, 394, 35, 37, 5, 10, 1],
+                borderRadius: 8,  // Rounded corners
+                borderSkipped: false,  // Disable sharp corners
+                label: '2021',
+                maxBarThickness: 10  // Adjust this value to control bar thickness
+            },
+            {
+                backgroundColor: '#c1c9ed',
+                hoverBackgroundColor: '#9bacee',
+                data: [25, 18, 43, 35, 37, 10, 10, 1],
+                borderRadius: 8,  // Rounded corners
+                borderSkipped: false,
+                label: '2022',
+                maxBarThickness: 10  // Adjust this value to control bar thickness
+            }
+        ]
+    },
     options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
+            legend: {
+                display: true,
+                labels: {
+                    color: '#333',
+                    font: {
+                        size: 14
+                    }
+                },
+            },
             tooltip: {
-                enabled: true
+                backgroundColor: '#5f76e8',
+                titleFont: { size: 16 },
+                bodyFont: { size: 14 },
+                callbacks: {
+                    label: function(context) {
+                        return `${context.dataset.label}: ${context.raw}`;
+                    }
+                }
             }
         },
         scales: {
             x: {
-                beginAtZero: true
+                grid: {
+                    display: false,
+                },
+                ticks: {
+                    font: {
+                        size: 14,
+                    }
+                }
             },
             y: {
-                beginAtZero: true
+                beginAtZero: true,
+                grid: {
+                    color: '#ddd',
+                    borderDash: [5, 5],
+                },
+                ticks: {
+                    font: {
+                        size: 14,
+                    }
+                }
             }
         }
     }
@@ -373,6 +418,10 @@ new Chart(barCtx, {
                 dropdown.style.display = "none";
             }
         });
+
+        window.onload = function() {
+            loadDashboard();  // Automatically load the Dashboard content
+        };
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

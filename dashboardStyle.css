@@ -7,7 +7,7 @@ body {
 
 h1 {
     font-weight: bold;
-    font-size: 28px;
+    font-size: 30px;
 }
 
 h3 {
@@ -39,22 +39,29 @@ h3 {
 .DT {
     display: flex;
     align-items: center;  /* Vertically center date and time */
-    justify-content: flex-start;  /* Align them to the left */
-    gap: 20px;  /* Add space between date and time */
+    gap:0;
 }
 
-.datediv, .timediv {
+
+.datediv {
+    float: left;
     display: flex;
-    align-items: center;  /* Vertically align icon and text */
+    align-items: center;
+    padding-right: 5%;
 }
 
-/* Space between icon and text */
+.timediv {
+    float:left;
+    display: flex;
+    align-items: center;
+}
+
 .datediv img, .timediv img {
-    margin-right: 8px;  /* Add space between the icon and the text */
+    margin-right: 8px;
 }
 
 h5 {
-    margin: 0;  /* Remove any default margin from h5 */
+    margin: 0;
 }
 
 
@@ -64,7 +71,6 @@ h5 {
     margin-right: 0;
     display: flex;
     justify-content: space-between;
-    /* align-items: center; */  
 }
 
 .col-md-4 {
@@ -93,6 +99,7 @@ h5 {
     font-size: 28px;
     color: #666;
     margin-right: 15px;
+    padding-right: 5%;
 }
 
 .stat-card .text h2 {
