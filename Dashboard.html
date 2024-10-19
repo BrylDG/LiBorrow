@@ -1,0 +1,124 @@
+<div class="container mt-4">
+    <div class="row">
+        <!-- Header Section -->
+        <div class="col-12">
+            <h1>Welcome Back!</h1>
+            <p>MM/DD/YYY | DAY, TIME</p>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <!-- Left Side Section -->
+        <div class="col-md-4">
+            <!-- Stat Cards -->
+            <div class="row">
+                <div class="col-6">
+                    <div class="stat-card">
+                        <div class="icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="text">
+                            <h2>100</h2>
+                            <p>Total Readers</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="stat-card">
+                        <div class="icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="text">
+                            <h2>200</h2>
+                            <p>Total Books</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pie Chart -->
+            <div class="chart-container mt-4">
+                <canvas id="myPieChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Right Side Section -->
+        <div class="col-md-8">
+            <div class="chart-container">
+                <canvas id="myBarChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Pie Chart Data
+const pieCtx = document.getElementById('myPieChart').getContext('2d');
+const pieData = {
+    labels: ['Borrowed', 'Return', 'Pending', 'Overdue'],
+    datasets: [{
+        data: [60, 20, 10, 10],
+        backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#c9cbcf'],
+        hoverBackgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#c9cbcf']
+    }]
+};
+
+// Create Pie Chart
+new Chart(pieCtx, {
+    type: 'doughnut',
+    data: pieData,
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// Bar Chart Data
+const barCtx = document.getElementById('myBarChart').getContext('2d');
+const barData = {
+    labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5', 'Category 6', 'Category 7', 'Category 8'],
+    datasets: [
+        {
+            label: '2021',
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            data: [225, 170, 430, 35, 36, 10, 10, 1]
+        },
+        {
+            label: '2022',
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            data: [25, 18, 394, 37, 37, 10, 10, 1]
+        }
+    ]
+};
+
+// Create Bar Chart
+new Chart(barCtx, {
+    type: 'bar',
+    data: barData,
+    options: {
+        responsive: true,
+        plugins: {
+            tooltip: {
+                enabled: true
+            }
+        },
+        scales: {
+            x: {
+                beginAtZero: true
+            },
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+</script>
