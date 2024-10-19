@@ -283,7 +283,7 @@ span {
 }
 
 #content-box {
-    height: 65vh;
+    height: 100%;
     background-color: #f5f5f5;
     margin: 2em;
     border-radius: 10px;
