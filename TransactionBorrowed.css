@@ -13,7 +13,7 @@
     background-color: #f5f5f5;
 }
 
-.Brbox {
+.Borrowbox {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -32,15 +32,15 @@
     margin: 5px;
     border-radius: 10px;
 }
-.Borrbox img{
+
+/* .Borrbox img{
     margin-left: 2em;
     margin-top: 1em;
     margin-bottom: 0.5em;
 }
-
 .Borrbox img {
     padding: 5px;
-}
+} */
 .date {
     margin-left: auto; /* Aligns the date to the right */
 }
@@ -193,3 +193,50 @@
 /* .filter-btn img:hover {
     filter: brightness(0) invert(1); 
 } */
+.dropdown-content {
+    display: none; /* Initially hidden */
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    margin-top: 5px; /* Space between the link and dropdown */
+    right: 20%; /* Position from the left */
+    transform: translateX(-50%); /* Center it by translating half of its width */
+    width: auto; /* Set to auto or a fixed width */
+}
+.last-content {
+    display: none; /* Initially hidden */
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    margin-top: 5px; /* Space between the link and dropdown */
+    right: 50%; /* Position from the left */
+    bottom: 50%;
+    transform: translateX(-50%); /* Center it by translating half of its width */
+    width: auto; /* Set to auto or a fixed width */
+}
+.viewbtn {
+    position: relative; /* To position dropdown content */
+}
+
+.viewbtn:hover .dropdown-content {
+    display: block; /* Show on hover */
+    table-layout: auto;
+}
+
+.dropdown-content table {
+    border-collapse: collapse;
+}
+.dropdown-content th, .dropdown-content td {
+    border: 1px solid #ccc;
+    padding: 15px 30px; /* Increased padding for more space inside cells */
+    text-align: left;
+    white-space: nowrap; /* Prevents text from wrapping, keeps it in one line */
+}
+
+.dropdown-content th {
+    background-color: #f2f2f2;
+}
