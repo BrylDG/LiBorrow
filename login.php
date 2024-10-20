@@ -30,13 +30,35 @@
         <div class="col-5 center-column">
             <div class="login-form-container"   >
                 <h3 class="text-center">Welcome Back!</h3>
-                <form>
+                <?php
+                include('connection.php');
+                session_start();
+
+                if($_SERVER["REQUEST_METHOD"] == "POST") {
+                    $email = mysqli_real_escape_string($conn, $_POST["email"]);
+                    $pass = mysqli_real_escape_string($conn, $_POST["password"]);
+                    
+                    $query = "SELECT * FROM users WHERE email='$email' AND password='$pass'";
+                    $result = mysqli_query($conn, $query);
+                    $count = mysqli_num_rows($result);
+                    
+                    if($count>=1) {
+                        //$_SESSION['login_email'] = $email;
+                        //header("location: index.html");
+                        //exit;
+                        echo "<script>alert('Login Success!')</script>";
+                    } else {
+                        echo "<script>alert('Login Failed')</script>";
+                    }
+                }
+                ?>
+                <form action="login.php" method="post">
                     <div class="mb-5 email-input input-container">
-                        <input type="email" class="form-control" id="email"  required>
+                        <input type="email" class="form-control" id="email" name="email" required>
                         <label for="email">Email Address</label>
                     </div>
                     <div class="mb-3 password-input input-container">
-                        <input type="password" class="form-control" id="password" required>
+                        <input type="password" class="form-control" id="password" name="password" required>
                         <label for="password">Password</label>
                         <span class="password-toggle" onclick="togglePassword()">
                             <i id="eye-icon" class="bi bi-eye"></i>

@@ -1,0 +1,73 @@
+<div class="content-box" id="dashboard">
+    <div class="row">
+        <!-- Header Section -->
+        <div class="col-6" id="top">
+            <h1>Welcome Back, Daist Lyn Laygan!</h1>
+            <div class="DT">
+                <div class="datediv">
+                <img src="./Images/date.svg" alt="date Icon" width="24" height="24">
+                <h5>August 12,2024</h5>
+                </div>
+                <div class="timediv">
+                <img src="./Images/time.svg" alt="time Icon" width="24" height="24">
+                <h5>11:20:30 A.M.</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <!-- Left Side Section -->
+        <div class="col-md-4" style="padding-right: 1%;">
+            <!-- Stat Cards -->
+            <div class="row">
+                <div class="col-6" style="padding-left: 0;">
+                    <div class="stat-card">
+                        <div class="icon">
+                            <img src="./Images/totalReaders.svg" alt="Total Readers Icon" width="50" height="50">
+                        </div>
+                        <div class="text">
+                            <h2>100</h2>
+                            <p>Total Readers</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6" style="padding-right: 0;">
+                    <div class="stat-card">
+                        <div class="icon">
+                                <img src="./Images/totalBooks.svg" alt="Total Books Icon" width="50" height="50">
+                        </div>
+                        <div class="text">
+                            <h2>200</h2>
+                            <p>Total Books</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pie Chart -->
+            <div class="chart-container pie-container" style="margin-top: 0;">
+                <h3>Transaction Overview</h3> <!-- Title for the chart -->
+                <canvas id="myPieChart"></canvas>
+                <!-- Labels similar to the image -->
+                <ul style="list-style: none; padding-left: 20%; text-align: start;">
+                    <li><span style="color: orange; font-size: 30px; padding-right: 2%;">●</span> Borrowed <span style="font-weight: bold; font-size: 17px; padding-left: 32%;">60%</span></li>
+                    <li><span style="color: #5f76e8; font-size: 30px; padding-right: 2%;">●</span> Pending <span style="font-weight: bold; font-size: 17px; padding-left: 35%;">10%</span></li>
+                    <li><span style="color: #ff8c61; font-size: 30px; padding-right: 2%;">●</span> Returned <span style="font-weight: bold; font-size: 17px; padding-left: 33%;">20%</span></li>
+                    <li><span style="color: red; font-size: 30px; padding-right: 2%;">●</span> Overdue <span style="font-weight: bold; font-size: 17px; padding-left: 34%;">10%</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Right Side Section -->
+        <div class="col-md-8" id="body-side">
+            <div class="chart-container" style="margin-top: 0; height: 642px">
+                <canvas id="myBarChart" style=" height:100%;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+</script>

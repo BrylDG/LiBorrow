@@ -1,0 +1,183 @@
+body {
+    font-family: Poppins, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+h3 {
+    text-align: center;
+    font-size: 25px;
+    font-weight:600;
+    padding: 5% 0 5% 0;
+}
+
+#dashboard {
+    /* background-color: #fff; */
+    padding: 0px 30px 30px 30px;
+    /* max-width: 1000px; */
+}
+
+#top, #body-side {
+    padding: 0;
+}
+
+#body-side {
+    height:100%;
+}
+
+#top {
+    margin-bottom: 20px;
+}
+
+/* Align date and time in a single row */
+.DT {
+    display: flex;
+    align-items: center;  /* Vertically center date and time */
+    gap:0;
+}
+
+
+.datediv {
+    float: left;
+    display: flex;
+    align-items: center;
+    padding-right: 5%;
+}
+
+.timediv {
+    float:left;
+    display: flex;
+    align-items: center;
+}
+
+.datediv img, .timediv img {
+    margin-right: 8px;
+}
+
+h5 {
+    margin: 0;
+}
+
+
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.col-md-4 {
+    margin-right: 0;
+    padding-right: 20px;
+    width: 35%;  /* Reduced to make space for the charts */
+}
+
+.col-md-8 {
+    width: 65%;  /* Increased to accommodate the bar chart */
+}
+
+.stat-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card .icon {
+    font-size: 28px;
+    color: #666;
+    margin-right: 15px;
+    padding-right: 5%;
+}
+
+.stat-card .text h2 {
+    margin: 0;
+    font-size: 32px;
+}
+
+.stat-card .text p {
+    margin: 0;
+    color: #888;
+    font-size: 14px;
+}
+
+.chart-container {
+    width: 490;
+    height:535px;
+    margin-top: 30px;
+    position: relative;
+    border: 1px solid #ddd;
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+canvas {
+    display: block;
+    max-width: 100%;
+    height: 400px;
+}
+
+#myPieChart {
+    height:250px;
+    width:250px;
+    margin: 0 auto;
+}
+
+.pie-container {
+    position: relative;
+    margin-top: 30px;
+}
+
+.bar-chart-container {
+    position: relative;
+    margin-top: 50px;
+    height: 100%;
+}
+
+/* Adjust Pie chart size and centering */
+.chart-container .pie-chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    margin-bottom: 30px;
+}
+
+.bar-chart-container {
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Tooltip styling for hover effects on bar chart */
+.tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.pie-container li {
+    font-size: 17px;
+    height: 35px;
+}

@@ -1,208 +1,378 @@
-/* Styling for dashboard */
-*{
+/* Global Reset */
+* {
     box-sizing: border-box;
 }
-.col-2 {
+
+body, html {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+#sidebar {
     background-color: #FC783F;
     height: 100vh;
-}
-
-.col-10 {
-    background-color: #f5f5f5;
-    height: 100vh; 
-}
-
-.sidebar {
     padding: 1em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-items: center;
 }
 
-
-.btns {
-    margin: 5em 5em 0 5em; 
+#sidebar img {
+    margin-right:2%;
 }
 
-.content {
-    height: 65vh;
-    background-color: azure;
-    margin: 0em 5em 5em 5em; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
+#submenu img {
+    height: 12px;
+    width: 17px;
 }
 
-.nav-item {
-    padding-top: 4px;
-}
-
-img {
-    padding-bottom: -4px;
-}
-
-.item {
-    list-style: none;
-} 
-
-.btn {
-    font-weight: bold;
-}
-
-.side {
-    font-family: 'Poppins', sans-serif; 
+#brand-name {
     font-weight: bold;
     font-size: 35px;
     color: white;
+    padding-top: 10%;
 }
 
-.nav-btn {
+#nav-list {
     list-style: none;
     padding-left: 0;
-    display: flex;
-    flex-direction: column;
     margin-top: 5em;
 }
 
-li:hover {
-    background-color: #ffff;
-}
-
-.nav-btn > li {
-    margin-bottom: 0.5em;
-    border-radius: 5px;
-    padding: 0.5em 0.5em 0.5em 3em;
-    font-family: 'Poppins', sans-serif;
-    font-weight: bold;
-    font-size: 18px;
-}
-
-ul li a {
+#nav-list li a {
     display: flex;
-    align-items: center; /* Align text and images vertically */
+    align-items: center;
     text-decoration: none;
-    color: white; /* Default color */
-    transition: color 0.3s ease; /* Transition for color change */
+    color: white;
+    font-weight: bold;
+    padding: 1em 7em 1em 1em;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
 
-ul li a img {
-    margin-right: 10px;
-    transition: filter 0.3s ease; /* Transition for filter change */
+#nav-list li a img {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+    transition: filter 0.3s ease;
+    margin-right: 10%;
 }
 
-/* Hover effects for main navigation items */
-.nav-btn > li:hover a {
-    color: #FC783F; /* Change anchor tag color on hover */
+#nav-list li:not(#submenu-list):hover a {
+    color: #FC783F;
+    background-color: #fff;
+    border-radius: 5px;
 }
 
-.nav-btn > li:hover a img {
-    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%); /* Adjust filter for vector color change */
+
+/* Specific hover effect for the images within the links */
+#nav-list li:not(#submenu-list):hover a img {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
 }
 
-.sub-menu {
+#submenu-list:hover > a {
+    color: #FC783F;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+/* Ensures the submenu list items are not affected when hovering over #submenu-list */
+#submenu-list:hover > ul {
+    background-color: inherit; /* Prevent submenu contents from being affected */
+}
+
+#submenu-list:hover > a img {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
+    transition: filter 0.3s ease;
+}
+
+/* Prevent submenu items from changing when #submenu-list is hovered */
+#submenu li a {
+    background-color: transparent; /* Keep background transparent */
+    color: white; /* Submenu item text color remains white */
+}
+
+/* Hover effect on the submenu items themselves */
+#submenu li:hover a {
+    background-color: white;
+    color: #FC783F;
+    border-radius: 5px;
+}
+
+#submenu li:hover a img {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
+    transition: filter 0.3s ease;
+}
+
+
+#submenu {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease; 
-    padding-left: 2em;
+    transition: max-height 0.3s ease;
+}
+
+#submenu li {
     list-style: none;
-    margin-top: 0;
-    margin-left: -40px;
-    margin-bottom: -10px;    
 }
 
-.rotate {
-    transform: rotate(180deg); 
-    transition: transform 0.3s ease;
-}
-
-.vec {
-    display: inline-block; 
-    width: 15px; 
-    margin-left: 15px;
-    height: 20px; 
-    transform-origin: center; 
-    transition: transform 0.3s ease;
-    position: relative; 
-    top: 0; 
-}
-
-.sub-menu li {
+#submenu li a {
     display: flex;
     align-items: center;
-    margin: 0.2em 0em 0em 0em;
+    padding: 0.3em 1em;
+    color: white;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
-.dash{
-    position: absolute;
+
+#submenu li a img {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+    transition: filter 0.3s ease;
+}
+
+#submenu li:hover a {
+    background-color: WHITE;
+    color: #FC783F;
+    border-radius: 5px;
+}
+
+#submenu li:hover a img {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
+}
+
+/* #submenu li a.active {
+    background-color: white;
+    color: #FC783F;
+    border-radius: 5px;
+}
+
+#submenu li a.active img {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
+} */
+
+#submenu-toggle-icon.rotate {
+    transform: rotate(180deg);
+}
+
+#submenu-toggle-icon {
+    margin-left:20%;
+}
+
+#submenu-list li {
+    padding-top: 10px;
+}
+
+#topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    height: 12vh;
+    padding: 0 2em;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5); /* Add this line for the bottom border */
+    margin-bottom: 3%;
+}
+
+.separator {
+    height: 60px; /* Adjust the height of the line to your needs */
+    border-left: 2px solid gray; /* 2px solid black line */
+    margin: 0 10px; /* Add space around the separator */
+}
+
+#page-title {
     font-size: 2em;
     font-weight: bold;
-    margin-top: -50px;
 }
 
-
-.proflist{
-    display: flex;
-    margin-left: 90em;
-}
-@media(max-width: 1400px){
-    .proflist{
-        margin-left:50em
-    }
-}   
-@media(max-width: 1920px){
-    .proflist{
-        margin-left:70em;
-        
-    }
-} 
-
-.proflist li{
-    margin-top: 2em;
-    list-style: none;
-}
-.proflist a{
-    color: black;
-    font-family: 'poppins', sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-}
-.proflist li div {
-    margin-top: 1px; /* Adjust spacing between name and title */
+#profile-section {
+    display: flex; 
+    align-items: center; 
+    max-width: 100%;
+    gap: 1em;
 }
 
-.proflist li h5 {
-    margin: 0; /* Remove default margin */
-    font-size: 14px; /* Adjust font size if needed */
-    color: #000; /* Change color as desired */
+#notification {
+    margin-right: 1em; 
 }
-.separator{
-    width: 2px;
-    height: 90px;
-    background-color: #746767;
-    margin: 1em 4em;
-}
-.dash{
-    margin-top: 2em;
-    margin-left: 1.7em;
-    
-} 
-.topbar {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 12vh;
+
+.notification-dropdown {
+    display: none;
+    position: absolute;
+    top: 80px; /* Adjust as needed */
+    width: 200px;
     background-color: white;
-    /* text-shadow: 1px 1px 5px gray; */
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    padding: 1em;
+    z-index: 100;
 }
-/* .prof{
+
+.notification-options {
     display: flex;
     flex-direction: column;
-} */
-.notif img{
-    margin-top: 2.8em;
 }
-.notif{
+
+.notification-item {
+    text-decoration: none;
+    color: black;
+    padding: 0.5em;
+    transition: background-color 0.3s ease;
+}
+
+.notification-item:hover {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+#profile {
+    display: flex; 
+    flex-direction: row;
+    align-items: center; 
+    margin-left: 0.5em; 
+    flex-grow: 1;
+    white-space: nowrap;
+}
+
+span {
+    font-size: 13px;
+    font-weight: bold;
+    color: black;
+}
+
+#profile-section h5 {
+    font-size: 11px;
+    font-weight: lighter;
+    color: black;
+}
+
+#profile-image {
+    margin-right: 10%;
+}
+
+#profile img {
+    margin-top: 0.1em;
+}
+
+#profile-info {
+    display: flex; 
+    flex-direction: column;
+    flex-direction: left ;
+    margin-left: 0.5em; 
+}
+.info-column {
     display: flex;
-   
-    
+    align-items: center; /* Align items (image + text) in a row */
+    width: 100%; /* Make sure the anchor tag occupies the full width */
+    text-decoration: none;
+}
+
+/* #filters {
+    margin: 2em;
+}
+
+#filters a {
+    margin-right: 1em;
+    font-weight: bold;
+    padding: 0.5em 1em;
+    border: 1px solid #FC783F;
+    border-radius: 5px;
+    color: #FC783F;
+    text-decoration: none;
+} */
+#main-content{
+    padding: 0;
+    margin: 0;
+    background-color: #f5f5f5;
+}
+#filters a:hover {
+    background-color: #FC783F;
+    color: white;
+}
+
+#content-box {
+    height: 100%;
+    background-color: #f5f5f5;
+    margin: 2em;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#body-content {
+    min-width: 100%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Profile Dropdown */
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 80px; /* Adjust according to the profile section's height */
+    right: 10px; /* Align it to the right side */
+    width: 200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    padding: 1em;
+    z-index: 100;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 1em;
+}
+
+.profile-details span {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.profile-details h5 {
+    font-size: 12px;
+    color: gray;
+}
+
+.profile-camera-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.profile-options {
+    display: flex;
+    flex-direction: column;
+    padding: 1em 0;
+}
+
+.profile-options a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    padding: 0.5em;
+    transition: background-color 0.3s ease;
+}
+
+.profile-options a img {
+    margin-right: 10px;
+}
+
+.profile-options a:hover {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+.profile-options .logout {
+    color: orange;
 }

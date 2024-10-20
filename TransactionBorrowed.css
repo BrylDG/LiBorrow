@@ -1,0 +1,242 @@
+.content-box {
+    background-color: #f5f5f5;
+    width: 100%;
+    height: 65vh;
+}
+
+.container {
+    background-color: red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+}
+
+.Borrowbox {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 62vh;
+    margin-top: 2em;
+    background-color: #f5f5f5;
+    overflow-y: auto; /* Use only this line */
+    overflow-x: hidden; /* This line is fine */
+}
+
+
+.Borrbox {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin: 5px;
+    border-radius: 10px;
+}
+
+/* .Borrbox img{
+    margin-left: 2em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+.Borrbox img {
+    padding: 5px;
+} */
+.date {
+    margin-left: auto; /* Aligns the date to the right */
+}
+
+.Bglobal {
+    height: 22vh;
+    background-color: white;
+    display: flex;
+    justify-content: space-between; /* Space between book details and buttons */
+    align-items: center; /* Center align items vertically */
+}
+#Total{
+    position: relative;
+    right: 10em;
+    text-align: left;
+}
+.book-details {
+    display: flex;
+    flex-direction: column; /* Stack title and author vertically */
+    margin-right: 20em;
+}
+#btitle{
+    font-weight: bold;
+}
+#Total{
+    font-weight: bold;
+}
+.viewbtn a{
+    color: #ff6600;
+}
+.viewbtn{
+    position: relative;
+    right: 3em;
+    bottom: 0.5em;
+}
+
+.approve-btn, .decline-btn {
+    height: 31px;
+    width: 102px;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.approve-btn {
+    background-color: #ff6600; /* Green for approve */
+    color: white;
+}
+
+.decline-btn {
+    background-color: white; /* Red for decline */
+    color: #ff6600;
+    border: 1px solid #ff6600;
+}
+
+/* .approve-btn:hover {
+    background-color: white; 
+    color: #ff6600;
+    border: 1px solid #ff6600;
+}
+
+.decline-btn:hover {
+    background-color: #ff6600;
+} */
+
+#d1 {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Search */
+.TranscInput {
+    display: flex; 
+    justify-content: flex-start;
+    gap: 10px;
+    position: relative;
+    top: 1em;
+    right: 20em;    
+    bottom: 4em;
+}
+
+.search-bar input {
+    width: 300px;
+    height: 40px;
+    padding: 10px 40px 10px 15px;
+    border: 1px solid #7d6966;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+    color: #7d6966;
+    transition: border-color 0.3s ease;
+}
+
+.search-bar .search-icon {
+    position: absolute;
+    left: 90%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Buttons */
+.sort-btn, .filter-btn {
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sort-btn {
+    background-color: #ff6600;
+    color: white;
+}
+
+.sort-btn {
+    float: right;
+}
+
+/* .sort-btn img:hover {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
+}
+
+.sort-btn:hover {
+    background-color: white;
+    color: #ff6600;
+    border: 1px solid #ff6600;
+} */
+
+.filter-btn {
+    border: 1px solid #ff6600;
+    background-color: white;
+    color: #ff6600;
+}
+
+/* .filter-btn:hover {
+    border: 1px solid #ff6600;
+    background-color: #ff6600;
+    color: white;
+} */
+
+.sort-btn img, .filter-btn img {
+    margin: 0 5px;
+}
+
+/* .filter-btn img:hover {
+    filter: brightness(0) invert(1); 
+} */
+.dropdown-content {
+    display: none; /* Initially hidden */
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    margin-top: 5px; /* Space between the link and dropdown */
+    right: 20%; /* Position from the left */
+    transform: translateX(-50%); /* Center it by translating half of its width */
+    width: auto; /* Set to auto or a fixed width */
+}
+.last-content {
+    display: none; /* Initially hidden */
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    margin-top: 5px; /* Space between the link and dropdown */
+    right: 50%; /* Position from the left */
+    bottom: 50%;
+    transform: translateX(-50%); /* Center it by translating half of its width */
+    width: auto; /* Set to auto or a fixed width */
+}
+.viewbtn {
+    position: relative; /* To position dropdown content */
+}
+
+.viewbtn:hover .dropdown-content {
+    display: block; /* Show on hover */
+    table-layout: auto;
+}
+
+.dropdown-content table {
+    border-collapse: collapse;
+}
+.dropdown-content th, .dropdown-content td {
+    border: 1px solid #ccc;
+    padding: 15px 30px; /* Increased padding for more space inside cells */
+    text-align: left;
+    white-space: nowrap; /* Prevents text from wrapping, keeps it in one line */
+}
+
+.dropdown-content th {
+    background-color: #f2f2f2;
+}
