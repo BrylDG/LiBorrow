@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="./TransactionsReturned.css">
     <link rel="stylesheet" href="./TransactionsOverdue.css">
     <link rel="stylesheet" href="./ReadersInformation.css">
+    <link rel="stylesheet" href="./BookInformation.css">
     
     <title>LiBorrow Dashboard</title>
 </head>
@@ -294,8 +295,9 @@ const myBarChart = new Chart(ctx, {
                         .catch(error => handleError('Error fetching ReadersInformation:', error));
                 });
             });
+            
         }
-
+        
         // Function to handle errors and display a user-friendly message
         function handleError(message, error) {
             console.error(message, error);
@@ -307,12 +309,29 @@ const myBarChart = new Chart(ctx, {
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
+                    initializeBookViewMoreButtons();
                     document.title = "Inventory"; // Change the page title
                     document.getElementById("page-title").innerText = "Inventory"; // Change the displayed title
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+        function initializeBookViewMoreButtons() {
+            document.querySelectorAll(".view-book a").forEach(button => {
+                button.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    fetch('./BooksInformation.html')
+                        .then(response => response.text())
+                        .then(data => {
+                            document.getElementById("body-content").innerHTML = data;
+                            document.title = "Book's Information"; // Change the page title
+                            document.getElementById("page-title").innerText = "Book's Information"; // Change the displayed title
+                        })
+                        .catch(error => handleError('Error fetching ReadersInformation:', error));
+                });
+            });
             
+        }
+        
         document.getElementById("BorrowedBtn").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./TransactionsBorrowed.html')
