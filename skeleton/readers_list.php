@@ -12,18 +12,18 @@
             <h1 class="logo">LiBorrow.</h1>
             <nav>
                 <ul>
-                    <li><a href="#">Dashboard</a></li>
-                    <li class="active"><a href="#">Readers List</a></li>
-                    <li><a href="#">Inventory</a></li>
-                    <li><a href="#">Transactions</a>
+                    <li class="active"><a href="l_dashboard.php">Dashboard</a></li>
+                    <li><a href="readers_list.php">Readers List</a></li>
+                    <li><a href="inventory.php">Inventory</a></li>
+                    <li><a href="transactions.php">Transactions</a>
                         <ul class="sub-menu">
-                            <li><a href="#">Pending</a></li>
-                            <li><a href="#">Borrowed</a></li>
-                            <li><a href="#">Returned</a></li>
-                            <li><a href="#">Overdue</a></li>
+                            <li><a href="pending.php">Pending</a></li>
+                            <li><a href="borrowed.php">Borrowed</a></li>
+                            <li><a href="returned.php">Returned</a></li>
+                            <li><a href="overdue.php">Overdue</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">History</a></li>
+                    <li><a href="history.php">History</a></li>
                 </ul>
             </nav>
         </aside>
@@ -68,31 +68,31 @@
                             <td>1</td>
                             <td>John Doe</td>
                             <td>JohnDoe@gmail.com</td>
-                            <td><a href="#">View more</a></td>
+                            <td><a href="readers_info.php">View more</a></td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Jane Smith</td>
                             <td>JaneSmith@gmail.com</td>
-                            <td><a href="#">View more</a></td>
+                            <td><a href="readers_info.php">View more</a></td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td>Jonatan</td>
                             <td>Jonatan@gmail.com</td>
-                            <td><a href="#">View more</a></td>
+                            <td><a href="readers_info.php">View more</a></td>
                         </tr>
                         <tr>
                             <td>4</td>
                             <td>Junjun</td>
                             <td>Junjun@gmail.com</td>
-                            <td><a href="#">View more</a></td>
+                            <td><a href="readers_info.php">View more</a></td>
                         </tr>
                         <tr>
                             <td>5</td>
                             <td>Juna Mae</td>
                             <td>JunaMae@gmail.com</td>
-                            <td><a href="#">View more</a></td>
+                            <td><a href="readers_info.php">View more</a></td>
                         </tr>
                     </tbody>
                 </table>
