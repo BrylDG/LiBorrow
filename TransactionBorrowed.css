@@ -33,14 +33,6 @@
     border-radius: 10px;
 }
 
-/* .Borrbox img{
-    margin-left: 2em;
-    margin-top: 1em;
-    margin-bottom: 0.5em;
-}
-.Borrbox img {
-    padding: 5px;
-} */
 .date {
     margin-left: auto; /* Aligns the date to the right */
 }
@@ -193,50 +185,50 @@
 /* .filter-btn img:hover {
     filter: brightness(0) invert(1); 
 } */
+
 .dropdown-content {
-    display: none; /* Initially hidden */
-    position: absolute;
+    display: none;
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1;
-    margin-top: 5px; /* Space between the link and dropdown */
-    right: 20%; /* Position from the left */
-    transform: translateX(-50%); /* Center it by translating half of its width */
-    width: auto; /* Set to auto or a fixed width */
+    width: 100%; /* Make it take up the full width */
+    margin-top: 10px; /* Optional space between dropdown and .Borrbox */
+    position: absolute; /* Ensure it is positioned correctly */
+    z-index: 100; /* Raise it above other content */
 }
+
 .last-content {
     display: none; /* Initially hidden */
-    position: absolute;
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1;
-    margin-top: 5px; /* Space between the link and dropdown */
-    right: 50%; /* Position from the left */
-    bottom: 50%;
-    transform: translateX(-50%); /* Center it by translating half of its width */
-    width: auto; /* Set to auto or a fixed width */
+    width: 100%; /* Same as .dropdown-content */
+    margin-top: 10px;
 }
+
 .viewbtn {
     position: relative; /* To position dropdown content */
 }
 
 .viewbtn:hover .dropdown-content {
-    display: block; /* Show on hover */
+    display: contents; /* Show on hover */
     table-layout: auto;
 }
 
 .dropdown-content table {
     border-collapse: collapse;
 }
+
 .dropdown-content th, .dropdown-content td {
     border: 1px solid #ccc;
-    padding: 15px 30px; /* Increased padding for more space inside cells */
+    padding: 15px 30px;
     text-align: left;
-    white-space: nowrap; /* Prevents text from wrapping, keeps it in one line */
+    white-space: nowrap;
 }
 
 .dropdown-content th {
     background-color: #f2f2f2;
+}
+.dropdown-content {
+    z-index: 100; /* Ensure the dropdown appears above other elements */
 }
