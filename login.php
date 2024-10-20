@@ -1,4 +1,4 @@
-g<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -42,14 +42,15 @@ g<!DOCTYPE html>
                     $result = mysqli_query($conn, $query);
                     $count = mysqli_num_rows($result);
                     
-                    if($count>=1) {
-                        //$_SESSION['login_email'] = $email;
-                        //header("location: index.html");
-                        //exit;
-                        echo "<script>alert('Login Success!')</script>";
-                    } else {
-                        echo "<script>alert('Login Failed')</script>";
-                    }
+                    if($count >= 1) {
+					// Redirect to BootDash.html on successful login
+						echo "<script>
+								alert('Login Success!');
+								window.location.href = 'BootDash.html';
+							  </script>";
+					} else {
+						echo "<script>alert('Login Failed')</script>";
+					}
                 }
                 ?>
                 <form action="login.php" method="post">
