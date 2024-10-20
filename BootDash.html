@@ -288,7 +288,7 @@ const myBarChart = new Chart(ctx, {
                         .then(response => response.text())
                         .then(data => {
                             document.getElementById("body-content").innerHTML = data;
-                            document.title = "Reader' Information"; // Change the page title
+                            document.title = "Reader's Information"; // Change the page title
                             document.getElementById("page-title").innerText = "Reader's Information"; // Change the displayed title
                         })
                         .catch(error => handleError('Error fetching ReadersInformation:', error));
