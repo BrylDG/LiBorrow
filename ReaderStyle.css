@@ -87,32 +87,7 @@ hr {
 }
 
 
-/* .sort-btn:hover {
-    background-color: #e55a00;
-}
-.filter-btn:hover{
-    background-color: #ffff;
-} */
-
 /* Buttons */
-.sort-btn {
-    font-size: 16px;
-    padding: 10px 20px; 
-    border: none;
-    border-radius: 30px;
-    background-color: #ff6600; 
-    color: white; 
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-.filter-btn{
-    font-size: 16px;
-    padding: 10px 20px; 
-    border: 1px solid #ff6600;
-    background-color: white;
-    color: #ff6600;
-    border-radius: 30px;
-}
 .sort-btn {
     font-size: 16px;
     padding: 10px 20px; 
