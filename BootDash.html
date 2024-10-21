@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="./TransactionsOverdue.css">
     <link rel="stylesheet" href="./ReadersInformation.css">
     <link rel="stylesheet" href="./BookInformation.css">
+    <link rel="stylesheet" href="./UpdateUser.css">
+
     
     <title>LiBorrow Dashboard</title>
 </head>
@@ -289,6 +291,7 @@ const myBarChart = new Chart(ctx, {
                         .then(response => response.text())
                         .then(data => {
                             document.getElementById("body-content").innerHTML = data;
+                            initializeUpdateButton();
                             document.title = "Reader's Information"; // Change the page title
                             document.getElementById("page-title").innerText = "Reader's Information"; // Change the displayed title
                         })
@@ -297,6 +300,23 @@ const myBarChart = new Chart(ctx, {
             });
             
         }
+        // Function to initialize the Update button
+        function initializeUpdateButton() {
+            const updateButton = document.querySelector(".update-btn"); // Use querySelector for a single element
+            updateButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                fetch('./UpdateUser.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("body-content").innerHTML = data;
+                        document.title = "Update User"; // Change the page title
+                        document.getElementById("page-title").innerText = "Update User"; // Change the displayed title
+                    })
+                    .catch(error => handleError('Error fetching ReadersInformation:', error));
+            });
+        }
+
+
         
         // Function to handle errors and display a user-friendly message
         function handleError(message, error) {
@@ -323,6 +343,7 @@ const myBarChart = new Chart(ctx, {
                         .then(response => response.text())
                         .then(data => {
                             document.getElementById("body-content").innerHTML = data;
+                            initializeUpdateBookButton()
                             document.title = "Book's Information"; // Change the page title
                             document.getElementById("page-title").innerText = "Book's Information"; // Change the displayed title
                         })
@@ -331,6 +352,22 @@ const myBarChart = new Chart(ctx, {
             });
             
         }
+        // Function to initialize the Update button
+        function initializeUpdateBookButton() {
+            const updateButton = document.querySelector(".update-btn"); // Use querySelector for a single element
+            updateButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                fetch('./BooksInformation.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("body-content").innerHTML = data;
+                        document.title = "Update Book"; // Change the page title
+                        document.getElementById("page-title").innerText = "Update Book"; // Change the displayed title
+                    })
+                    .catch(error => handleError('Error fetching ReadersInformation:', error));
+            });
+        }
+
         
         document.getElementById("BorrowedBtn").addEventListener("click", function(event) {
             event.preventDefault();
@@ -366,6 +403,7 @@ const myBarChart = new Chart(ctx, {
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+
         document.getElementById("OverdueBtn").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./TransactionsOverdue.html')
@@ -377,6 +415,7 @@ const myBarChart = new Chart(ctx, {
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+        
         
 
         document.querySelector("#button3").addEventListener("click", function(event) {
