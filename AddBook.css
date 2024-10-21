@@ -1,0 +1,207 @@
+
+
+.Bview {
+    margin-top: 3em;
+    margin-left: 2em;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+#Book-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 3em;
+    margin-right: 2em;
+}
+
+#Book-details .input-row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+#Book-details .input-container {
+    position: relative;
+    margin-left: 2.4em;
+    margin-top: 1em;
+    width: 100%;
+}
+
+
+#Book-details .input-container input,
+#Book-details .input-container select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #746767;
+    color: #333;
+    border-radius: 20px;
+    outline: none;
+    font-size: 16px;
+    transition: border-color 0.3s ease-in-out;
+}
+#book-details #input-six{
+    width: 40% ;
+}
+
+#Book-details .input-container input:focus,
+#Book-details .input-container select:focus,
+#Book-details .input-container input:not(:placeholder-shown),
+#Book-details .input-container select:not(:placeholder-shown) {
+    border-color: #ff6600;
+}
+
+#Book-details .input-container label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    color: #aaa;
+    transform: translateY(-50%);
+    background-color: white;
+    padding: 0 5px;
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+#Book-details .input-container input:focus + label,
+#Book-details .input-container input:not(:placeholder-shown) + label,
+#Book-details .input-container select:focus + label {
+    top: 1px;
+    left: 20px;
+    font-size: 12px;
+    color: #ff6600;
+}
+.cal {
+    margin-left: 16em;
+}
+
+.cal img {
+    position: relative;
+    bottom: 2.3em;
+}
+
+.img2 {
+    position: relative;
+    left: 18em;
+    bottom: 2.3em;
+}
+
+.dropdown {
+    display: flex;
+    align-items: center;
+}
+
+.transparent-label {
+    background-color: transparent;
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown-content li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.dropdown-content li:hover {
+    background-color: #f1f1f1;
+}
+
+#dropdown-toggle {
+    position: relative;
+}
+
+.input-container {
+    position: relative;
+}
+
+select {
+    padding: 10px;
+    border: 2px solid #ff6600;
+    border-radius: 20px;
+    width: 100%;
+    cursor: pointer;
+    background-color:white; /* Default background color */
+}
+
+.select-container {
+    position: relative;
+}
+
+select {
+    padding: 10px;
+    border: 2px solid #d9d9d9; /* Default border color */
+    border-radius: 20px;
+    width: 100%;
+    cursor: pointer;
+    background-color: white; /* Default background color */
+    appearance: none; /* Remove default styling */
+}
+#myTextarea {
+    margin-top: 2em;
+    margin-left: 2.4em;
+    width: 100%;           /* Full width */
+    height: 150px;        /* Height of the textarea */
+    padding: 10px;        /* Padding inside the textarea */
+    border: 2px solid #746767;  /* Border styling */
+    border-radius: 20px;  /* Rounded corners */
+    font-size: 16px;      /* Font size */
+    outline: none;        /* Remove outline on focus */
+    transition: border-color 0.3s ease-in-out; /* Smooth transition for border color */
+}
+
+/* Focus state styling */
+#myTextarea:focus {
+    border-color: #ff6600; /* Change border color when focused */
+}
+#image-container {
+    position: relative; /* To position the button relative to this container */
+    display: inline-block; /* To ensure the container only takes up the necessary space */
+}
+
+.book-image {
+    display: block; /* Ensures the image takes up its container's width */
+    width: 100%; /* Adjust the width as per your requirement */
+    height: auto;
+}
+
+.overlay-button {
+    position: absolute; /* Positions the button relative to the image container */
+    top: 60%; /* Places the button in the center vertically */
+    left: 50%; /* Places the button in the center horizontally */
+    transform: translate(-50%, -50%); /* Centers the button precisely */
+    background-color:  #ff6600; /* Semi-transparent background */
+    color: white; /* Text color */
+    border: none;
+    padding: 10px 20px; /* Button padding */
+    cursor: pointer; /* Pointer cursor */
+    border-radius: 20px; /* Optional: rounded corners */
+}
+
+.overlay-button:hover {
+    background-color: rgba(0, 0, 0, 0.9); /* Slightly darker on hover */
+}
+
+#Adbtn{
+    width: 95px;
+}
