@@ -340,6 +340,7 @@ const myBarChart = new Chart(ctx, {
                     document.getElementById("body-content").innerHTML = data;
                     document.title = "Borrowed Books"; // Change the page title
                     document.getElementById("page-title").innerText = "Borrowed Books"; // Change the displayed title
+                    initializeBorrowedListeners();
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
@@ -467,6 +468,41 @@ const myBarChart = new Chart(ctx, {
         window.onload = function() {
             loadDashboard();  // Automatically load the Dashboard content
         };
+
+        function initializeBorrowedListeners() {
+    // Function to toggle the visibility of the dropdown
+    function toggleDropdown(event) {
+        event.stopPropagation();
+        const borrbox = event.target.closest('.Borrbox'); // Get the parent .Borrbox
+        const dropdown = borrbox.nextElementSibling; // Get the .dropdown-content below the .Borrbox
+        
+        // Toggle by adding/removing the display property
+        if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+            dropdown.style.display = 'contents'; // Show dropdown
+        } else {
+            dropdown.style.display = 'none'; // Hide dropdown
+        }
+    }
+
+    // Add the click event listener to each "View Borrowers" link
+    document.querySelectorAll('.view-borrowers').forEach(link => {
+        link.addEventListener('click', toggleDropdown);
+    });
+
+    // Close the dropdown if the user clicks outside of it
+    document.addEventListener('click', function(event) {
+        // Loop through all dropdowns
+        document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+            const borrbox = dropdown.previousElementSibling; // The corresponding .Borrbox
+
+            // Close dropdown if the click was outside of both the dropdown and its corresponding .Borrbox
+            if (!borrbox.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.style.display = 'none'; // Hide the dropdown
+            }
+        });
+    });
+}
+
         
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
