@@ -189,21 +189,17 @@
 .dropdown-content {
     display: none;
     background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Make it take up the full width */
-    margin-top: 10px; /* Optional space between dropdown and .Borrbox */
-    position: absolute; /* Ensure it is positioned correctly */
-    z-index: 100; /* Raise it above other content */
+    width: 100%;
+    margin-top: 10px;
+    position: absolute;
+    z-index: 100;
+    border: none; /* Remove the border */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Light shadow for better visibility */
 }
 
-.last-content {
-    display: none; /* Initially hidden */
-    background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Same as .dropdown-content */
-    margin-top: 10px;
+.dropdown-open {
+    max-height: 500px; /* You can adjust this based on the expected height of your content */
+    opacity: 1; /* Fully visible */
 }
 
 .viewbtn {
@@ -215,20 +211,55 @@
     table-layout: auto;
 }
 
+
 .dropdown-content table {
-    border-collapse: collapse;
+    width: 100%; /* Make the table take the full width */
+    border-collapse: collapse; /* Remove extra spacing between table cells */
 }
 
 .dropdown-content th, .dropdown-content td {
-    border: 1px solid #ccc;
-    padding: 15px 30px;
-    text-align: left;
-    white-space: nowrap;
+    padding: 15px;
+    text-align: center; /* Align text to the left */
+    font-size: 14px; /* Adjust font size to match the screenshot */
+    color: #333; /* Darker font color for better readability */
+    background-color: white;
 }
 
 .dropdown-content th {
-    background-color: #f2f2f2;
+    background-color: white; /* Light background for header */
+    font-weight: bold; /* Make the header bold */
+    color: black; /* Change text color for header */
+    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
 }
-.dropdown-content {
-    z-index: 100; /* Ensure the dropdown appears above other elements */
+
+.last-content {
+    display: none; /* Initially hidden */
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Same as .dropdown-content */
+    margin-top: 10px;
+}
+
+.dropdown-content td {
+    vertical-align: middle; /* Align content vertically in the middle */  
+}
+
+.dropdown-content img.Avatar {
+    border-radius: 50%; /* Make avatar images circular */
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+    vertical-align: middle; /* Align the image with the text */
+}
+
+.dropdown-content td a {
+    color: #ff6600; /* Orange color for the "View More" link */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Make the link bold */
+}
+
+.dropdown-content td a:hover {
+    text-decoration: underline; /* Add underline on hover */
 }
