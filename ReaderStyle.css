@@ -60,7 +60,7 @@ hr {
     justify-content: flex-end;
     gap: 10px; 
     margin-top: 50px;
-    margin-bottom: 20px; 
+    margin-bottom: 10px; 
 
 }
 .search-bar {
@@ -90,7 +90,7 @@ hr {
 /* Buttons */
 .sort-btn {
     font-size: 16px;
-    padding: 10px 20px; 
+    padding: 10px 10px; 
     border: none;
     border-radius: 30px;
     background-color: #ff6600; 
@@ -143,7 +143,7 @@ hr {
     display: flex;
     align-items: center;
     justify-content: center; /* Center the pagination */
-    margin-top: 50px; /* Space above the pagination */
+    margin-top: 70px; /* Space above the pagination */
 }
 #num{
     color: #e55a00;

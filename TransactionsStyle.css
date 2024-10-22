@@ -120,7 +120,7 @@
 }
 
 /* Search */
-.TranscInput {
+.input {
     display: flex; 
     justify-content: flex-start;
     gap: 10px;
@@ -152,7 +152,7 @@
 /* Buttons */
 .sort-btn, .filter-btn {
     font-size: 16px;
-    padding: 10px 20px;
+    padding: 8px 20px;
     border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s ease;

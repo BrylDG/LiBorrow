@@ -57,6 +57,7 @@
 #btitle{
     font-weight: bold;
 }
+
 #Total{
     font-weight: bold;
 }
@@ -91,15 +92,6 @@
     border: 1px solid #ff6600;
 }
 
-/* .approve-btn:hover {
-    background-color: white; 
-    color: #ff6600;
-    border: 1px solid #ff6600;
-}
-
-.decline-btn:hover {
-    background-color: #ff6600;
-} */
 
 #d1 {
     background-color: white;
@@ -109,7 +101,7 @@
 }
 
 /* Search */
-.TranscInput {
+.input {
     display: flex; 
     justify-content: flex-start;
     gap: 10px;
@@ -141,7 +133,7 @@
 /* Buttons */
 .sort-btn, .filter-btn {
     font-size: 16px;
-    padding: 10px 20px;
+    padding: 8px 20px;
     border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -156,35 +148,17 @@
     float: right;
 }
 
-/* .sort-btn img:hover {
-    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
-}
-
-.sort-btn:hover {
-    background-color: white;
-    color: #ff6600;
-    border: 1px solid #ff6600;
-} */
-
 .filter-btn {
     border: 1px solid #ff6600;
     background-color: white;
     color: #ff6600;
 }
 
-/* .filter-btn:hover {
-    border: 1px solid #ff6600;
-    background-color: #ff6600;
-    color: white;
-} */
 
 .sort-btn img, .filter-btn img {
     margin: 0 5px;
 }
 
-/* .filter-btn img:hover {
-    filter: brightness(0) invert(1); 
-} */
 
 .dropdown-content {
     display: none;
@@ -234,32 +208,32 @@
 }
 
 .last-content {
-    display: none; /* Initially hidden */
+    display: none; 
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Same as .dropdown-content */
+    width: 100%;
     margin-top: 10px;
 }
 
 .dropdown-content td {
-    vertical-align: middle; /* Align content vertically in the middle */  
+    vertical-align: middle; 
 }
 
 .dropdown-content img.Avatar {
-    border-radius: 50%; /* Make avatar images circular */
+    border-radius: 50%; 
     width: 35px;
     height: 35px;
     margin-right: 10px;
-    vertical-align: middle; /* Align the image with the text */
+    vertical-align: middle; 
 }
 
 .dropdown-content td a {
-    color: #ff6600; /* Orange color for the "View More" link */
-    text-decoration: none; /* Remove underline */
-    font-weight: bold; /* Make the link bold */
+    color: #ff6600; 
+    text-decoration: none; 
+    font-weight: bold; 
 }
 
 .dropdown-content td a:hover {
-    text-decoration: underline; /* Add underline on hover */
+    text-decoration: underline;
 }
