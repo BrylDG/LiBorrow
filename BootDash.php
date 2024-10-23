@@ -1,3 +1,13 @@
+<?php
+    session_start();
+    include('connection.php');
+
+    if (!isset($_SESSION['idno'])) {
+        // Redirect to login page if not logged in
+        header("Location: login.php");
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -152,7 +162,7 @@
         }
                 document.getElementById("button1").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./ReaderDash.html')
+            fetch('./ReaderDash.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -285,7 +295,7 @@ const myBarChart = new Chart(ctx, {
 
         document.getElementById("button1").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./ReaderDash.html')
+            fetch('./ReaderDash.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -301,7 +311,7 @@ const myBarChart = new Chart(ctx, {
             document.querySelectorAll(".view-more a").forEach(button => {
                 button.addEventListener("click", function(event) {
                     event.preventDefault();
-                    fetch('./ReadersInformation.html')
+                    fetch('./ReadersInformation.php')
                         .then(response => response.text())
                         .then(data => {
                             document.getElementById("body-content").innerHTML = data;
@@ -321,7 +331,7 @@ const myBarChart = new Chart(ctx, {
             const updateButton = document.querySelector(".update-btn"); // Use querySelector for a single element
             updateButton.addEventListener("click", function(event) {
                 event.preventDefault();
-                fetch('./UpdateUser.html')
+                fetch('./UpdateUser.php')
                     .then(response => response.text())
                     .then(data => {
                         document.getElementById("body-content").innerHTML = data;
@@ -578,7 +588,7 @@ function initializeViewMoreListeners() {
     function fetchAndDisplayContent(event) {
         event.preventDefault();
 
-        fetch('./ReadersInformation.html')
+        fetch('./ReadersInformation.php')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
