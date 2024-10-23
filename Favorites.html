@@ -1,1 +1,126 @@
-<p>Favorites</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions Section</title>
+    <link rel="stylesheet" href="./TransactionsStyle.css"> <!-- Linking the CSS file here -->
+</head>
+<body>
+
+<div class="content-box" id="content2">
+    <div class="container">
+        <div class="Userinput" id="search-boks">
+            <div class="search-bar">
+                <input type="text" placeholder=" Search...">
+                <span class="forsearch-icon">
+                    <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
+                </span>
+            </div>
+            <button class="sort-btn">
+
+                <img src="./Images/Sort.svg" alt="Icon Before" width="20" height="20"> <!-- Icon before text -->
+                Sort By
+                <img src="./Images/vec.svg" alt="Icon After" width="18" height="18"> <!-- Icon after text -->
+            </button>
+        </div>
+
+            <div class="pendbox global" id="User-books">
+
+                <!-- Div 5 -->
+                <div class="book-container">
+                    <div class="button-container">
+                        <button id="stats-btn2">
+                            <img  src="./Images/Check.svg" alt="Book status" class="book-status" id="bookstaticon" width="30" height="30">
+                            Borrowed
+                        </button>
+                        <button id="addtofav-btn">
+                            <img src="./Images/AddedtoFav.svg" alt="Book fav" class="book-fav" >
+                        </button>
+                    </div>
+                        <img src="./Images/pride and prejudice.svg" alt="Book one" class="book-image">
+                        <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
+                        <p id="B-title">Pirde and Prejudice</p>
+                        <p id="Book-Author">Jane Austen</p>
+                        <button id="borbtn2">Return</button>
+                </div>
+
+                <!-- Div 6 -->
+                <div class="book-container">
+                    <div class="button-container">
+                        <button id="stats-btn3">
+                            <img  src="./Images/Reading.svg" alt="Book status" class="book-status" id="bookstaticon" width="30" height="30">
+                            Currently Reading
+                        </button>
+                        <button id="addtofav-btn">
+                            <img src="./Images/AddedtoFav.svg" alt="Book fav" class="book-fav" >
+                        </button>
+                    </div>
+                        <img src="./Images/sherlock.svg" alt="Book one" class="book-image">
+                        <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
+                        <p id="B-title">The Great Adventure...</p>
+                        <p id="Book-Author">Catherine Lacey</p>
+                        <button id="borbtn2">Return</button>
+                </div>
+
+                <!-- Div 7 -->
+                <div class="book-container">
+                    <div class="button-container">
+                        <button id="stats-btn">
+                            <img  src="./Images/Unavalable.svg" alt="Book status" class="book-status" id="bookstaticon" width="30" height="30">
+                            Borrowed
+                        </button>
+                        <button id="addtofav-btn">
+                            <img src="./Images/AddedtoFav.svg" alt="Book fav" class="book-fav" >
+                        </button>
+                    </div>
+                        <img src="./Images/beloved.svg" alt="Book one" class="book-image">
+                        <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
+                        <p id="B-title">Beloved</p>
+                        <p id="Book-Author">Catherine Lacey</p>
+                        <button id="borbtn2">Returned</button>
+                </div>
+
+                <!-- Div 8 -->
+                <div class="book-container">
+                    <div class="button-container">
+                        <button id="stats-btn3">
+                            <img  src="./Images/Reading.svg" alt="Book status" class="book-status" id="bookstaticon" width="30" height="30">
+                            Currently Reading
+                        </button>
+                        <button id="addtofav-btn">
+                            <img src="./Images/AddedtoFav.svg" alt="Book fav" class="book-fav" >
+                        </button>
+                    </div>
+                        <img src="./Images/handmaid.svg" alt="Book one" class="book-image" id="book-opacity">
+                        <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
+                        <p id="B-title">The Handmaid's Tale</p>
+                        <p id="Book-Author">Catherine Lacey</p>
+                        <button id="borbtn2">Return</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        //wala ni gamit hehe
+        const titleElement = document.getElementById('Book-tittle2');
+
+        titleElement.addEventListener('click', () => {
+            if (titleElement.style.whiteSpace === 'normal') {
+                titleElement.style.whiteSpace = 'nowrap';
+                titleElement.style.overflow = 'hidden';
+                titleElement.style.maxWidth = '25px'; // Collapse to show only the first two letters
+            } else {
+                titleElement.style.whiteSpace = 'normal';
+                titleElement.style.overflow = 'visible';
+                titleElement.style.maxWidth = '200px'; // Expand to show the full title
+            }
+        });
+
+    </script>    
+</div>
+
+</body>
+</html>
