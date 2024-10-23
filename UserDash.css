@@ -1,5 +1,20 @@
+    .Reader-Home {
+        overflow-y: auto;
+        height: 890px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .bottom-section {
+        display: flex;
+    }
+    
     .Left-Side {
         padding-left: 2%;
+    }
+
+    .Right-Side {
+        padding-left: 75px;
     }
 
     .inputSection {
@@ -7,10 +22,10 @@
         align-items: center;
         justify-content: start;
         gap: 10px; 
-        margin-top: 50px;
         margin-bottom: 3%; 
-
+        padding-left: 2%;
     }
+
     .search-bar {
         position: relative;
     }
@@ -58,7 +73,7 @@
         border: 2px solid #7d6966;
         border-radius: 20px;
         background-size: cover;
-        margin-bottom: 3%;
+        margin-bottom: 5%;
         align-content: center;
         position: relative;
         overflow: hidden;
@@ -72,6 +87,18 @@
         padding-bottom: 3%;
         margin-top: 20px;
         opacity:85%;
+    }
+
+    .GenreSection {
+        width: 1080px;
+    }
+
+    .GenreSectionContainer h1, .FeaturedStoriesSectionContainer h1, .NewReleaseSectionContainer h1 {
+        font-size: 30px;
+        font-weight: bolder;
+        font-family: 'Poppins', sans-serif;
+        opacity: 55%;
+        margin-bottom: 2%;
     }
 
     .Clickable {
@@ -106,19 +133,43 @@
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
-        margin-bottom: 1%;
+        margin-bottom: 5%;
+    }
+
+    .GenreSection h4 {
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .GenreSection p {
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+    .GenreSection h3 {
+        font-size: 30px;
+        font-weight: bold;
     }
 
     .Section {
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
+        /* flex-direction: column; */
         background-color: orange;
         width: 255px;
         height: auto;
         color: white;
         border-radius: 10px;
         box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
-        padding: 5px;
+        padding: 1%;
+    }
+
+    .Section .right {
+        text-align: end;
+    }
+
+    .Section .left {
+        width:68%;
     }
 
     .Section h3 {
@@ -127,4 +178,215 @@
     
     .Section p {
         margin: 0;
+    }
+
+    .FeaturedBooksContainer, .NewReleaseContainer {
+        display: flex;
+        background-color: white;
+        height: 340px;
+        width: 1080px;
+        justify-content: center;
+        margin-bottom: 5%;
+        border-radius: 10px;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .NewReleaseSectionContainer {
+        padding-bottom: 5%;
+    }
+
+    .Books {
+        padding: 4%;
+        text-align: center;
+    }
+
+    .Books .Title {
+        font-size: 12px;
+    }
+
+    .Books .Author {
+        font-size: 11px;
+        color: gray;
+    }
+
+    .Books p {
+        margin-bottom: 3%;
+    }
+
+    .Books .rating {
+        margin-top:5%;
+    }
+
+
+
+    .MyBooksContainer, .RecommendationsContainer {
+        height: 689px;
+        width: 430px;
+        background-color: white;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+        margin-bottom: 10%;
+        border-radius: 10px;
+        text-align: center;
+        padding: 10%;
+    }
+
+    .MyBooksContainer h1 {
+        padding-bottom: 10%;
+        padding-top: 5%;
+        font-size: 50px;
+        font-weight: bold;
+        font-family: 'Poppins', sans-serif;
+        color: rgba(75,77,77);
+    }
+
+    .MyBook {
+        display: flex;
+    }
+
+    .BookImage {
+        width: 45%;
+    }
+
+    .BookDetails {
+        text-align: start;
+        width: 50%;
+    }
+
+    #BelovedBook {
+        padding-top: 5%;
+    }
+
+    .MyBook img {
+        width: 140px;
+        height: 170px;
+    }
+
+    #BookRaiting {
+        height: 30px;
+    }
+
+    .BookTitle {
+        font-size: 16px;
+        font-weight: 500;
+        font-family: 'Poppins', sans-serif;
+        padding-left:3%;
+        margin-bottom: 3%;
+        padding-top: 1%;
+    }
+
+    .BookAuthor {
+        font-size: 12px;
+        font-weight: 200;
+        font-family: 'Poppins', sans-serif;
+        padding-left:3%;
+    }
+
+    .ViewDetailsButton {
+        font-size: 12px;
+        color:#ff6600;
+        font-family: 'Poppins', sans-serif;
+        padding-left:3%;
+    }
+
+    .ProgressStatus {
+        font-size: 10px;
+        font-weight: 500;
+        font-family: 'Poppins', sans-serif;
+        padding-left:3%;
+        padding-top: 3%;
+    }
+
+    .progress {
+        height: 10px;
+    }
+    
+    .progress-bar {
+        height: 100%; 
+    }
+
+    .ProgBarContainer {
+        padding-left: 3%;
+        padding-top: 10%;
+    }
+
+    .book-separator {
+        border: none;
+        border-top: 2px solid #ccc;
+        margin: 20px 0;    
+    }
+    
+    .SeeAllButton {
+        font-size: 16px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 30px;
+        background-color: #ff6600; 
+        color: white; 
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        height: 50px;
+        width: 160px;
+        margin-top: 5%;
+    }
+
+    .RecommendationsContainer h1 {
+        padding-bottom: 1%;
+        padding-top: 5%;
+        font-size: 35px;
+        font-weight: bold;
+        font-family: 'Poppins', sans-serif;
+        color: rgba(75,77,77);
+    }
+
+    #RecommendationImage {
+        width: 177px;
+        height: 266px;
+        margin-top: 10%;
+    }
+
+    #BookSimilar {
+        font-size: 18px;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .RecommendationsContainer a {
+        color: orange;
+    }
+
+    .RecommendedBook {
+        margin-bottom: 10%;
+    }
+
+    .MoreButton {
+        font-size: 16px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 30px;
+        background-color: #ff6600; 
+        color: white; 
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        height: 50px;
+        width: 160px;
+        margin-top: 5%;
+    }
+
+    #BookRating {
+        height: 16px;
+        width: 100px;
+    }
+
+    #RecoBook {
+        font-size: 16px;
+        font-weight: 500;
+        font-family: 'Poppins', sans-serif;
+        margin-bottom: 1%;
+        padding-top: 1%;
+    }
+
+    #RecoAuthor {
+        font-size: 12px;
+        font-weight: 200;
+        font-family: 'Poppins', sans-serif;
+        margin-bottom: 0px;
     }

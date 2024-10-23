@@ -275,9 +275,10 @@ span {
 
 #body-content {
     min-width: 100%;
-    background-color: #fff;
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 /* Profile Dropdown */
