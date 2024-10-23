@@ -189,6 +189,9 @@
     color: #999;
 
  }
+ hr{
+    color: #ff6600;
+ }
 
 .input-icon input {
     padding-left: 35px; /* Add padding for the icon */
