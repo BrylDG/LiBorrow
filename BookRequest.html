@@ -1,1 +1,131 @@
-<p>Book Request</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions Section</title>
+</head>
+<body>
+
+<div class="content-box" id="content2">
+    <div class="container">
+        <div class="Userinput" id="search-boks">
+            <div class="search-bar">
+                <input type="text" placeholder=" Search...">
+                <span class="forsearch-icon">
+                    <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
+                </span>
+            </div>
+            <button class="sort-btn">
+
+                <img src="./Images/Sort.svg" alt="Icon Before" width="20" height="20"> <!-- Icon before text -->
+                Sort By
+                <img src="./Images/vec.svg" alt="Icon After" width="18" height="18"> <!-- Icon after text -->
+            </button>
+        </div>
+
+        <!-- Stacking 5 divs inside the Trbox class -->
+        <div id="td1" class="Trbox Browbox">
+            <div class="pendbox global" id="User-books">
+
+                <!-- Div 1  -->
+                <div class="book-container" id="Request-Books">
+                    <img src="./Images/beloved.svg" alt="Book one" class="book-image" id="book-loc">
+                    <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
+                    <p id="B-title">Beloved</p>
+                    <p id="Book-Author">Catherine Lacey</p>
+                    <p id="Req-Date">Request Date: 09/20/2024</p>
+                    <button id="borbtn2">Cancel</button>
+                </div>
+
+                <!-- Div 2 -->
+                <div class="book-container">
+                        <img src="./Images/Divine-Comedy.svg" alt="Book one" class="book-image" id="book-loc" >
+                        <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
+                        <p id="B-title">The Divine Comedy</p>
+                        <p id="Book-Author">Request Date: 08/20/2024</p>
+                        <button id="borbtn2">Cancel</button>
+                </div>
+
+                 <!-- Div 3 -->
+                <div class="book-container">
+                        <img src="./Images/cull of.svg" alt="Book one" class="book-image" id="book-loc" >
+                        <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
+                        <p id="B-title">Cull of the Wild</p>
+                        <p id="Book-Author">Hugh Warwick</p>
+                        <p id="Book-Author">Request Date: 08/20/2024</p>
+                        <button id="borbtn2">Cancel</button>
+                </div>
+                 <!-- Div 4 -->
+                <div class="book-container">
+                        <img src="./Images/Lost-Time.svg" alt="Book one" class="book-image" id="book-loc" >
+                        <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
+                        <p id="B-title">In Search of Lost Time</p>
+                        <p id="Book-Author">Marcel Proust</p>
+                        <p id="Book-Author">Request Date: 08/20/2024</p>
+                        <button id="borbtn2">Cancel</button>
+                </div>
+                <!-- Div 5 -->
+                <div class="book-container">
+                        <img src="./Images/Lolita.svg" alt="Book one" class="book-image" id="book-loc" >
+                        <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
+                        <p id="B-title">Lolita</p>
+                        <p id="Book-Author">Vladimir Nabocov</p>
+                        <p id="Book-Author">Request Date: 08/20/2024</p>
+                        <button id="borbtn2">Cancel</button>
+                </div>
+                <!-- Div 6 -->
+                <div class="book-container">
+                        <img src="./Images/Dick.svg" alt="Book one" class="book-image" id="book-loc" >
+                        <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
+                        <p id="B-title">Moby Dick</p>
+                        <p id="Book-Author">Herman Melville</p>
+                        <p id="Book-Author">Request Date: 08/20/2024</p>
+                        <button id="borbtn2">Cancel</button>
+                </div>
+                 <!-- Div 7 -->
+                <div class="book-container">
+                        <img src="./Images/Jane-Eyre.svg" alt="Book one" class="book-image" id="book-loc" >
+                        <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
+                        <p id="B-title">Jane Eyre</p>
+                        <p id="Book-Author">Charlotte Bronte</p>
+                        <p id="Book-Author">Request Date: 08/20/2024</p>
+                        <button id="borbtn2">Cancel</button>
+                </div>
+                <!-- Div 8-->
+                <div class="book-container">
+                        <img src="./Images/War-Peace.svg" alt="Book one" class="book-image" id="book-loc" >
+                        <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
+                        <p id="B-title">War Peace</p>
+                        <p id="Book-Author">Leo Tolstoy</p>
+                        <p id="Book-Author">Request Date: 08/20/2024</p>
+                        <button id="borbtn2">Cancel</button>
+                </div>
+               
+
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        //wala ni gamit hehe
+        const titleElement = document.getElementById('Book-tittle2');
+
+        titleElement.addEventListener('click', () => {
+            if (titleElement.style.whiteSpace === 'normal') {
+                titleElement.style.whiteSpace = 'nowrap';
+                titleElement.style.overflow = 'hidden';
+                titleElement.style.maxWidth = '25px'; // Collapse to show only the first two letters
+            } else {
+                titleElement.style.whiteSpace = 'normal';
+                titleElement.style.overflow = 'visible';
+                titleElement.style.maxWidth = '200px'; // Expand to show the full title
+            }
+        });
+
+    </script>    
+</div>
+
+</body>
+</html>
