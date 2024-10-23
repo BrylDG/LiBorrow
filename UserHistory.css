@@ -1,0 +1,183 @@
+.content-box {
+    background-color: #f5f5f5;
+    width: 100%;
+    height: 65vh;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+}
+
+.Returned-box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 70vh;
+}
+
+
+hr {
+    height: 2px;
+    background-color: black;
+    border: none;
+    width: 100%;
+    margin: 0 auto;
+}
+
+#Returend-d1 {
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.input {
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+    right: 18em;    
+    gap: 10px;    
+}
+
+
+
+
+
+.search-bar input {
+    width: 500px;
+    height: 40px;
+    padding: 10px 40px 10px 15px;
+    border: 1px solid #7d6966;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+    color: #7d6966;
+    transition: border-color 0.3s ease;
+}
+
+.search-bar .search-icon {
+    position: absolute;
+    left: 90%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Buttons */
+.sort-btn {
+    font-size: 16px;
+    padding: 10px 20px; 
+    border: none;
+    border-radius: 30px;
+    background-color: #ff6600; 
+    color: white; 
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.filter-btn{
+    font-size: 16px;
+    padding: 10px 20px; 
+    border: 1px solid #ff6600;
+    background-color: white;
+    color: #ff6600;
+    border-radius: 30px;
+}
+.sort-btn img, .filter-btn img {
+    margin: 0 5px; 
+}
+.addbtn {
+    position: relative;
+    left: 34em;
+    font-size: 16px;
+    margin: 20px  20px 5px 20px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.addbtn {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+}
+
+
+.container-box {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 70vh;
+    margin-top: 3.6em;
+    background-color: #fff;
+    padding: 0;
+}
+
+.Returned-table {
+    width: 100%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    overflow-y: auto;
+    border-spacing: 10px;
+}
+
+.Returned-table thead {
+    border-bottom: 1px solid black;
+} 
+
+.Returned-table th {
+    text-align: left;
+    padding: 20px;
+}
+
+.Returned-table th {
+    font-weight: bold;
+}
+
+
+.Returned-table tbody tr{
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(255, 0, 0, 0.7);
+    width: 80%;
+    padding: 5%;
+    gap: 100px;
+
+}
+
+.act {
+    color: #e55a00;
+    text-decoration: underline;
+}
+
+/* Pagination */
+.Returned-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.Returned-pagination a {
+    text-decoration: none;
+    color: #7d6966;
+    padding: 5px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+/* .Inventory-pagination a:hover {
+    background-color: #f0f0f0;
+} */
+
+.Returned-pagination .active {
+    background-color: #e55a00;
+    color: white;
+}
+
+.Returned-pagination span {
+    padding: 0 10px;
+}
