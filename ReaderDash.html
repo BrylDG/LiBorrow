@@ -2,15 +2,6 @@
 <title>Reader's Information</title>
 <div class="content-box" id="readers-info-content">
     <div class="container">
-        <!-- Four anchor tags as buttons -->
-        <div class="button-group">
-            <a href="#" class="button">All</a>
-            <a href="#" class="button">Suspended</a>
-            <a href="#" class="button">Banned</a>
-            <a href="#" class="button">History</a>
-            <hr>
-        </div>
-
         <div id="d1" class="Reader-box">
             <!-- Input text field and buttons centered on top -->
             <div class="input-area">
@@ -90,34 +81,4 @@
         </div>
         
     </div>
-
-    <div id="fetched-content"></div> <!-- New container for dynamically fetched content -->
-
-    <script>
-    document.querySelectorAll(".view-more a").forEach(button => {
-        button.addEventListener("click", function(event) {
-            event.preventDefault();
-            fetch('./ReadersInformation.html')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    document.getElementById("fetched-content").innerHTML = data; // Update the fetched-content div
-                    document.title = "Reader's Information"; // Change the page title
-
-                    // Reinitialize any event listeners after loading the new content
-                    document.querySelectorAll('.view-more-btn').forEach(button => {
-                        button.addEventListener('click', function(event) {
-                            event.preventDefault();
-                            // Logic for view-more inside new content
-                        });
-                    });
-                })
-                .catch(error => console.error('Error fetching content:', error));
-        });
-    });
-    </script>
 </div>

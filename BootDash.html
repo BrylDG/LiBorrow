@@ -18,7 +18,8 @@
     <link rel="stylesheet" href="./ReadersInformation.css">
     <link rel="stylesheet" href="./BookInformation.css">
     <link rel="stylesheet" href="./UpdateUser.css">
-
+    <link rel="stylesheet" href="./AddBook.css">
+    <link rel="stylesheet" href="./Settings.css">
     
     <title>LiBorrow Dashboard</title>
 </head>
@@ -112,19 +113,20 @@
                             <a href="#" class="settings">
                                 <img src="./Images/settings.svg" alt="Settings Icon"> Settings
                             </a>
-                            <a href="#" class="logout">
+                            <a href="#" class="logout" id="logout-out">
                                 <img src="./Images/signin.svg" alt="Logout Icon"> Log Out
                             </a>
                         </div>
                     </div>
                 </div>
-                <div id="body-content" class="col-10">
+                    <div id="body-content" class="col-10">
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        
         function toggleSubmenu() {
             const submenu = document.getElementById('submenu');
             const icon = document.getElementById('submenu-toggle-icon');
@@ -149,6 +151,18 @@
                 })
                 .catch(error => console.error('Error fetching content:', error));
         }
+                document.getElementById("button1").addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./ReaderDash.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    initializeViewMoreButtons();
+                    document.title = "Readers List"; // Change the page title
+                    document.getElementById("page-title").innerText = "Readers List"; // Change the displayed title
+                })
+                .catch(error => handleError('Error fetching ReaderDash:', error));
+        });
 
         document.getElementById("button0").addEventListener("click", function(event) {
             event.preventDefault();
@@ -162,6 +176,7 @@
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+        
 
         function renderCharts() {
                 // Pie Chart Data
@@ -300,6 +315,8 @@ const myBarChart = new Chart(ctx, {
             });
             
         }
+
+        
         // Function to initialize the Update button
         function initializeUpdateButton() {
             const updateButton = document.querySelector(".update-btn"); // Use querySelector for a single element
@@ -330,6 +347,7 @@ const myBarChart = new Chart(ctx, {
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
                     initializeBookViewMoreButtons();
+                    initializeAddBookButton()
                     document.title = "Inventory"; // Change the page title
                     document.getElementById("page-title").innerText = "Inventory"; // Change the displayed title
                 })
@@ -343,7 +361,6 @@ const myBarChart = new Chart(ctx, {
                         .then(response => response.text())
                         .then(data => {
                             document.getElementById("body-content").innerHTML = data;
-                            initializeUpdateBookButton()
                             document.title = "Book's Information"; // Change the page title
                             document.getElementById("page-title").innerText = "Book's Information"; // Change the displayed title
                         })
@@ -352,21 +369,35 @@ const myBarChart = new Chart(ctx, {
             });
             
         }
-        // Function to initialize the Update button
-        function initializeUpdateBookButton() {
-            const updateButton = document.querySelector(".update-btn"); // Use querySelector for a single element
+        function initializeAddBookButton() {
+            const updateButton = document.querySelector(".addbtn"); // Use querySelector for a single element
             updateButton.addEventListener("click", function(event) {
                 event.preventDefault();
-                fetch('./BooksInformation.html')
+                fetch('./AddBook.html')
                     .then(response => response.text())
                     .then(data => {
                         document.getElementById("body-content").innerHTML = data;
-                        document.title = "Update Book"; // Change the page title
-                        document.getElementById("page-title").innerText = "Update Book"; // Change the displayed title
+                        document.title = "Add Book"; // Change the page title
+                        document.getElementById("page-title").innerText = "Add Book"; // Change the displayed title
                     })
                     .catch(error => handleError('Error fetching ReadersInformation:', error));
             });
         }
+        function initializeSettingsButton() {
+            const updateButton = document.querySelector(".settings"); // Use querySelector for a single element
+            updateButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                fetch('./Settings.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("body-content").innerHTML = data;
+                        document.title = "Settings"; // Change the page title
+                        document.getElementById("page-title").innerText = "Settings "; // Change the displayed title
+                    })
+                    .catch(error => handleError('Error fetching ReadersInformation:', error));
+            });
+        }
+
 
         
         document.getElementById("BorrowedBtn").addEventListener("click", function(event) {
@@ -478,6 +509,7 @@ const myBarChart = new Chart(ctx, {
             } else {
                 dropdown.style.display = "none";
             }
+            initializeSettingsButton()
         });
 
         document.addEventListener("click", function(event) {
@@ -487,6 +519,7 @@ const myBarChart = new Chart(ctx, {
             if (!profileSection.contains(event.target) && !dropdown.contains(event.target)) {
                 dropdown.style.display = "none";
             }
+            initializeSettingsButton()
         });
         
         document.getElementById("notification").addEventListener("click", function(event) {
@@ -543,34 +576,30 @@ const myBarChart = new Chart(ctx, {
     });
 }
 function initializeViewMoreListeners() {
-    // Function to handle the fetch request and content loading
     function fetchAndDisplayContent(event) {
-        event.preventDefault(); // Prevent the default link behavior
+        event.preventDefault();
 
-        fetch('./ReadersInformation.html') // Fetch the external HTML file
+        fetch('./ReadersInformation.html')
             .then(response => {
-                if (!response.ok) { // Check for network errors
+                if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.text(); // Convert the response to text
+                return response.text(); 
             })
             .then(data => {
-                // Insert the fetched content into the 'fetched-content' div
                 document.getElementById("body-content").innerHTML = data;
-                document.title = "Reader's Information"; // Update the page title
+                initializeUpdateButton();
+                document.title = "Reader's Information";
 
-                // Reinitialize event listeners for any new elements inside the fetched content
                 document.querySelectorAll('.view-more-btn').forEach(button => {
                     button.addEventListener('click', function(event) {
                         event.preventDefault();
-                        // Logic for view-more inside new content
                     });
                 });
             })
-            .catch(error => console.error('Error fetching content:', error)); // Handle fetch errors
+            .catch(error => console.error('Error fetching content:', error));
     }
 
-    // Add the click event listener to each "View More Info" link
     document.querySelectorAll(".ViewMoreInfo a").forEach(button => {
         button.addEventListener("click", fetchAndDisplayContent);
     });
