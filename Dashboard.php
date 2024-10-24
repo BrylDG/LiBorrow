@@ -43,7 +43,7 @@
 					$userCount = $row['userCount'];
 				}
 				
-				$sql = "SELECT COUNT(*) as bookCount FROM books";
+				$sql = "SELECT SUM(quantity) as bookCount FROM books";
 				$result = $conn->query($sql);
 				
 				$bookCount = 0;
