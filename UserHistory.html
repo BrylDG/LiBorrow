@@ -1,90 +1,81 @@
-<div class="content-box" id="content2">
-    <div class="container">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Returned Books</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="content-box" id="content2">
+        <div class="container">
 
-        <div id="Returend-d1" class="Returned-box">
-            <div class="input" >
-                <div class="search-bar">
-                    <input type="text" placeholder=" Search...">
-                    <span class="search-icon">
-                        <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
-                    </span>
+            <div id="Returned-d1" class="Returned-box">
+                <!-- Search, Sort, Filter Section -->
+                <div class="input">
+                    <div class="search-bar-user">
+                        <input type="text" placeholder="Search...">
+                        <span class="search-icon-user">
+                            <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
+                        </span>
+                    </div>
+                    <button class="sort-btn">
+                        <img src="./Images/Sort.svg" alt="Sort Icon" width="20" height="20"> Sort By
+                        <img src="./Images/vec.svg" alt="Sort Down Icon" width="18" height="18">
+                    </button>
+                    <button class="filter-btn">
+                        <img src="./Images/Filter_alt_fill.svg" alt="Filter Icon" width="20" height="20"> Filter By
+                        <img src="./Images/Expand_down.svg" alt="Filter Down Icon" width="18" height="18">
+                    </button>
                 </div>
-                <button class="sort-btn">
-                    <img src="./Images/Sort.svg" alt="Icon Before" width="20" height="20"> <!-- Icon before text -->
-                    Sort By
-                    <img src="./Images/vec.svg" alt="Icon After" width="18" height="18"> <!-- Icon after text -->
-                </button>
-                <button class="filter-btn">
-                    <img src="./Images/Filter_alt_fill.svg" alt="Icon Before" width="20" height="20"> <!-- Icon before text -->
-                    Filter By
-                    <img src="./Images/Expand_down.svg" alt="Icon After" width="18" height="18"> <!-- Icon after text -->
-                </button>
+
+                <!-- Table Section -->
+                <div class="container-box">
+                        <div class="historytitle">
+                                <p>Book</p>
+                                <p style="margin-left: 5%">Author</p>
+                                <p style="margin-left: 0;">Status</p>
+                                <p style="margin-left: 0;">Action</p>
+                        </div>
+                        <div class="historybody">
+                            <div class="book-row">
+                                <p><img src="./Images/fw.svg" alt="book"> Fourth Wing</p>
+                                <p>Rebecca Yarros</p>
+                                <p>Good Condition</p>
+                                <p class="viewdetails"><a href="#">View Details</a></p>
+                            </div>
+                            <div class="book-row">
+                                <p><img src="./Images/fw.svg" alt="book"> Fourth Wing</p>
+                                <p>Rebecca Yarros</p>
+                                <p>Good Condition</p>
+                                <p class="viewdetails"><a href="#">View Details</a></p>
+                            </div>
+                            <div class="book-row">
+                                <p><img src="./Images/fw.svg" alt="book"> Fourth Wing</p>
+                                <p>Rebecca Yarros</p>
+                                <p>Good Condition</p>
+                                <p class="viewdetails"><a href="#">View Details</a></p>
+                            </div>
+                        </div>
+
+                </div>
+
+                <!-- Pagination Section -->
+                <div class="Returned-pagination">
+                    <span><img src="./Images/Expand_left.svg" alt="Previous Icon" width="18" height="18"></span>
+                    <a href="#" class="prev">Previous</a>
+                    <a href="#" class="page-number active" id="one">1</a>
+                    <a href="#" class="page-number" id="num">2</a>
+                    <a href="#" class="page-number" id="num">3</a>
+                    <a href="#" class="page-number" id="num">4</a>
+                    <a href="#" class="page-number" id="num">...</a>
+                    <a href="#" class="page-number" id="num">50</a>
+                    <a href="#" class="next">Next</a>
+                    <span><img src="./Images/Expand_right.svg" alt="Next Icon" width="18" height="18"></span>
+                </div>
             </div>
-            <!-- Table Section -->
-            <div class="container-box">
-                <table class="Returned-table">
-                    <thead>
-                        <tr>
-                            <th>Book </th>
-                            <th>Author</th>
-                            <th>Status</th>
-                            <th>Returned By</th>
-                            <th>Date Returned</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><img src="./Images/fw.svg" alt="book"> Fourth Wing</td>
-                            <td>Rebecca Yarros</td>
-                            <td>Good Condition</td>
-                            <td>Nicholai Koblashnicov</td> 
-                            <td>09/28/2024</td>
-                        </tr>
-                        <tr>
-                            <td><img src="./Images/fw.svg" alt="book"> Fourth Wing</td>
-                            <td>Rebecca Yarros</td>
-                            <td>Good Condition</td>
-                            <td>Nicholai Koblashnicov</td> 
-                            <td>09/28/2024</td>
-                        </tr>
-                        <tr>
-                            <td><img src="./Images/fw.svg" alt="book"> Fourth Wing</td>
-                            <td>Rebecca Yarros</td>
-                            <td>Good Condition</td>
-                            <td>Nicholai Koblashnicov</td> 
-                            <td>09/28/2024</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="Returned-pagination">
-                <span><img src="./Images/Expand_left.svg" alt="Previous Icon" width="18" height="18"></span>
-                <a href="#" class="prev">Previous</a>
-                <a href="#" class="page-number active" id="one">1</a>
-                <a href="#" class="page-number" id="num">2</a>
-                <a href="#" class="page-number" id="num">3</a>
-                <a href="#" class="page-number" id="num">4</a>
-                <a href="#" class="page-number" id="num">...</a>
-                <a href="#" class="page-number" id="num">50</a>
-                <a href="#" class="next">Next</a>
-                <span><img src="./Images/Expand_right.svg" alt="Next Icon" width="18" height="18"></span>
-            </div>            
         </div>
     </div>
 
-    <script>
-        document.querySelectorAll('button-group a').forEach(link => {
-            link.addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent default anchor behavior
-    
-                // Remove 'active' class from all links
-                document.querySelectorAll('button-group a').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                
-                // Add 'active' class to the clicked link
-                this.classList.add('active');
-            });
-        });
-    </script>    
-</div>
+</body>
+</html>
