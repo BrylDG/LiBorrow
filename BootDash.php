@@ -156,7 +156,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
 
         document.getElementById("button0").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./Dashboard.html')
+            fetch('./Dashboard.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
