@@ -1,3 +1,41 @@
+<?php
+    session_start();
+
+    include('connection.php');
+
+    if($_SERVER["REQUEST_METHOD"] == "POST") {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        // Query to check the user's credentials
+        $sql = "SELECT * FROM users WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $db_user = $result->fetch_assoc();
+
+            // Verify password
+            if ($password === $db_user['password']) {
+                // Store idno in session
+                $_SESSION['idno'] = $db_user['idno'];
+
+                // Redirect to BootDash page
+                header("Location: BootDash.php");
+                exit();
+            } else {
+                echo "<script>alert('Invalid Password!')</script>";
+            }
+        } else {
+            echo "<script>alert('Email does not exist!')</script>";
+        }
+
+        $stmt->close();
+        $conn->close();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +68,7 @@
         <div class="col-5 center-column">
             <div class="login-form-container"   >
                 <h3 class="text-center">Welcome Back!</h3>
+<<<<<<< Updated upstream
                 <?php
 				include('connection.php');
 				session_start();
@@ -57,6 +96,8 @@
 					}
 				}
 				?>
+=======
+>>>>>>> Stashed changes
                 <form action="login.php" method="post">
                     <div class="mb-5 email-input input-container">
                         <input type="email" class="form-control" id="email" name="email" required>
@@ -74,7 +115,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Sign-In</button>
                 </form>
-                <p class="text-center mt-3">Don't have an Account? <a href="#" class="sign-up">Sign-up!</a></p>
+                <p class="text-center mt-3">Don't have an Account? <a href="./register.php" class="sign-up">Sign-up!</a></p>
             </div>
         </div>
 

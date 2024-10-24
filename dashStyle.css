@@ -104,10 +104,12 @@ body, html {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
+    margin-left: 7px;
 }
 
 #submenu li {
     list-style: none;
+    padding-left:5%;
 }
 
 #submenu li a {
@@ -259,19 +261,6 @@ span {
     text-decoration: none;
 }
 
-/* #filters {
-    margin: 2em;
-}
-
-#filters a {
-    margin-right: 1em;
-    font-weight: bold;
-    padding: 0.5em 1em;
-    border: 1px solid #FC783F;
-    border-radius: 5px;
-    color: #FC783F;
-    text-decoration: none;
-} */
 #main-content{
     padding: 0;
     margin: 0;

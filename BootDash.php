@@ -1,9 +1,20 @@
 <?php
+<<<<<<< Updated upstream
 session_start(); // Start the session
 include('connection.php'); // Include your connection file
 
 // Retrieve the full name from the session
 $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // Default to 'User ' if not set
+=======
+    session_start();
+    include('connection.php');
+
+    if (!isset($_SESSION['idno'])) {
+        // Redirect to login page if not logged in
+        header("Location: login.php");
+        exit();
+    }
+>>>>>>> Stashed changes
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +34,14 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
     <link rel="stylesheet" href="./TransactionsReturned.css">
     <link rel="stylesheet" href="./TransactionsOverdue.css">
     <link rel="stylesheet" href="./ReadersInformation.css">
+<<<<<<< Updated upstream
     
+=======
+    <link rel="stylesheet" href="./BookInformation.css">
+    <link rel="stylesheet" href="./UpdateUser.css">
+    <link rel="stylesheet" href="./AddBook.css">
+    <link rel="stylesheet" href="./Settings.css">
+>>>>>>> Stashed changes
     <title>LiBorrow Dashboard</title>
 </head>
 <body>
@@ -55,22 +73,38 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                         <ul id="submenu">
                             <li>
                                 <a href="#" id="pendBtn">
+<<<<<<< Updated upstream
                                     <img src="./Images/Vector.svg" alt="Pending Icon" width="18" height="18"> Pending
+=======
+                                    Pending
+>>>>>>> Stashed changes
                                 </a>
                             </li>
                             <li>
                                 <a href="#" id="BorrowedBtn">
+<<<<<<< Updated upstream
                                     <img src="./Images/Vector.svg" alt="Borrowed Icon" width="18" height="18"> Borrowed
+=======
+                                    Borrowed
+>>>>>>> Stashed changes
                                 </a>
                             </li>
                             <li>
                                 <a href="#" id="ReturnedBtn">
+<<<<<<< Updated upstream
                                     <img src="./Images/Vector.svg" alt="Returned Icon" width="18" height="18"> Returned
+=======
+                                    Returned
+>>>>>>> Stashed changes
                                 </a>
                             </li>
                             <li>
                                 <a href="#" id="OverdueBtn">
+<<<<<<< Updated upstream
                                     <img src="./Images/Vector.svg" alt="Overdue Icon" width="18" height="18"> Overdue
+=======
+                                    Overdue
+>>>>>>> Stashed changes
                                 </a>
                             </li>
                         </ul>
@@ -100,11 +134,19 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                             </div>
                         </div>
                         <div class="separator"></div>
+<<<<<<< Updated upstream
                         <div id="profile" class="col-4">					
                             <a href="#" class="info-column">
                                 <img src="./Images/Profile.svg" id="profile-image" alt="Profile" height="60" width="60">
                                 <div id="profile-info">
                                     <span><?php echo $fullname; ?></span>
+=======
+                        <div id="profile" class="col-4">
+                            <a href="#" class="info-column">
+                                <img src="./Images/Profile.svg" id="profile-image" alt="Profile" height="60" width="60">
+                                <div id="profile-info">
+                                    <span>Daisy Lyn Laygan</span>
+>>>>>>> Stashed changes
                                     <h5>Librarian</h5>
                                 </div>
                             </a>
@@ -116,19 +158,31 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                             <a href="#" class="settings">
                                 <img src="./Images/settings.svg" alt="Settings Icon"> Settings
                             </a>
+<<<<<<< Updated upstream
                             <a href="logout.php" class="logout">
+=======
+                            <a href="#" class="logout" id="logout-out">
+>>>>>>> Stashed changes
                                 <img src="./Images/signin.svg" alt="Logout Icon"> Log Out
                             </a>
                         </div>
                     </div>
                 </div>
+<<<<<<< Updated upstream
                 <div id="body-content" class="col-10">
+=======
+                    <div id="body-content" class="col-10">
+>>>>>>> Stashed changes
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+<<<<<<< Updated upstream
+=======
+        
+>>>>>>> Stashed changes
         function toggleSubmenu() {
             const submenu = document.getElementById('submenu');
             const icon = document.getElementById('submenu-toggle-icon');
@@ -143,7 +197,11 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
         }
         
         function loadDashboard() {
+<<<<<<< Updated upstream
             fetch('./Dashboard.php')
+=======
+            fetch('./Dashboard.html')
+>>>>>>> Stashed changes
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -153,10 +211,29 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                 })
                 .catch(error => console.error('Error fetching content:', error));
         }
+<<<<<<< Updated upstream
 
         document.getElementById("button0").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./Dashboard.php')
+=======
+                document.getElementById("button1").addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./ReaderDash.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    initializeViewMoreButtons();
+                    document.title = "Readers List"; // Change the page title
+                    document.getElementById("page-title").innerText = "Readers List"; // Change the displayed title
+                })
+                .catch(error => handleError('Error fetching ReaderDash:', error));
+        });
+
+        document.getElementById("button0").addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./Dashboard.html')
+>>>>>>> Stashed changes
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -166,6 +243,10 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+<<<<<<< Updated upstream
+=======
+        
+>>>>>>> Stashed changes
 
         function renderCharts() {
                 // Pie Chart Data
@@ -275,7 +356,11 @@ const myBarChart = new Chart(ctx, {
 
         document.getElementById("button1").addEventListener("click", function(event) {
             event.preventDefault();
+<<<<<<< Updated upstream
             fetch('./ReaderDash.html')
+=======
+            fetch('./ReaderDash.php')
+>>>>>>> Stashed changes
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -291,18 +376,52 @@ const myBarChart = new Chart(ctx, {
             document.querySelectorAll(".view-more a").forEach(button => {
                 button.addEventListener("click", function(event) {
                     event.preventDefault();
+<<<<<<< Updated upstream
                     fetch('./ReadersInformation.html')
                         .then(response => response.text())
                         .then(data => {
                             document.getElementById("body-content").innerHTML = data;
                             document.title = "Reader' Information"; // Change the page title
+=======
+                    fetch('./ReadersInformation.php')
+                        .then(response => response.text())
+                        .then(data => {
+                            document.getElementById("body-content").innerHTML = data;
+                            initializeUpdateButton();
+                            document.title = "Reader's Information"; // Change the page title
+>>>>>>> Stashed changes
                             document.getElementById("page-title").innerText = "Reader's Information"; // Change the displayed title
                         })
                         .catch(error => handleError('Error fetching ReadersInformation:', error));
                 });
             });
+<<<<<<< Updated upstream
         }
 
+=======
+            
+        }
+
+        
+        // Function to initialize the Update button
+        function initializeUpdateButton() {
+            const updateButton = document.querySelector(".update-btn"); // Use querySelector for a single element
+            updateButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                fetch('./UpdateUser.php')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("body-content").innerHTML = data;
+                        document.title = "Update User"; // Change the page title
+                        document.getElementById("page-title").innerText = "Update User"; // Change the displayed title
+                    })
+                    .catch(error => handleError('Error fetching ReadersInformation:', error));
+            });
+        }
+
+
+        
+>>>>>>> Stashed changes
         // Function to handle errors and display a user-friendly message
         function handleError(message, error) {
             console.error(message, error);
@@ -314,12 +433,67 @@ const myBarChart = new Chart(ctx, {
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
+<<<<<<< Updated upstream
+=======
+                    initializeBookViewMoreButtons();
+                    initializeAddBookButton()
+>>>>>>> Stashed changes
                     document.title = "Inventory"; // Change the page title
                     document.getElementById("page-title").innerText = "Inventory"; // Change the displayed title
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+<<<<<<< Updated upstream
             
+=======
+        function initializeBookViewMoreButtons() {
+            document.querySelectorAll(".view-book a").forEach(button => {
+                button.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    fetch('./BooksInformation.html')
+                        .then(response => response.text())
+                        .then(data => {
+                            document.getElementById("body-content").innerHTML = data;
+                            document.title = "Book's Information"; // Change the page title
+                            document.getElementById("page-title").innerText = "Book's Information"; // Change the displayed title
+                        })
+                        .catch(error => handleError('Error fetching ReadersInformation:', error));
+                });
+            });
+            
+        }
+        function initializeAddBookButton() {
+            const updateButton = document.querySelector(".addbtn"); // Use querySelector for a single element
+            updateButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                fetch('./AddBook.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("body-content").innerHTML = data;
+                        document.title = "Add Book"; // Change the page title
+                        document.getElementById("page-title").innerText = "Add Book"; // Change the displayed title
+                    })
+                    .catch(error => handleError('Error fetching ReadersInformation:', error));
+            });
+        }
+        function initializeSettingsButton() {
+            const updateButton = document.querySelector(".settings"); // Use querySelector for a single element
+            updateButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                fetch('./Settings.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("body-content").innerHTML = data;
+                        document.title = "Settings"; // Change the page title
+                        document.getElementById("page-title").innerText = "Settings "; // Change the displayed title
+                    })
+                    .catch(error => handleError('Error fetching ReadersInformation:', error));
+            });
+        }
+
+
+        
+>>>>>>> Stashed changes
         document.getElementById("BorrowedBtn").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./TransactionsBorrowed.html')
@@ -328,6 +502,11 @@ const myBarChart = new Chart(ctx, {
                     document.getElementById("body-content").innerHTML = data;
                     document.title = "Borrowed Books"; // Change the page title
                     document.getElementById("page-title").innerText = "Borrowed Books"; // Change the displayed title
+<<<<<<< Updated upstream
+=======
+                    initializeBorrowedListeners();
+                    initializeViewMoreListeners();
+>>>>>>> Stashed changes
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
@@ -353,6 +532,10 @@ const myBarChart = new Chart(ctx, {
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         document.getElementById("OverdueBtn").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./TransactionsOverdue.html')
@@ -365,6 +548,10 @@ const myBarChart = new Chart(ctx, {
                 .catch(error => console.error('Error fetching content:', error));
         });
         
+<<<<<<< Updated upstream
+=======
+        
+>>>>>>> Stashed changes
 
         document.querySelector("#button3").addEventListener("click", function(event) {
             event.preventDefault();
@@ -425,6 +612,10 @@ const myBarChart = new Chart(ctx, {
             } else {
                 dropdown.style.display = "none";
             }
+<<<<<<< Updated upstream
+=======
+            initializeSettingsButton()
+>>>>>>> Stashed changes
         });
 
         document.addEventListener("click", function(event) {
@@ -434,6 +625,10 @@ const myBarChart = new Chart(ctx, {
             if (!profileSection.contains(event.target) && !dropdown.contains(event.target)) {
                 dropdown.style.display = "none";
             }
+<<<<<<< Updated upstream
+=======
+            initializeSettingsButton()
+>>>>>>> Stashed changes
         });
         
         document.getElementById("notification").addEventListener("click", function(event) {
@@ -456,6 +651,77 @@ const myBarChart = new Chart(ctx, {
             loadDashboard();  // Automatically load the Dashboard content
         };
 
+<<<<<<< Updated upstream
+=======
+        function initializeBorrowedListeners() {
+    // Function to toggle the visibility of the dropdown
+    function toggleDropdown(event) {
+        event.stopPropagation();
+        const borrbox = event.target.closest('.Borrbox'); // Get the parent .Borrbox
+        const dropdown = borrbox.nextElementSibling; // Get the .dropdown-content below the .Borrbox
+        
+        // Toggle by adding/removing the display property
+        if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+            dropdown.style.display = 'contents'; // Show dropdown
+        } else {
+            dropdown.style.display = 'none'; // Hide dropdown
+        }
+    }
+
+    // Add the click event listener to each "View Borrowers" link
+    document.querySelectorAll('.view-borrowers').forEach(link => {
+        link.addEventListener('click', toggleDropdown);
+    });
+
+    // Close the dropdown if the user clicks outside of it
+    document.addEventListener('click', function(event) {
+        // Loop through all dropdowns
+        document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+            const borrbox = dropdown.previousElementSibling; // The corresponding .Borrbox
+
+            // Close dropdown if the click was outside of both the dropdown and its corresponding .Borrbox
+            if (!borrbox.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.style.display = 'none'; // Hide the dropdown
+            }
+        });
+    });
+}
+function initializeViewMoreListeners() {
+    function fetchAndDisplayContent(event) {
+        event.preventDefault();
+
+        fetch('./ReadersInformation.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text(); 
+            })
+            .then(data => {
+                document.getElementById("body-content").innerHTML = data;
+                initializeUpdateButton();
+                document.title = "Reader's Information";
+
+                document.querySelectorAll('.view-more-btn').forEach(button => {
+                    button.addEventListener('click', function(event) {
+                        event.preventDefault();
+                    });
+                });
+            })
+            .catch(error => console.error('Error fetching content:', error));
+    }
+
+    document.querySelectorAll(".ViewMoreInfo a").forEach(button => {
+        button.addEventListener("click", fetchAndDisplayContent);
+    });
+}
+
+    document.querySelector('.pencil-icon').addEventListener('click', function() {
+            var inputField = document.getElementById('full-name');
+            inputField.disabled = false;  // Enable the input field
+            inputField.focus();  // Optionally focus the input field
+    });
+>>>>>>> Stashed changes
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
