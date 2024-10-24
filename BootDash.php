@@ -24,7 +24,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
     <link rel="stylesheet" href="./TransactionsOverdue.css">
     <link rel="stylesheet" href="./ReadersInformation.css">
     
-    <title>LiBorrow Dashboard</title>
+    <title >LiBorrow Dashboard</title>
 </head>
 <body>
     <div class="container-fluid" style="padding: 0;">
@@ -129,6 +129,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
     </div>
 
     <script>
+       
         function toggleSubmenu() {
             const submenu = document.getElementById('submenu');
             const icon = document.getElementById('submenu-toggle-icon');
@@ -153,7 +154,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                 })
                 .catch(error => console.error('Error fetching content:', error));
         }
-
+		
         document.getElementById("button0").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./Dashboard.php')
@@ -169,15 +170,15 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
 
         function renderCharts() {
                 // Pie Chart Data
-const pieCtx = document.getElementById('myPieChart').getContext('2d');
-const pieData = {
-    labels: ['Borrowed', 'Return', 'Pending', 'Overdue'],
-    datasets: [{
-        data: [60, 20, 10, 10],
-        backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#c9cbcf'],
-        hoverBackgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#c9cbcf']
-    }]
-};
+		const pieCtx = document.getElementById('myPieChart').getContext('2d');
+		const pieData = {
+			labels: ['Borrowed', 'Return', 'Pending', 'Overdue'],
+			datasets: [{
+				data: [60, 20, 10, 10],
+				backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#c9cbcf'],
+				hoverBackgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#c9cbcf']
+			}]
+		};
 
 // Create Pie Chart
 new Chart(pieCtx, {
@@ -302,7 +303,7 @@ const myBarChart = new Chart(ctx, {
                 });
             });
         }
-
+		
         // Function to handle errors and display a user-friendly message
         function handleError(message, error) {
             console.error(message, error);
@@ -365,7 +366,7 @@ const myBarChart = new Chart(ctx, {
                 .catch(error => console.error('Error fetching content:', error));
         });
         
-
+		
         document.querySelector("#button3").addEventListener("click", function(event) {
             event.preventDefault();
 
@@ -394,7 +395,7 @@ const myBarChart = new Chart(ctx, {
                 });
         });
         
-
+			
         document.getElementById("button4").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./HistoryDash.html')
@@ -442,7 +443,7 @@ const myBarChart = new Chart(ctx, {
 
             dropdown.style.display = (dropdown.style.display === "none" || dropdown.style.display === "") ? "block" : "none";
         });
-
+		
         document.addEventListener("click", function(event) {
             const dropdown = document.getElementById("notification-dropdown");
             const notification = document.getElementById("notification");
@@ -451,11 +452,30 @@ const myBarChart = new Chart(ctx, {
                 dropdown.style.display = "none";
             }
         });
+		function updateTime() {
+		const now = new Date(); // Get the current date and time
 
+		// Extract hours, minutes, and seconds
+		const hours = String(now.getHours()).padStart(2, '0');
+		const minutes = String(now.getMinutes()).padStart(2, '0');
+		const seconds = String(now.getSeconds()).padStart(2, '0');
+
+		// Format the time
+		const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+		// Update the HTML element with the current time
+		document.getElementById("current-time").innerHTML = `${formattedTime}`;
+	}
         window.onload = function() {
             loadDashboard();  // Automatically load the Dashboard content
-        };
+			// Call updateTime every second (1000 milliseconds)
+			setInterval(updateTime, 1000);
 
+			// Initial call to display the time immediately on page load
+			updateTime();
+				};
+		
+		
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

@@ -13,11 +13,11 @@
             <div class="DT">
                 <div class="datediv">
                 <img src="./Images/date.svg" alt="date Icon" width="24" height="24">
-                <h5>August 12,2024</h5>
+                <h5><?php echo date('F d, Y'); ?></h5>
                 </div>
                 <div class="timediv">
                 <img src="./Images/time.svg" alt="time Icon" width="24" height="24">
-                <h5>11:20:30 A.M.</h5>
+                <h5 id="current-time"></h5>
                 </div>
             </div>
         </div>
@@ -99,7 +99,25 @@
         </div>
     </div>
 </div>
-
 <script>
-    
+function updateTime() {
+    const now = new Date(); // Get the current date and time
+
+    // Extract hours, minutes, and seconds
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    // Format the time
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+    // Update the HTML element with the current time
+    document.getElementById("current-time").innerHTML = `Current Time: ${formattedTime}`;
+}
+
+// Call updateTime every second (1000 milliseconds)
+setInterval(updateTime, 1000);
+
+// Initial call to display the time immediately on page load
+updateTime();
 </script>
