@@ -2,6 +2,11 @@
 session_start(); // Start the session
 include('connection.php'); // Include your connection file
 
+// Check if the user is logged in
+if (!isset($_SESSION['fullname'])) { // Replace 'user_id' with your session variable for logged-in users
+    header("Location: login.php"); // Redirect to the login page
+    exit(); // Make sure to exit after the redirect
+}
 // Retrieve the full name from the session
 $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // Default to 'User ' if not set
 ?>
@@ -127,7 +132,54 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
             </div>
         </div>
     </div>
+	<?php
+	// Database connection (adjust the connection parameters as needed)
+	include ("connection.php");
+	
+	// Query to get the counts from each table
+	$borrowedQuery = "SELECT COUNT(*) AS count FROM borrows";
+	$returnedQuery = "SELECT COUNT(*) AS count FROM returns";
+	$pendingQuery = "SELECT COUNT(*) AS count FROM pendings";
+	$overdueQuery = "SELECT COUNT(*) AS count FROM overdues";
 
+	// Execute queries
+	$borrowedResult = $conn->query($borrowedQuery);
+	$returnedResult = $conn->query($returnedQuery);
+	$pendingResult = $conn->query($pendingQuery);
+	$overdueResult = $conn->query($overdueQuery);
+
+	// Fetch counts
+	$counts = [
+		'Borrowed' => $borrowedResult->fetch_assoc()['count'],
+		'Returned' => $returnedResult->fetch_assoc()['count'],
+		'Pending' => $pendingResult->fetch_assoc()['count'],
+		'Overdue' => $overdueResult->fetch_assoc()['count']
+	];
+
+	// Calculate total books
+	$totalBooks = array_sum($counts);
+
+	// Calculate percentages
+	$percentages = [];
+	foreach ($counts as $status => $count) {
+		$percentages[$status] = ($totalBooks > 0) ? ($count / $totalBooks) * 100 : 0;
+	}
+	
+	
+	// BARCHART
+	// Fetch genre names from the genres table
+	$genreQuery = "SELECT name FROM genres";
+	$genreResult = $conn->query($genreQuery);
+
+	// Store genre names in an array
+	$genreNames = [];
+	while ($row = $genreResult->fetch_assoc()) {
+		$genreNames[] = $row['name'];
+	}
+
+	// Close the database connection
+	$conn->close();
+	?>
     <script>
        
         function toggleSubmenu() {
@@ -172,11 +224,11 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                 // Pie Chart Data
 		const pieCtx = document.getElementById('myPieChart').getContext('2d');
 		const pieData = {
-			labels: ['Borrowed', 'Return', 'Pending', 'Overdue'],
+			labels: ['Borrowed', 'Returned', 'Pending', 'Overdue'],
 			datasets: [{
-				data: [60, 20, 10, 10],
-				backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#c9cbcf'],
-				hoverBackgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#c9cbcf']
+				 data: [<?php echo implode(',', array_values($percentages)); ?>],
+				backgroundColor: ['orange', '#5f76e8', '#ff8c61', 'red'],
+				hoverBackgroundColor: ['orange', '#5f76e8', '#ff8c61', 'red']
 			}]
 		};
 
@@ -200,7 +252,7 @@ const ctx = document.getElementById('myBarChart').getContext('2d');
 const myBarChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5', 'Category 6', 'Category 7', 'Category 8'],
+        labels: <?php echo json_encode($genreNames); ?>,
         datasets: [
             {
                 backgroundColor: '#5f76e8',
@@ -467,10 +519,8 @@ const myBarChart = new Chart(ctx, {
 		document.getElementById("current-time").innerHTML = `${formattedTime}`;
 	}
         window.onload = function() {
-            loadDashboard();  // Automatically load the Dashboard content
-			// Call updateTime every second (1000 milliseconds)
-			setInterval(updateTime, 1000);
-
+            loadDashboard();
+			setInterval(updateTime, 1);
 			// Initial call to display the time immediately on page load
 			updateTime();
 				};

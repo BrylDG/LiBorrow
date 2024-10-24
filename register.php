@@ -108,9 +108,9 @@
                     <div class="text-end mb-3">
                         <a href="#" class="forgot-password">Forgot Password?</a>
                     </div>
-                    <input type="submit" class="btn btn-primary" name="submit" value="Sign-In"/>
+                    <input type="submit" class="btn btn-primary" name="submit" value="Sign-Up"/>
                 </form>
-                <p class="text-center mt-3">Don't have an Account? <a href="#" class="sign-up">Sign-up!</a></p>
+                <p class="text-center mt-3">Already have an Account? <a href="login.php" class="sign-up">Sign-in!</a></p>
             </div>
         </div>
 
