@@ -177,6 +177,22 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
 		$genreNames[] = $row['name'];
 	}
 
+	// Query to count borrows by genre
+	$genreCountQuery = "SELECT genre, COUNT(*) AS borrow_count FROM borrowhistory GROUP BY genre";
+
+	// Execute the query
+	$genreCountResult = $conn->query($genreCountQuery);
+
+	// Prepare arrays for genres and their corresponding borrow counts
+	$genreNames = [];
+	$borrowCounts = [];
+
+	// Fetch the results
+	while ($row = $genreCountResult->fetch_assoc()) {
+		$genreNames[] = $row['genre'];
+		$borrowCounts[] = $row['borrow_count'];
+	}
+
 	// Close the database connection
 	$conn->close();
 	?>
@@ -257,21 +273,12 @@ const myBarChart = new Chart(ctx, {
             {
                 backgroundColor: '#5f76e8',
                 hoverBackgroundColor: '#3949ab',
-                data: [222, 177, 394, 35, 37, 5, 10, 1],
+                data: <?php echo json_encode($borrowCounts); ?>,
                 borderRadius: 8,  // Rounded corners
                 borderSkipped: false,  // Disable sharp corners
-                label: '2021',
+                label: '2024',
                 maxBarThickness: 10  // Adjust this value to control bar thickness
             },
-            {
-                backgroundColor: '#c1c9ed',
-                hoverBackgroundColor: '#9bacee',
-                data: [25, 18, 43, 35, 37, 10, 10, 1],
-                borderRadius: 8,  // Rounded corners
-                borderSkipped: false,
-                label: '2022',
-                maxBarThickness: 10  // Adjust this value to control bar thickness
-            }
         ]
     },
     options: {
