@@ -1,0 +1,119 @@
+body, html {
+    font-family: 'Poppins', sans-serif;
+}
+
+
+.Reader-MyBooks {
+    overflow-y: auto;
+    height: 890px;
+    display: flex;
+    flex-direction: column;
+}
+
+.inputSection {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 10px; 
+    margin-bottom: 3%; 
+    padding-left: 2%;
+}
+
+.search-bar {
+    position: relative;
+}
+
+.search-bar input {
+    width: 567px;
+    height: 50px;
+    padding: 10px 40px 10px 15px;
+    border: 2px solid #7d6966;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+    color: #7d6966;
+    transition: border-color 0.3s ease;
+}
+
+.search-bar .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 93%;
+    transform: translateY(-50%);
+}
+
+.sort-btn {
+    font-size: 16px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 30px;
+    background-color: #FC783F; 
+    color: white; 
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 50px;
+    width: 160px;
+    margin-left: 1%;
+}
+
+.sort-btn img {
+    margin: 0 5px; 
+}
+
+.filter-btn{
+    font-size: 16px;
+    padding: 10px 20px; 
+    border: 1px solid #ff6600;
+    background-color: white;
+    color: #ff6600;
+    border-radius: 30px;
+    margin-left: 1%;
+}
+
+.BookContainer {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    width: 1050px;
+}
+
+.Shelf {
+    background-color: white;
+    height: 54px;
+    width: 1045px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.Books {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.ReadStatus {
+    font-size: 10px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    padding-top: 1%;
+}
+
+.top-row {
+    display: flex;
+    height: 307px;
+    align-items: flex-end;
+}
+
+.bottom-row {
+    height: 307px;
+    display: flex;
+    align-items: flex-end;
+}
+

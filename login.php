@@ -68,6 +68,36 @@
         <div class="col-5 center-column">
             <div class="login-form-container"   >
                 <h3 class="text-center">Welcome Back!</h3>
+<<<<<<< Updated upstream
+                <?php
+				include('connection.php');
+				session_start();
+
+				if ($_SERVER["REQUEST_METHOD"] == "POST") {
+					$email = mysqli_real_escape_string($conn, $_POST["email"]);
+					$pass = mysqli_real_escape_string($conn, $_POST["password"]);
+					
+					$query = "SELECT * FROM users WHERE email='$email' AND password='$pass'";
+					$result = mysqli_query($conn, $query);
+					$count = mysqli_num_rows($result);
+					
+					if ($count == 1) {
+						// Fetch the user's full name
+						$user = mysqli_fetch_assoc($result);
+						$_SESSION['fullname'] = $user['fullname']; // Store full name in session
+						
+						// Redirect to BootDash.php on successful login
+						echo "<script>
+								alert('Login Success!');
+								window.location.href = 'BootDash.php';
+							  </script>";
+					} else {
+						echo "<script>alert('Login Failed')</script>";
+					}
+				}
+				?>
+=======
+>>>>>>> Stashed changes
                 <form action="login.php" method="post">
                     <div class="mb-5 email-input input-container">
                         <input type="email" class="form-control" id="email" name="email" required>
