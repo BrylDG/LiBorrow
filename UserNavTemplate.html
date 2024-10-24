@@ -101,20 +101,6 @@
 
     <script>
         //FUNCTIONS
-
-        function loadDashboard() {
-            fetch('./UserDashboard.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("body-content").innerHTML = data;
-                    document.title = "Dashboard"; // Change the page title
-                    document.getElementById("page-title").innerText = "Dashboard"; // Change the displayed title
-                    renderCharts();
-                })
-                .catch(error => console.error('Error fetching content:', error));
-        }
-
-
         //DASHBOARD CONTENT
         document.getElementById("button0").addEventListener("click", function(event) {
             event.preventDefault();
@@ -122,7 +108,7 @@
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
-                    initializeBookViewDetailsButtons();
+                    initializeViewDetailsButtons();
                     document.title = "Dashboard"; // Change the page title
                     document.getElementById("page-title").innerText = "Dashboard"; // Change the displayed title
                     renderCharts();
@@ -159,27 +145,11 @@
                 .catch(error => console.error('Error fetching content:', error));
         });
 
-        function initializeBookViewDetailsButtons() {
-            document.querySelectorAll(".viewDetsbtn").forEach(button => {
-                button.addEventListener("click", function(event) {
-                    event.preventDefault();
-                    fetch('./ViewDetails.html')
-                        .then(response => response.text())
-                        .then(data => {
-                            document.getElementById("body-content").innerHTML = data;
-                            document.title = "View Details"; // Change the page title
-                            document.getElementById("page-title").innerText = "View Details"; // Change the displayed title
-                        })
-                        .catch(error => handleError('Error fetching ReadersInformation:', error));
-                });
-            });
-        } 
-
 
         //BORROWED BOOKS CONTENT
         document.getElementById("button2").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./MyBooks.html')
+            fetch('./UserMyBooks.html')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -261,6 +231,7 @@
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
+                    initializeViewDetailsButtons();
                     document.title = "Dashboard"; // Change the page title
                     document.getElementById("page-title").innerText = "Dashboard"; // Change the displayed title
                     renderCharts();
@@ -271,6 +242,36 @@
         window.onload = function() {
             loadUserDashboard();  // Automatically load the Dashboard content
         };
+
+        function initializeViewDetailsButtons() {
+    document.querySelectorAll(".ViewDetailsButton").forEach(button => {
+        button.addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./ViewDetails.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "View Details"; // Change the page title
+                    document.getElementById("page-title").innerText = "View Details"; // Change the displayed title
+                })
+                .catch(error => console.error('Error fetching content:', error));
+        });
+    });
+}
+
+        document.getElementById("ViewDetailsButton").addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./ViewDetails.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "View Details"; // Change the page title
+                    document.getElementById("page-title").innerText = "View Details"; // Change the displayed title
+                    renderCharts();
+                })
+                .catch(error => console.error('Error fetching content:', error));
+        });
+
 
         
     </script>

@@ -34,36 +34,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>John Doe</td>
-                        <td>johndoe@example.com</td>
-                        <td class="act view-more"><a href="#">View More</a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Jane Smith</td>
-                        <td>janesmith@example.com</td>
-                        <td class="act view-more"><a href="#">View More</a></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Robert Brown</td>
-                        <td>robertbrown@example.com</td>
-                        <td class="act view-more"><a href="#">View More</a></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Emily White</td>
-                        <td>emilywhite@example.com</td>
-                        <td class="act view-more"><a href="#">View More</a></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Michael Green</td>
-                        <td>michaelgreen@example.com</td>
-                        <td class="act view-more"><a href="#">View More</a></td>
-                    </tr>
+                    <?php
+                        include("connection.php");
+                        
+                        $query = "SELECT idno, fullname, email FROM users";
+                        $result = $conn->query($query);
+
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo "<tr><td>" . $row["idno"]. "</td><td>" . $row["fullname"]. "</td><td>" . $row["email"]. "</td><td><a href='#' class='view-more'>View more</a></td></tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='3'>No data found</td></tr>";
+                        }
+                    ?>
                 </tbody>
             </table>
             <div class="Reader-pagination">

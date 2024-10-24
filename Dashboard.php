@@ -2,7 +2,14 @@
     <div class="row">
         <!-- Header Section -->
         <div class="col-6" id="top">
-            <h1>Welcome Back, Daisy Lyn Laygan!</h1>
+			<?php
+			session_start(); // Start the session
+			include('connection.php'); // Include your connection file
+
+			// Retrieve the full name from the session
+			$fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // Default to 'User ' if not set
+			?>
+            <h1>Welcome Back, <?php echo $fullname; ?>!</h1>
             <div class="DT">
                 <div class="datediv">
                 <img src="./Images/date.svg" alt="date Icon" width="24" height="24">
@@ -29,10 +36,22 @@
 
 				// Initialize user count
 				$userCount = 0;
-				if ($result->num_rows > 0) {
+				if ($result->num_rows > 0) 
+				{
 					// Fetch the result
 					$row = $result->fetch_assoc();
 					$userCount = $row['userCount'];
+				}
+				
+				$sql = "SELECT COUNT(*) as bookCount FROM books";
+				$result = $conn->query($sql);
+				
+				$bookCount = 0;
+				if ($result->num_rows > 0)
+				{
+					$row = $result->fetch_assoc();
+					$bookCount = $row['bookCount'];
+				}
 				?>
                 <div class="col-6" style="padding-left: 0;">
                     <div class="stat-card">
@@ -51,7 +70,7 @@
                                 <img src="./Images/totalBooks.svg" alt="Total Books Icon" width="50" height="50">
                         </div>
                         <div class="text">
-                            <h2>200</h2>
+                            <h2><?php echo $bookCount; ?></h2>
                             <p>Total Books</p>
                         </div>
                     </div>

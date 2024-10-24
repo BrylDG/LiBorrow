@@ -1,43 +1,77 @@
+<?php
+    session_start();
+    include('connection.php');
+
+    if (!isset($_SESSION['idno'])) {
+        // Redirect to login page if not logged in
+        header("Location: login.php");
+        exit();
+    }
+
+    $user_id = $_SESSION['idno'];
+
+    // Fetch user data based on idno from the database
+    $sql = "SELECT idno, fullname, address, username, email, phoneno FROM users WHERE idno = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $user_data = $result->fetch_assoc();
+    } else {
+        echo "No user data found.";
+        exit();
+    }
+
+    $stmt->close();
+    $conn->close();
+?>
 <div class="content-box" id="content2">
     <div class="container">
         <div id="Readd1" class="Readerbox">
             <div class="Readbox Rglobal" id="PboxView">
                 <div id="profile-view" class="Pview">
                     <img src="./Images/profilepic.png" alt="Book one" id="profilepic">
-                    <h2>JONATAN</h2>
+                    <h2><?php echo htmlspecialchars($user_data['username']) ?></h2>
                 </div>
                 <div id="profile-details" class="Pdets">
         
                         <table class="Readersinfo-table">
                             <tr>
                                 <td style="font-weight: bold;">ID Number</td>
-                                <td>2022545</td>
+                                <td><?php echo htmlspecialchars($user_data['idno']) ?></td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;">User Name:</td>
-                                <td>Jonatan</td>
+                                <td><?php echo htmlspecialchars($user_data['username']) ?></td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;">Full Name:</td>
-                                <td>Jonatan</td>
+                                <td><?php echo htmlspecialchars($user_data['fullname']) ?></td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;" >Email:</td>
-                                <td>Jonatan@gmail.com</td>
+                                <td><?php echo htmlspecialchars($user_data['email']) ?></td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;" >Phone Number:</td>
-                                <td>09461321876512</td>
+                                <td><?php echo htmlspecialchars($user_data['phoneno']) ?></td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;">Address:</td>
-                                <td>Volgograd, Russia</td>
+                                <td><?php echo htmlspecialchars($user_data['address']) ?></td>
                             </tr>
                         </table>
                                       
                 </div>
                 <div class="upbtn">
-                    <button id="update-button" class="update-btn">
+                    <script>
+                        function linktoUpdateUser() {
+                            window.location.href = 'UpdateUser.php'; // Link to update information page
+                        }
+                    </script>
+                    <button id="update-button" class="update-btn" onclick="linktoUpdateUser()">
                         Update
                     </button>
                 </div>
