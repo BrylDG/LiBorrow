@@ -55,22 +55,22 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                         <ul id="submenu">
                             <li>
                                 <a href="#" id="pendBtn">
-                                    <img src="./Images/Vector.svg" alt="Pending Icon" width="18" height="18"> Pending
+                                   Pending
                                 </a>
                             </li>
                             <li>
                                 <a href="#" id="BorrowedBtn">
-                                    <img src="./Images/Vector.svg" alt="Borrowed Icon" width="18" height="18"> Borrowed
+                                   Borrowed
                                 </a>
                             </li>
                             <li>
                                 <a href="#" id="ReturnedBtn">
-                                    <img src="./Images/Vector.svg" alt="Returned Icon" width="18" height="18"> Returned
+                                   Returned
                                 </a>
                             </li>
                             <li>
                                 <a href="#" id="OverdueBtn">
-                                    <img src="./Images/Vector.svg" alt="Overdue Icon" width="18" height="18"> Overdue
+                                   Overdue
                                 </a>
                             </li>
                         </ul>
