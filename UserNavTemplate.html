@@ -152,7 +152,11 @@
         //BORROWED BOOKS CONTENT
         document.getElementById("button2").addEventListener("click", function(event) {
             event.preventDefault();
+<<<<<<< Updated upstream
             fetch('./UserMyBooks.html')
+=======
+            fetch('./ViewDetails.html')
+>>>>>>> Stashed changes
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
