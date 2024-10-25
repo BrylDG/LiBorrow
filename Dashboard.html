@@ -21,19 +21,6 @@
         <div class="col-md-4" style="padding-right: 1%;">
             <!-- Stat Cards -->
             <div class="row">
-				<?php
-				include("connection.php");
-				
-				$sql = "SELECT COUNT(*) as userCount FROM users WHERE isAdmin = 0";
-				$result = $conn->query($sql);
-
-				// Initialize user count
-				$userCount = 0;
-				if ($result->num_rows > 0) {
-					// Fetch the result
-					$row = $result->fetch_assoc();
-					$userCount = $row['userCount'];
-				?>
                 <div class="col-6" style="padding-left: 0;">
                     <div class="stat-card">
                         <div class="icon">
