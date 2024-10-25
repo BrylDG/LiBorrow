@@ -112,6 +112,7 @@
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
                     initializeViewDetailsButtons();
+                    initializeSeeAllButtons()
                     document.title = "Dashboard"; // Change the page title
                     document.getElementById("page-title").innerText = "Dashboard"; // Change the displayed title
                     renderCharts();
@@ -243,6 +244,7 @@
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
                     initializeViewDetailsButtons();
+                    initializeSeeAllButtons()
                     document.title = "Dashboard"; // Change the page title
                     document.getElementById("page-title").innerText = "Dashboard"; // Change the displayed title
                     renderCharts();
@@ -264,6 +266,22 @@
                     document.getElementById("body-content").innerHTML = data;
                     document.title = "View Details"; // Change the page title
                     document.getElementById("page-title").innerText = "View Details"; // Change the displayed title
+                })
+                .catch(error => console.error('Error fetching content:', error));
+        });
+    });
+}
+
+function initializeSeeAllButtons() {
+    document.querySelectorAll(".SeeAllButton").forEach(button => {
+        button.addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./UserMyBooks.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "My Books"; // Change the page title
+                    document.getElementById("page-title").innerText = "My Books"; // Change the displayed title
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
