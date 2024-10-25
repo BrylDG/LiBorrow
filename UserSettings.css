@@ -12,6 +12,7 @@
     align-items: center;
     justify-content: center;
     background-color: #f5f5f5;
+    
 }
 
 .prof-details {
@@ -30,8 +31,6 @@
     background-color: #f5f5f5;
     
 }
-
-
 #info-box {
     width: 100%;
     /* overflow-y: auto;
@@ -90,7 +89,7 @@
 
 #sett-header {
     padding: 0;
-    margin-right: 46em;
+    margin-right: 40em;
     
 }
 
@@ -134,8 +133,9 @@
     margin-top: 20em;
 }
 
-.usersave-btn {
+.usersave-btn, .usercancel-btn {
     border: none;
+    margin: 10px;
     font-size: 16px;
     border-radius: 30px;
     color: white;
@@ -144,34 +144,25 @@
     margin-bottom: 10px;
     width: 100px;
 }
+.usercancel-btn {
+    color: #ff6600;
+    background-color: white;
+    border: 1px solid #ff6600;
+}
 
 .SaveCancel-btn {
     display: flex;
     justify-content: flex-end;
-    padding: 10px;
     margin-bottom: -100px;
 }
 
-#cancelsetbtn {
-    margin-left: 15px;
-    border: 1px solid #ff6600;
-    font-size: 16px;
-    border-radius: 30px;
-    color: #ff6600;
-    background-color: white;
-    padding: 2px 20px;
-}
+
 /* Styles for input fields with icons */
 .input-icon {
     position: relative;
    
 }
 
-
-/* #full-name, #username{
-    position: relative;
-    right: 1.6em;
-} */
 #pen-ic{
     position: absolute;
     left: 95%;
@@ -186,6 +177,14 @@
     top: 37%;
     transform: translateY(-50%);
     color: #999;
+ }
+ #Fpen-ic{
+    position: absolute;
+    left: 95%;
+    top: 40%;
+    transform: translateY(-50%);
+    color: #999;
+
  }
 #ic{
     position: absolute;

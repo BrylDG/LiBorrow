@@ -87,7 +87,7 @@
 
                     <div id="profile-dropdown" class="profile-dropdown">
                         <div class="profile-options">
-                            <a href="#" class="settings">
+                            <a href="#" class="Usersettings">
                                 <img src="./Images/settings.svg" alt="Settings Icon"> Settings
                             </a>
                             <a href="#" class="logout">
@@ -152,11 +152,7 @@
         //BORROWED BOOKS CONTENT
         document.getElementById("button2").addEventListener("click", function(event) {
             event.preventDefault();
-<<<<<<< Updated upstream
             fetch('./UserMyBooks.html')
-=======
-            fetch('./ViewDetails.html')
->>>>>>> Stashed changes
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -196,13 +192,21 @@
 
 
     //PROFILE DROP DOWN
-    document.querySelector(".info-column").addEventListener("click", function(event) {
-            event.preventDefault();
+            document.addEventListener("click", function(event) {
             const dropdown = document.getElementById("profile-dropdown");
+            const profileSection = document.querySelector(".info-column");
 
-            if (dropdown.style.display === "none" || dropdown.style.display === "") {
-                dropdown.style.display = "block";
-            } else {
+            // Toggle dropdown when profile is clicked
+            if (profileSection.contains(event.target)) {
+                event.preventDefault();
+                dropdown.style.display = (dropdown.style.display === "none" || dropdown.style.display === "") ? "block" : "none";
+                
+                // Initialize the settings button only when the dropdown is shown
+                if (dropdown.style.display === "block") {
+                    initializeUserSettingsButton();// Initialize only once when dropdown is visible
+                }
+            } else if (!dropdown.contains(event.target)) {
+                // Close dropdown if clicked outside
                 dropdown.style.display = "none";
             }
         });
@@ -251,10 +255,10 @@
         };
 
         function initializeViewDetailsButtons() {
-    document.querySelectorAll(".ViewDetailsButton").forEach(button => {
-        button.addEventListener("click", function(event) {
+        document.querySelectorAll(".ViewDetailsButton").forEach(button => {
+            button.addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./ViewDetails.html')
+            fetch('./ViewDetailsAvailable.html')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -278,6 +282,40 @@
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+        //SETTINGS BUTTON
+        document.querySelector(".info-column").addEventListener("click", function(event) {
+            event.preventDefault();
+            const dropdown = document.getElementById("profile-dropdown");
+
+            if (dropdown.style.display === "none" || dropdown.style.display === "") {
+                dropdown.style.display = "block";
+            } else {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.addEventListener("click", function(event) {
+            const dropdown = document.getElementById("profile-dropdown");
+            const profileSection = document.querySelector(".info-column");
+
+            if (!profileSection.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.style.display = "none";
+            }
+        });
+        function initializeUserSettingsButton() {
+            const updateButton = document.querySelector(".Usersettings"); // Use querySelector for a single element
+            updateButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                fetch('./UserSettings.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("body-content").innerHTML = data;
+                        document.title = "Settings"; // Change the page title
+                        document.getElementById("page-title").innerText = "Settings "; // Change the displayed title
+                    })
+                    .catch(error => handleError('Error fetching ReadersInformation:', error));
+            });
+        }
 
 
         
