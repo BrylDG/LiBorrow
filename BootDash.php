@@ -335,7 +335,7 @@ const myBarChart = new Chart(ctx, {
 
         document.getElementById("button1").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./ReaderDash.html')
+            fetch('./ReaderDash.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -351,7 +351,7 @@ const myBarChart = new Chart(ctx, {
             document.querySelectorAll(".view-more a").forEach(button => {
                 button.addEventListener("click", function(event) {
                     event.preventDefault();
-                    fetch('./ReadersInformation.html')
+                    fetch('./ReadersInformation.php')
                         .then(response => response.text())
                         .then(data => {
                             document.getElementById("body-content").innerHTML = data;
