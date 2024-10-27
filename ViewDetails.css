@@ -1,0 +1,190 @@
+.content-box {
+    background-color: #f5f5f5;
+    width: 100%;
+    height: 80vh;
+    margin-bottom: 10em;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.Details-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f5;
+    width: 90%; 
+
+}
+.Viewdiv1{
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0;
+}
+
+.BookDetails-View{
+    margin-left: 5em;
+    width: 100%;
+}
+
+.Viewdiv2{
+    width: 95%;
+    background-color: white;
+    margin-top: 20px;
+    margin-left:7em;
+    height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.Viewdiv2, .Viewdiv3{
+    border-radius: 10px;
+}
+.Viewdiv3{
+    background-color: #f5f5f5;
+    margin-top: 20px;
+    margin-left: 6em;
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 95%;
+
+}
+.actions{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin: 0;
+    color: #ff6600;
+    font-size: 16px;
+    margin-left: 7.2em;
+    position: static;
+}
+#expan{
+    position: relative;
+    top: 5px;
+}
+.av-btn{
+    font-size: 16px;
+    padding: 5px;
+    padding-right: 10px;
+}
+.title-book{
+    display: flex;
+    flex-direction: row;
+}
+.status{
+    position: relative;
+    left: 1em;
+    bottom: 1.1em;
+}
+#staticon{
+    margin-bottom: 0.1em;
+}
+#GenRo, #GenFic{
+    color: #ff6600;
+}
+#Pride-Book{
+    margin-left: 7em;
+}
+#Rate-stars{
+    position: relative;
+    bottom:2px;
+}
+#Rate-Numbers{
+    color: #ff6600;
+}
+#main-title{
+    font-weight: bold;
+}
+.Revs{
+    margin: 20px;
+    width: 100%;
+
+}
+.pfp{
+    display: flex;
+    flex-direction: row;
+}
+.user-name {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Ensures it spans full width of parent container */
+    margin-left: 1em;
+}
+
+.user-name p {
+    margin: 0;
+    padding-right: 10px; /* Space between name and date */
+    color: black;
+    font-weight: bold;
+}
+
+.comm-date {
+    font-size: 14px; /* Adjust the font size if needed */
+    color: #888; /* Optional: style the date to differentiate from the name */
+    position: relative;
+    top: 1.2px;
+    width: 100%;
+}
+.user-comments {
+    display: flex;
+    flex-direction: column; /* Stack the elements vertically */
+    margin-top: 1em;
+}
+#book-rating{
+    margin-top: 10px;
+}
+#Rate{
+    margin: 5px 5px 5px 10px;
+
+}
+.comm-date {
+    font-size: 14px; 
+    color: #888; 
+}
+
+#Rate-stars {
+    width: 100px; /* Adjust the size as needed */
+}
+
+#Rate-Numbers {
+    font-size: 16px;
+    color: #ff6600; /* Styling for rating number */
+}
+#the-comment{
+    margin-left: 1em;
+}
+.pof{
+    margin-left: 1em;
+}
+#input-comment{
+    margin-left: 1em;
+}
+#input-comment input{
+    height: 50px;
+    padding: 10px 40px 10px 15px;
+    border: 2px solid #7d6966;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+    width: 100%;
+    color: #7d6966;
+    transition: border-color 0.3s ease;
+}
+#desnuts{
+    font-weight: bold;
+    font-size: 17px;
+}
+#input-comment {
+    display: flex;
+    flex-grow: 1;
+}
+#Read-More{
+    color: #757575;
+}
+
+.pendicon{
+    color: #33363F;
+}

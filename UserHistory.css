@@ -1,0 +1,169 @@
+/* Main container */
+.content-box {
+    background-color: #f5f5f5;
+    width: 100%;
+    height: 65vh;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+}
+
+.Returned-box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 70vh;
+}
+
+/* Divider */
+hr {
+    height: 2px;
+    background-color: black;
+    border: none;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Search and Buttons Section */
+.input {
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+    gap: 10px;
+}
+
+
+.search-bar-user input {
+    width: 567px;
+    height: 40px;
+    padding: 10px 40px 10px 15px;
+    border: 1px solid #7d6966;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+    color: #7d6966;
+    transition: border-color 0.3s ease;
+}
+
+.search-bar-user .search-icon-user {
+    position: absolute;
+    left: 40%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.sort-btn, .filter-btn {
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sort-btn {
+    border: none;
+    background-color: #ff6600;
+    color: white;
+}
+
+.filter-btn {
+    background-color: white;
+    color: #ff6600;
+    border: 1px solid #ff6600;
+}
+
+.sort-btn img, .filter-btn img {
+    margin-right: 5px;
+}
+
+
+
+/* Table Section */
+.container-box {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+    background-color: #fff;
+    margin-top: 3.6em;
+    width: 100%;
+    height: 70vh;
+    padding: 0;
+}
+
+.historytitle{
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: 1px solid rgb(0, 0, 0);
+    padding: 0% 0% 0% 5px
+
+}
+
+.historytitle p {
+    font-weight: bold;
+    margin: 4% 245px 2% 40px;
+}
+
+
+
+.book-row {
+    display: flex;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    width: 95%;
+    border-radius: 8px;
+    margin: 2% 3% 3% 2.5%;
+    padding: 3% 0% 0% 0%;
+
+    background-color: white;
+}
+
+.historybookimage {
+    margin-top: 100px;
+}
+
+.book-row p{
+    display: flex;
+    white-space: nowrap;
+    justify-content: space-between;
+    margin: 1% 170px 1% 10px;
+    
+}
+
+.book-row a{
+    color: #ff6600;
+    margin-left: -10px;
+}
+
+.book-row img {
+    margin-top: -22%;
+    margin-left: -3px;
+    margin-right: 5px;
+}
+
+
+/* Pagination Section */
+.Returned-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.Returned-pagination a {
+    text-decoration: none;
+    color: #7d6966;
+    padding: 5px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.Returned-pagination .active {
+    background-color: #e55a00;
+    color: white;
+}
+
+.Returned-pagination span {
+    padding: 0 10px;
+}

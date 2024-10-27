@@ -16,7 +16,10 @@
     <link rel="stylesheet" href="./TransactionsReturned.css">
     <link rel="stylesheet" href="./TransactionsOverdue.css">
     <link rel="stylesheet" href="./ReadersInformation.css">
-    
+    <link rel="stylesheet" href="./BookInformation.css">
+    <link rel="stylesheet" href="./UpdateUser.css">
+    <link rel="stylesheet" href="./AddBook.css">
+    <link rel="stylesheet" href="./Settings.css">
     <title>LiBorrow Dashboard</title>
 </head>
 <body>
@@ -48,22 +51,22 @@
                         <ul id="submenu">
                             <li>
                                 <a href="#" id="pendBtn">
-                                    <img src="./Images/Vector.svg" alt="Pending Icon" width="18" height="18"> Pending
+                                    Pending
                                 </a>
                             </li>
                             <li>
                                 <a href="#" id="BorrowedBtn">
-                                    <img src="./Images/Vector.svg" alt="Borrowed Icon" width="18" height="18"> Borrowed
+                                    Borrowed
                                 </a>
                             </li>
                             <li>
                                 <a href="#" id="ReturnedBtn">
-                                    <img src="./Images/Vector.svg" alt="Returned Icon" width="18" height="18"> Returned
+                                    Returned
                                 </a>
                             </li>
                             <li>
                                 <a href="#" id="OverdueBtn">
-                                    <img src="./Images/Vector.svg" alt="Overdue Icon" width="18" height="18"> Overdue
+                                    Overdue
                                 </a>
                             </li>
                         </ul>
@@ -109,19 +112,20 @@
                             <a href="#" class="settings">
                                 <img src="./Images/settings.svg" alt="Settings Icon"> Settings
                             </a>
-                            <a href="#" class="logout">
+                            <a href="#" class="logout" id="logout-out">
                                 <img src="./Images/signin.svg" alt="Logout Icon"> Log Out
                             </a>
                         </div>
                     </div>
                 </div>
-                <div id="body-content" class="col-10">
+                    <div id="body-content" class="col-10">
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        
         function toggleSubmenu() {
             const submenu = document.getElementById('submenu');
             const icon = document.getElementById('submenu-toggle-icon');
@@ -146,6 +150,18 @@
                 })
                 .catch(error => console.error('Error fetching content:', error));
         }
+                document.getElementById("button1").addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./ReaderDash.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    initializeViewMoreButtons();
+                    document.title = "Readers List"; // Change the page title
+                    document.getElementById("page-title").innerText = "Readers List"; // Change the displayed title
+                })
+                .catch(error => handleError('Error fetching ReaderDash:', error));
+        });
 
         document.getElementById("button0").addEventListener("click", function(event) {
             event.preventDefault();
@@ -159,6 +175,7 @@
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+        
 
         function renderCharts() {
                 // Pie Chart Data
@@ -288,14 +305,35 @@ const myBarChart = new Chart(ctx, {
                         .then(response => response.text())
                         .then(data => {
                             document.getElementById("body-content").innerHTML = data;
-                            document.title = "Reader' Information"; // Change the page title
+                            initializeUpdateButton();
+                            document.title = "Reader's Information"; // Change the page title
                             document.getElementById("page-title").innerText = "Reader's Information"; // Change the displayed title
                         })
                         .catch(error => handleError('Error fetching ReadersInformation:', error));
                 });
             });
+            
         }
 
+        
+        // Function to initialize the Update button
+        function initializeUpdateButton() {
+            const updateButton = document.querySelector(".update-btn"); // Use querySelector for a single element
+            updateButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                fetch('./UpdateUser.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("body-content").innerHTML = data;
+                        document.title = "Update User"; // Change the page title
+                        document.getElementById("page-title").innerText = "Update User"; // Change the displayed title
+                    })
+                    .catch(error => handleError('Error fetching ReadersInformation:', error));
+            });
+        }
+
+
+        
         // Function to handle errors and display a user-friendly message
         function handleError(message, error) {
             console.error(message, error);
@@ -307,12 +345,60 @@ const myBarChart = new Chart(ctx, {
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
+                    initializeBookViewMoreButtons();
+                    initializeAddBookButton()
                     document.title = "Inventory"; // Change the page title
                     document.getElementById("page-title").innerText = "Inventory"; // Change the displayed title
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+        function initializeBookViewMoreButtons() {
+            document.querySelectorAll(".view-book a").forEach(button => {
+                button.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    fetch('./BooksInformation.html')
+                        .then(response => response.text())
+                        .then(data => {
+                            document.getElementById("body-content").innerHTML = data;
+                            document.title = "Book's Information"; // Change the page title
+                            document.getElementById("page-title").innerText = "Book's Information"; // Change the displayed title
+                        })
+                        .catch(error => handleError('Error fetching ReadersInformation:', error));
+                });
+            });
             
+        }
+        function initializeAddBookButton() {
+            const updateButton = document.querySelector(".addbtn"); // Use querySelector for a single element
+            updateButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                fetch('./AddBook.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("body-content").innerHTML = data;
+                        document.title = "Add Book"; // Change the page title
+                        document.getElementById("page-title").innerText = "Add Book"; // Change the displayed title
+                    })
+                    .catch(error => handleError('Error fetching ReadersInformation:', error));
+            });
+        }
+        function initializeSettingsButton() {
+            const updateButton = document.querySelector(".settings"); // Use querySelector for a single element
+            updateButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                fetch('./Settings.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("body-content").innerHTML = data;
+                        document.title = "Settings"; // Change the page title
+                        document.getElementById("page-title").innerText = "Settings "; // Change the displayed title
+                    })
+                    .catch(error => handleError('Error fetching ReadersInformation:', error));
+            });
+        }
+
+
+        
         document.getElementById("BorrowedBtn").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./TransactionsBorrowed.html')
@@ -321,6 +407,8 @@ const myBarChart = new Chart(ctx, {
                     document.getElementById("body-content").innerHTML = data;
                     document.title = "Borrowed Books"; // Change the page title
                     document.getElementById("page-title").innerText = "Borrowed Books"; // Change the displayed title
+                    initializeBorrowedListeners();
+                    initializeViewMoreListeners();
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
@@ -346,6 +434,7 @@ const myBarChart = new Chart(ctx, {
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+
         document.getElementById("OverdueBtn").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./TransactionsOverdue.html')
@@ -357,6 +446,7 @@ const myBarChart = new Chart(ctx, {
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+        
         
 
         document.querySelector("#button3").addEventListener("click", function(event) {
@@ -418,6 +508,7 @@ const myBarChart = new Chart(ctx, {
             } else {
                 dropdown.style.display = "none";
             }
+            initializeSettingsButton()
         });
 
         document.addEventListener("click", function(event) {
@@ -427,6 +518,7 @@ const myBarChart = new Chart(ctx, {
             if (!profileSection.contains(event.target) && !dropdown.contains(event.target)) {
                 dropdown.style.display = "none";
             }
+            initializeSettingsButton()
         });
         
         document.getElementById("notification").addEventListener("click", function(event) {
@@ -449,6 +541,74 @@ const myBarChart = new Chart(ctx, {
             loadDashboard();  // Automatically load the Dashboard content
         };
 
+        function initializeBorrowedListeners() {
+    // Function to toggle the visibility of the dropdown
+    function toggleDropdown(event) {
+        event.stopPropagation();
+        const borrbox = event.target.closest('.Borrbox'); // Get the parent .Borrbox
+        const dropdown = borrbox.nextElementSibling; // Get the .dropdown-content below the .Borrbox
+        
+        // Toggle by adding/removing the display property
+        if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+            dropdown.style.display = 'contents'; // Show dropdown
+        } else {
+            dropdown.style.display = 'none'; // Hide dropdown
+        }
+    }
+
+    // Add the click event listener to each "View Borrowers" link
+    document.querySelectorAll('.view-borrowers').forEach(link => {
+        link.addEventListener('click', toggleDropdown);
+    });
+
+    // Close the dropdown if the user clicks outside of it
+    document.addEventListener('click', function(event) {
+        // Loop through all dropdowns
+        document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+            const borrbox = dropdown.previousElementSibling; // The corresponding .Borrbox
+
+            // Close dropdown if the click was outside of both the dropdown and its corresponding .Borrbox
+            if (!borrbox.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.style.display = 'none'; // Hide the dropdown
+            }
+        });
+    });
+}
+function initializeViewMoreListeners() {
+    function fetchAndDisplayContent(event) {
+        event.preventDefault();
+
+        fetch('./ReadersInformation.html')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text(); 
+            })
+            .then(data => {
+                document.getElementById("body-content").innerHTML = data;
+                initializeUpdateButton();
+                document.title = "Reader's Information";
+
+                document.querySelectorAll('.view-more-btn').forEach(button => {
+                    button.addEventListener('click', function(event) {
+                        event.preventDefault();
+                    });
+                });
+            })
+            .catch(error => console.error('Error fetching content:', error));
+    }
+
+    document.querySelectorAll(".ViewMoreInfo a").forEach(button => {
+        button.addEventListener("click", fetchAndDisplayContent);
+    });
+}
+
+    document.querySelector('.pencil-icon').addEventListener('click', function() {
+            var inputField = document.getElementById('full-name');
+            inputField.disabled = false;  // Enable the input field
+            inputField.focus();  // Optionally focus the input field
+    });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
