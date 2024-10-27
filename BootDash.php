@@ -393,7 +393,7 @@ const myBarChart = new Chart(ctx, {
         });
         document.getElementById("ReturnedBtn").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./TransactionsReturned.html')
+            fetch('./TransactionsReturned.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;

@@ -28,7 +28,35 @@ $current_page = max(1, min($current_page, $total_pages));
 $start_from = ($current_page - 1) * $results_per_page;
 
 // Fetch data for the current page
-$sql = "SELECT bookname, author, status, username, datereturned FROM returns LIMIT $start_from, $results_per_page";
+$sql = "SELECT bookname, author, status, username, datereturned, image FROM returns LIMIT $start_from, $results_per_page";
+$result = $conn->query($sql);
+
+// Initial SQL query with pagination
+$sql = "SELECT bookname, author, status, username, datereturned, image FROM returns WHERE 1=1";
+
+// Add search filter if provided
+if (!empty($_GET['search'])) {
+    $search = $conn->real_escape_string($_GET['search']);
+    $sql .= " AND (bookname LIKE '%$search%' OR author LIKE '%$search%')";
+}
+
+// Add status filter if provided
+if (!empty($_GET['filter'])) {
+    $filter = $conn->real_escape_string($_GET['filter']);
+    $sql .= " AND status = '$filter'";
+}
+
+// Add sorting if selected
+if (!empty($_GET['sort'])) {
+    $sort = $conn->real_escape_string($_GET['sort']);
+    $sql .= " ORDER BY $sort";
+} else {
+    // Default sorting by bookname
+    $sql .= " ORDER BY bookname";
+}
+
+// Add pagination limits
+$sql .= " LIMIT $start_from, $results_per_page";
 $result = $conn->query($sql);
 ?>
     <div class="content-box" id="content2">
@@ -65,21 +93,29 @@ $result = $conn->query($sql);
                     </thead>
                     <tbody>
                         <?php
-                        if ($result && $result->num_rows > 0) {
-                            // Output data of each row
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>";
-                                echo "<td>" . htmlspecialchars($row["bookname"]) . "</td>";
-                                echo "<td>" . htmlspecialchars($row["author"]) . "</td>";
-                                echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
-                                echo "<td>" . htmlspecialchars($row["username"]) . "</td>";
-                                echo "<td>" . htmlspecialchars($row["datereturned"]) . "</td>";
-                                echo "</tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='5'>No records found</td></tr>";
-                        }
-                        ?>
+						if ($result && $result->num_rows > 0) {
+							// Output data of each row
+							while ($row = $result->fetch_assoc()) {
+								echo "<tr>";
+								echo "<td>";
+								// Display the image next to the book name
+								if (!empty($row["image"])) {
+									echo "<img src='" . htmlspecialchars($row["image"]) . "' alt='Book Image' width='50' height='70' style='margin-right:10px;'>";
+								} else {
+									// Default image if none provided
+									echo "<img src='./Images/default-book.png' alt='Default Book Image' width='50' height='70' style='margin-right:10px;'>";
+								}
+								echo htmlspecialchars($row["bookname"]) . "</td>";
+								echo "<td>" . htmlspecialchars($row["author"]) . "</td>";
+								echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
+								echo "<td>" . htmlspecialchars($row["username"]) . "</td>";
+								echo "<td>" . htmlspecialchars($row["datereturned"]) . "</td>";
+								echo "</tr>";
+							}
+						} else {
+							echo "<tr><td colspan='5'>No records found</td></tr>";
+						}
+						?>
                     </tbody>
                 </table>
                 
