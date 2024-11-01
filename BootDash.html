@@ -150,7 +150,8 @@
                 })
                 .catch(error => console.error('Error fetching content:', error));
         }
-                document.getElementById("button1").addEventListener("click", function(event) {
+        
+        document.getElementById("button1").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./ReaderDash.html')
                 .then(response => response.text())
