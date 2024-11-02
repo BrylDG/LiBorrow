@@ -44,7 +44,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                     </li>
                     <li>
                         <a href="#" id="button1">
-                            <img src="./Images/ReaderIcon.svg" alt="Readers Icon" width="24" height="24"> Readers List
+                            <img src="./Images/ReaderIcon.svg" alt="Readers Icon" width="24" height="24"> Readers Lista
                         </a>
                     </li>
                     <li>
@@ -341,7 +341,7 @@ const myBarChart = new Chart(ctx, {
                     document.getElementById("body-content").innerHTML = data;
                     initializeViewMoreButtons();
                     document.title = "Readers List"; // Change the page title
-                    document.getElementById("page-title").innerText = "Readers List"; // Change the displayed title
+                    document.getElementById("page-title").innerText = "Readers Lists"; // Change the displayed title
                 })
                 .catch(error => handleError('Error fetching ReaderDash:', error));
         });
@@ -370,7 +370,7 @@ const myBarChart = new Chart(ctx, {
         }
         document.getElementById("button2").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./InventoryDash.html')
+            fetch('./InventoryDash.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
