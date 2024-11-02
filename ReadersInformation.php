@@ -2,7 +2,7 @@
     session_start();
     include('connection.php');
 
-    if (!isset($_SESSION['idno'])) {
+    if (!isset($_SESSION['fullname'])) {
         // Redirect to login page if not logged in
         header("Location: login.php");
         exit();
