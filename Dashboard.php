@@ -82,9 +82,9 @@
 
 	// Calculate percentages
 	$percentages = [];
-	foreach ($counts as $status => $count) {
-		$percentages[$status] = ($totalBooks > 0) ? ($count / $totalBooks) * 100 : 0;
-	}
+    foreach ($counts as $status => $count) {
+    $percentages[$status] = ($totalBooks > 0) ? round(($count / $totalBooks) * 100) : 0;
+    }
 
 	// Close the database connection
 	$conn->close();

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions Section</title>
+    <link rel="stylesheet" href="./Browse.css"> <!-- Linking the CSS file here -->
+    <link rel="stylesheet" href="./ViewDetails.css"> <!-- Linking the CSS file here -->
+    <link rel="stylesheet" href="./ViewDetailsAvailable.css">
+</head>
+<body>
+
+<div class="content-box">
+    <div class="Details-container">
+        <div class="actions">
+            <p>Browse</p>
+            <img src="./Images/Expand_right.svg" alt="expand-icon" width="15" height="15" id="expan">
+            <p>Romance</p>
+            <img src="./Images/Expand_right.svg" alt="expand-icon" width="15" height="15" id="expan">
+            <p>Jane Eyre</p>
+        </div>
+        <div class="Viewdiv1">
+            <!-- Content for the first div -->
+            <div class="Book-Cover">
+                <img src="./Images/Jane-Eyre-cover.png" alt="Jane-Eyre-cover" id="Pride-Book" height="400">
+            </div>
+            <div class="BookDetails-View">
+                    <div class="title-book">
+                        <h2 id="main-title">Jane Eyre</h2>
+                        <div class="status">
+                            <button class="av-btn" id="stats-btn2">
+                                <img  src="./Images/Check.svg" alt="Book status" class="book-status" id="staticon" width="19" height="19">
+                                Available
+                            </button>
+                       </div>
+                    </div>
+                    <div class="auth">
+                        <p>Author: Jane Austen  |  Publication Date: January 28, 1813</p>
+                    </div>   
+                    <div class="Ave-Rating" id="book-rating">
+                        <p>Average Rating: 
+                            <img src="./Images/Rating Component.svg" alt=" Rate" width="150" id="Rate-stars">
+                            <a id="Rate-Numbers">4.5</a>
+                        </p>
+                    </div>
+                    <div id="Genre">
+                        <p>Genre: 
+                            <a id="GenRo" href="#s">Romance</a>,
+                            <a id="GenFic" href="#">Fiction</a>
+                        </p>
+                    </div>
+                    <div class="reviews">
+                        <p>Ratings: 30 | Reviews: 20</p>
+                    </div>
+                    <div class="desc">
+                        <p><span id="desnuts">Description:</span> <br>Lorem ipsum dolor sit amet. Et molestiae consequatur et culpa dignissimos rem officia accusantium 
+                            aut accusamus doloribus ut tempora minima rem laborum sint? Sed voluptatem commodi eum velit quasi a cupiditate 
+                            mollitia sed doloremque exercitationem eos nobis eligendi. Qui consequatur tempora ut illum minima quo omnis 
+                            molestias aut asperiores voluptatem.</p>
+                        <a id="Read-More" href="#"> Read More</a>
+                        <p id="srtendDate">Start Date: 09/20/2024</p>
+                        <p id="srtendDate">Start Date: 09/28/2024</p>   
+                        <div class="BorrowSimilar-btn">
+                            <button class="borrow-button" id="borbtn2">Borrow</button>
+                            <button class="similar-button" id="similarbtn">Similar to this</button>
+                        </div>
+
+                    </div>
+            </div>
+        </div>
+
+        <div class="Viewdiv2">
+            <div class="Revs">
+                <h4>Reviews:</h4>
+            </div>
+            <div class="Revs">
+                <div class="pfp">
+                    <img src="./Images/Comment-Avatar.svg" alt="">
+                    <div class="user-comments">
+                        <div class="user-name">
+                            <p>Amilla</p>
+                            <div class="comm-date">2024-03-19</div>
+                        </div>
+                        <!-- Move Ave-Rating below the user name and date -->
+                        <div class="Ave-Rating" id="Rate">
+                            <img src="./Images/Rating Component.svg" alt=" Rate" width="150" id="Rate-stars">
+                            <a id="Rate-Numbers">4.5</a>
+                        </div>
+                        <p id="the-comment">
+                            Lorem ipsum dolor sit amet. Et molestiae consequatur et culpa dignissimos rem officia accusantium
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="Revs">
+                <div class="pfp">
+                    <img src="./Images/Comment-Avatar.svg" alt="">
+                    <div class="user-comments">
+                        <div class="user-name">
+                            <p>Amar</p>
+                            <div class="comm-date">2024-03-19</div>
+                        </div>
+                        <!-- Move Ave-Rating below the user name and date -->
+                        <div class="Ave-Rating" id="Rate">
+                            <img src="./Images/Rating Component.svg" alt=" Rate" width="150" id="Rate-stars">
+                            <a id="Rate-Numbers">4.5</a>
+                        </div>
+                        <p id="the-comment">
+                            Lorem ipsum dolor sit amet. Et molestiae consequatur et culpa dignissimos rem officia accusantium
+                        </p>
+                    </div>
+                </div>
+            </div>  
+            
+            <hr>
+            
+            <div class="Revs">
+                <div class="pfp">
+                    <img src="./Images/Comment-Avatar.svg" alt="">
+                    <div class="user-comments">
+                        <div class="user-name">
+                            <p>Amira</p>
+                            <div class="comm-date">2024-03-19</div>
+                        </div>
+                        <!-- Move Ave-Rating below the user name and date -->
+                        <div class="Ave-Rating" id="Rate">
+                            <img src="./Images/Rating Component.svg" alt=" Rate" width="150" id="Rate-stars">
+                            <a id="Rate-Numbers">4.5</a>
+                        </div>
+                        <p id="the-comment">
+                            Lorem ipsum dolor sit amet. Et molestiae consequatur et culpa dignissimos rem officia accusantium
+                        </p>
+                    </div>
+                </div>
+            </div>  
+            
+            <hr>
+
+        </div>
+        <div class="Viewdiv3">
+            <div class="pof">
+                <img src="./Images/Profile.svg" alt="">
+            </div>
+            <div id="input-comment">
+                <input type="text" placeholder=" Write a Review...">    
+            </div>
+        </div>
+    </div> <!-- End of container -->
+</div> <!-- End of content-box -->
+
+</body>
+</html>
