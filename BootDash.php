@@ -44,7 +44,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                     </li>
                     <li>
                         <a href="#" id="button1">
-                            <img src="./Images/ReaderIcon.svg" alt="Readers Icon" width="24" height="24"> Readers Lista
+                            <img src="./Images/ReaderIcon.svg" alt="Readers Icon" width="24" height="24"> Readers List
                         </a>
                     </li>
                     <li>
@@ -334,17 +334,18 @@ const myBarChart = new Chart(ctx, {
         }
 
         document.getElementById("button1").addEventListener("click", function(event) {
-            event.preventDefault();
-            fetch('./ReaderDash.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("body-content").innerHTML = data;
-                    initializeViewMoreButtons();
-                    document.title = "Readers List"; // Change the page title
-                    document.getElementById("page-title").innerText = "Readers Lists"; // Change the displayed title
-                })
-                .catch(error => handleError('Error fetching ReaderDash:', error));
-        });
+    event.preventDefault();
+    fetch('./ReaderDash.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("body-content").innerHTML = data;
+            document.title = "Readers List";
+            document.getElementById("page-title").innerText = "Readers Lists";
+            // Call the function to load the first page of readers
+            loadReaderPage();
+        })
+        .catch(error => handleError('Error fetching ReaderDash:', error));
+});
 
         // Function to attach listeners to View More buttons
         function initializeViewMoreButtons() {
@@ -523,7 +524,10 @@ const myBarChart = new Chart(ctx, {
 		const formattedTime = `${hours}:${minutes}:${seconds}`;
 
 		// Update the HTML element with the current time
-		document.getElementById("current-time").innerHTML = `${formattedTime}`;
+		 const timeElement = document.getElementById("current-time");
+    if (timeElement) {
+        timeElement.innerHTML = formattedTime;
+    } 
 	}
         window.onload = function() {
             loadDashboard();
