@@ -33,14 +33,6 @@
     border-radius: 10px;
 }
 
-/* .Borrbox img{
-    margin-left: 2em;
-    margin-top: 1em;
-    margin-bottom: 0.5em;
-}
-.Borrbox img {
-    padding: 5px;
-} */
 .date {
     margin-left: auto; /* Aligns the date to the right */
 }
@@ -65,6 +57,7 @@
 #btitle{
     font-weight: bold;
 }
+
 #Total{
     font-weight: bold;
 }
@@ -99,15 +92,6 @@
     border: 1px solid #ff6600;
 }
 
-/* .approve-btn:hover {
-    background-color: white; 
-    color: #ff6600;
-    border: 1px solid #ff6600;
-}
-
-.decline-btn:hover {
-    background-color: #ff6600;
-} */
 
 #d1 {
     background-color: white;
@@ -117,7 +101,7 @@
 }
 
 /* Search */
-.TranscInput {
+.input {
     display: flex; 
     justify-content: flex-start;
     gap: 10px;
@@ -149,7 +133,7 @@
 /* Buttons */
 .sort-btn, .filter-btn {
     font-size: 16px;
-    padding: 10px 20px;
+    padding: 8px 20px;
     border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -164,79 +148,92 @@
     float: right;
 }
 
-/* .sort-btn img:hover {
-    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
-}
-
-.sort-btn:hover {
-    background-color: white;
-    color: #ff6600;
-    border: 1px solid #ff6600;
-} */
-
 .filter-btn {
     border: 1px solid #ff6600;
     background-color: white;
     color: #ff6600;
 }
 
-/* .filter-btn:hover {
-    border: 1px solid #ff6600;
-    background-color: #ff6600;
-    color: white;
-} */
 
 .sort-btn img, .filter-btn img {
     margin: 0 5px;
 }
 
-/* .filter-btn img:hover {
-    filter: brightness(0) invert(1); 
-} */
+
 .dropdown-content {
-    display: none; /* Initially hidden */
-    position: absolute;
+    display: none;
     background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1;
-    margin-top: 5px; /* Space between the link and dropdown */
-    right: 20%; /* Position from the left */
-    transform: translateX(-50%); /* Center it by translating half of its width */
-    width: auto; /* Set to auto or a fixed width */
-}
-.last-content {
-    display: none; /* Initially hidden */
+    width: 100%;
+    margin-top: 10px;
     position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1;
-    margin-top: 5px; /* Space between the link and dropdown */
-    right: 50%; /* Position from the left */
-    bottom: 50%;
-    transform: translateX(-50%); /* Center it by translating half of its width */
-    width: auto; /* Set to auto or a fixed width */
+    z-index: 100;
+    border: none; /* Remove the border */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Light shadow for better visibility */
 }
+
+.dropdown-open {
+    max-height: 500px; /* You can adjust this based on the expected height of your content */
+    opacity: 1; /* Fully visible */
+}
+
 .viewbtn {
     position: relative; /* To position dropdown content */
 }
 
 .viewbtn:hover .dropdown-content {
-    display: block; /* Show on hover */
+    display: contents; /* Show on hover */
     table-layout: auto;
 }
 
+
 .dropdown-content table {
-    border-collapse: collapse;
+    width: 100%; /* Make the table take the full width */
+    border-collapse: collapse; /* Remove extra spacing between table cells */
 }
+
 .dropdown-content th, .dropdown-content td {
-    border: 1px solid #ccc;
-    padding: 15px 30px; /* Increased padding for more space inside cells */
-    text-align: left;
-    white-space: nowrap; /* Prevents text from wrapping, keeps it in one line */
+    padding: 15px;
+    text-align: center; /* Align text to the left */
+    font-size: 14px; /* Adjust font size to match the screenshot */
+    color: #333; /* Darker font color for better readability */
+    background-color: white;
 }
 
 .dropdown-content th {
-    background-color: #f2f2f2;
+    background-color: white; /* Light background for header */
+    font-weight: bold; /* Make the header bold */
+    color: black; /* Change text color for header */
+    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
+}
+
+.last-content {
+    display: none; 
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-top: 10px;
+}
+
+.dropdown-content td {
+    vertical-align: middle; 
+}
+
+.dropdown-content img.Avatar {
+    border-radius: 50%; 
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+    vertical-align: middle; 
+}
+
+.dropdown-content td a {
+    color: #ff6600; 
+    text-decoration: none; 
+    font-weight: bold; 
+}
+
+.dropdown-content td a:hover {
+    text-decoration: underline;
 }

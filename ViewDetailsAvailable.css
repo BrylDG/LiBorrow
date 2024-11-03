@@ -1,0 +1,19 @@
+#similarbtn{
+    border: 1px solid #ff6600;
+    border-radius: 30px;
+    padding: 8px 25px 8px 25px;
+    color: #ff6600;
+    background-color: white;
+    margin-bottom: 2em;
+
+}
+.BorrowSimilar-btn{
+    margin-top: 1em;
+}
+.borrow-button{
+    width: 155px;
+}
+#srtendDate{
+    font-weight: bold;
+    margin-top: 10px;
+}

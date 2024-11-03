@@ -1,0 +1,361 @@
+/* Global Reset */
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    overflow-y: hidden;
+}
+#sidebar {
+    background-color: #FC783F;
+    height: 100vh;
+    padding: 1em;
+    justify-items: center;
+}
+
+#sidebar img {
+    margin-right:2%;
+}
+
+#submenu img {
+    height: 12px;
+    width: 17px;
+}
+
+#brand-name {
+    font-weight: bold;
+    font-size: 35px;
+    color: white;
+    padding-top: 10%;
+}
+
+#nav-list {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 5em;
+}
+
+#nav-list li a {
+    display: flex;
+    white-space: nowrap;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 1em 7em 1em 1em;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+#nav-list li a img {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+    transition: filter 0.3s ease;
+    margin-right: 10%;
+}
+
+#nav-list li:not(#submenu-list):hover a {
+    color: #FC783F;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+
+/* Specific hover effect for the images within the links */
+#nav-list li:not(#submenu-list):hover a img {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
+}
+
+#submenu-list:hover > a {
+    color: #FC783F;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+/* Ensures the submenu list items are not affected when hovering over #submenu-list */
+#submenu-list:hover > ul {
+    background-color: inherit; /* Prevent submenu contents from being affected */
+}
+
+#submenu-list:hover > a img {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
+    transition: filter 0.3s ease;
+}
+
+/* Prevent submenu items from changing when #submenu-list is hovered */
+#submenu li a {
+    background-color: transparent; /* Keep background transparent */
+    color: white; /* Submenu item text color remains white */
+}
+
+/* Hover effect on the submenu items themselves */
+#submenu li:hover a {
+    background-color: white;
+    color: #FC783F;
+    border-radius: 5px;
+}
+
+#submenu li:hover a img {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
+    transition: filter 0.3s ease;
+}
+
+
+#submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+#submenu li {
+    list-style: none;
+    padding-left:5%;
+}
+
+#submenu li a {
+    display: flex;
+    align-items: center;
+    padding: 0.3em 1em;
+    color: white;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+#submenu li a img {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+    transition: filter 0.3s ease;
+}
+
+#submenu li:hover a {
+    background-color: WHITE;
+    color: #FC783F;
+    border-radius: 5px;
+}
+
+#submenu li:hover a img {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
+}
+
+
+#submenu-toggle-icon.rotate {
+    transform: rotate(180deg);
+}
+
+#submenu-toggle-icon {
+    margin-left:20%;
+}
+
+#submenu-list li {
+    padding-top: 10px;
+}
+
+#topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    height: 12vh;
+    padding: 0 2em;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5); /* Add this line for the bottom border */
+    margin-bottom: 3%;
+}
+
+.separator {
+    height: 60px; /* Adjust the height of the line to your needs */
+    border-left: 2px solid gray; /* 2px solid black line */
+    margin: 0 10px; /* Add space around the separator */
+}
+
+#page-title {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+#profile-section {
+    display: flex; 
+    align-items: center; 
+    max-width: 100%;
+    gap: 1em;
+}
+
+#notification {
+    margin-right: 1em; 
+}
+
+.notification-dropdown {
+    display: none;
+    position: absolute;
+    top: 80px; /* Adjust as needed */
+    width: 200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    padding: 1em;
+    z-index: 100;
+}
+
+.notification-options {
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-item {
+    text-decoration: none;
+    color: black;
+    padding: 0.5em;
+    transition: background-color 0.3s ease;
+}
+
+.notification-item:hover {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+#profile {
+    display: flex; 
+    flex-direction: row;
+    align-items: center; 
+    margin-left: 0.5em; 
+    flex-grow: 1;
+    white-space: nowrap;
+}
+
+span {
+    font-size: 13px;
+    font-weight: bold;
+    color: black;
+}
+
+#profile-section h5 {
+    font-size: 11px;
+    font-weight: lighter;
+    color: black;
+}
+
+#profile-image {
+    margin-right: 10%;
+}
+
+#profile img {
+    margin-top: 0.1em;
+}
+
+#profile-info {
+    display: flex; 
+    flex-direction: column;
+    flex-direction: left ;
+    margin-left: 0.5em; 
+}
+.info-column {
+    display: flex;
+    align-items: center; /* Align items (image + text) in a row */
+    width: 100%; /* Make sure the anchor tag occupies the full width */
+    text-decoration: none;
+}
+
+#main-content{
+    padding: 0;
+    margin: 0;
+    background-color: #f5f5f5;
+}
+#filters a:hover {
+    background-color: #FC783F;
+    color: white;
+}
+
+#content-box {
+    height: 100%;
+    background-color: #f5f5f5;
+    margin: 2em;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#body-content {
+    min-width: 100%;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* Profile Dropdown */
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 80px; /* Adjust according to the profile section's height */
+    right: 10px; /* Align it to the right side */
+    width: 200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    padding: 1em;
+    z-index: 100;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 1em;
+}
+
+.profile-details span {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.profile-details h5 {
+    font-size: 12px;
+    color: gray;
+}
+
+.profile-camera-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.profile-options {
+    display: flex;
+    flex-direction: column;
+    padding: 1em 0;
+}
+
+.profile-options a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    padding: 0.5em;
+    transition: background-color 0.3s ease;
+}
+
+.profile-options a img {
+    margin-right: 10px;
+}
+
+.profile-options a:hover {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+.profile-options .logout {
+    color: orange;
+}

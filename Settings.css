@@ -1,0 +1,229 @@
+.Scontent-box {
+    background-color: #f5f5f5;
+    width: 100%;
+    height: 80vh;
+    overflow: auto;
+
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+}
+
+.prof-details {
+    margin-left: 1em;
+    margin-right: 40em;
+    margin-top: 1em;
+    width: 50em;
+}
+
+.Settingsbox {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 62vh;
+    margin-top: 2em;
+    background-color: #f5f5f5;
+    
+}
+
+
+#info-box {
+    width: 100%;
+    /* overflow-y: auto;
+    overflow-x: hidden; */
+}
+
+.pendbox {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin: 5px;
+    border-radius: 10px;
+}
+
+.Sbox img {
+    padding: 5px;
+}
+.Sbox{
+    border-radius: 10px;
+}
+
+
+.global {
+    height: 18vh;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+#Name {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.settings-buttons {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    right: 10em;
+}
+
+.change-btn {
+    border: none;
+    font-size: 16px;
+    border-radius: 30px;
+    color: white;
+    background-color: #ff6600;
+    padding: 8px 20px;
+    margin-bottom: 10px;
+    width: 200px;
+}
+
+
+
+#sett-header {
+    padding: 0;
+    margin-right: 46em;
+    
+}
+
+#book1 {
+    margin-left: 2em;
+}
+
+/* Additional inline CSS for inputs styling */
+.input-section {
+    margin-top: 20px;
+}
+
+.input-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-section input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Flex container for password fields */
+.password-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.password-container .input-field {
+    flex: 1;
+}
+
+.upbtn {
+    margin-top: 20em;
+}
+
+.usersave-btn {
+    border: none;
+    font-size: 16px;
+    border-radius: 30px;
+    color: white;
+    background-color: #ff6600;
+    padding: 8px 20px;
+    margin-bottom: 10px;
+    width: 100px;
+}
+
+.SaveCancel-btn {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    margin-bottom: -100px;
+}
+
+#cancelsetbtn {
+    margin-left: 15px;
+    border: 1px solid #ff6600;
+    font-size: 16px;
+    border-radius: 30px;
+    color: #ff6600;
+    background-color: white;
+    padding: 2px 20px;
+}
+/* Styles for input fields with icons */
+.input-icon {
+    position: relative;
+   
+}
+
+
+/* #full-name, #username{
+    position: relative;
+    right: 1.6em;
+} */
+#pen-ic{
+    position: absolute;
+    left: 95%;
+    top: 37%;
+    transform: translateY(-50%);
+    color: #999;
+
+ }
+ #pass-ic{
+    position: absolute;
+    left: 90%;
+    top: 37%;
+    transform: translateY(-50%);
+    color: #999;
+ }
+#ic{
+    position: absolute;
+    left: 10px;
+    top: 37%;
+    transform: translateY(-50%);
+    color: #999;
+
+ }
+ hr{
+    color: #ff6600;
+ }
+
+.input-icon input {
+    padding-left: 35px; /* Add padding for the icon */
+    border: none;
+    border-radius: 10px;
+}
+
+/* Keep all the existing styles below intact */
+/* Styles for input fields with icons */
+.input-icon {
+    position: relative;
+}
+
+
+/* Adjust padding for input fields with left icon */
+.input-icon input {
+    padding-left: 35px;
+    padding-right: 35px; /* Add padding for the right eye icon */
+}
+
+/* Eye icon positioned outside the input box on the right */
+/* .eye-icon .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #999;
+} */
