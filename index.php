@@ -40,7 +40,7 @@
                 <div class="collapse navbar-collapse" id="navbarMenu">
                     <ul class="col-sm-2 offset-sm-10 navbar-nav">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Sign-In</a>
+                            <a href="login.php" class="nav-link">Sign-In</a>
                         </li>
                         <li class="nav-item">
                             <a href="register.php" class="nav-link">Get Started</a>
