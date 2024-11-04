@@ -2,6 +2,11 @@
 session_start(); // Start the session
 include('connection.php'); // Include your connection file
 
+// Check if the user is logged in
+if (!isset($_SESSION['fullname'])) { // Replace 'user_id' with your session variable for logged-in users
+    header("Location: login.php"); // Redirect to the login page
+    exit(); // Make sure to exit after the redirect
+}
 // Retrieve the full name from the session
 $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // Default to 'User ' if not set
 ?>
@@ -39,7 +44,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                     </li>
                     <li>
                         <a href="#" id="button1">
-                            <img src="./Images/ReaderIcon.svg" alt="Readers Icon" width="24" height="24"> Readers List
+                            <img src="./Images/ReaderIcon.svg" alt="Readers Icon" width="24" height="24"> Readers Lista
                         </a>
                     </li>
                     <li>
@@ -127,7 +132,70 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
             </div>
         </div>
     </div>
+	<?php
+	// Database connection (adjust the connection parameters as needed)
+	include ("connection.php");
+	
+	// Query to get the counts from each table
+	$borrowedQuery = "SELECT COUNT(*) AS count FROM borrows";
+	$returnedQuery = "SELECT COUNT(*) AS count FROM returns";
+	$pendingQuery = "SELECT COUNT(*) AS count FROM pendings";
+	$overdueQuery = "SELECT COUNT(*) AS count FROM overdues";
 
+	// Execute queries
+	$borrowedResult = $conn->query($borrowedQuery);
+	$returnedResult = $conn->query($returnedQuery);
+	$pendingResult = $conn->query($pendingQuery);
+	$overdueResult = $conn->query($overdueQuery);
+
+	// Fetch counts
+	$counts = [
+		'Borrowed' => $borrowedResult->fetch_assoc()['count'],
+		'Returned' => $returnedResult->fetch_assoc()['count'],
+		'Pending' => $pendingResult->fetch_assoc()['count'],
+		'Overdue' => $overdueResult->fetch_assoc()['count']
+	];
+
+	// Calculate total books
+	$totalBooks = array_sum($counts);
+
+	// Calculate percentages
+	$percentages = [];
+	foreach ($counts as $status => $count) {
+		$percentages[$status] = ($totalBooks > 0) ? ($count / $totalBooks) * 100 : 0;
+	}
+	
+	
+	// BARCHART
+	// Fetch genre names from the genres table
+	$genreQuery = "SELECT name FROM genres";
+	$genreResult = $conn->query($genreQuery);
+
+	// Store genre names in an array
+	$genreNames = [];
+	while ($row = $genreResult->fetch_assoc()) {
+		$genreNames[] = $row['name'];
+	}
+
+	// Query to count borrows by genre
+	$genreCountQuery = "SELECT genre, COUNT(*) AS borrow_count FROM borrowhistory GROUP BY genre";
+
+	// Execute the query
+	$genreCountResult = $conn->query($genreCountQuery);
+
+	// Prepare arrays for genres and their corresponding borrow counts
+	$genreNames = [];
+	$borrowCounts = [];
+
+	// Fetch the results
+	while ($row = $genreCountResult->fetch_assoc()) {
+		$genreNames[] = $row['genre'];
+		$borrowCounts[] = $row['borrow_count'];
+	}
+
+	// Close the database connection
+	$conn->close();
+	?>
     <script>
        
         function toggleSubmenu() {
@@ -172,11 +240,11 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                 // Pie Chart Data
 		const pieCtx = document.getElementById('myPieChart').getContext('2d');
 		const pieData = {
-			labels: ['Borrowed', 'Return', 'Pending', 'Overdue'],
+			labels: ['Borrowed', 'Returned', 'Pending', 'Overdue'],
 			datasets: [{
-				data: [60, 20, 10, 10],
-				backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#c9cbcf'],
-				hoverBackgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#c9cbcf']
+				 data: [<?php echo implode(',', array_values($percentages)); ?>],
+				backgroundColor: ['orange', '#5f76e8', '#ff8c61', 'red'],
+				hoverBackgroundColor: ['orange', '#5f76e8', '#ff8c61', 'red']
 			}]
 		};
 
@@ -200,26 +268,17 @@ const ctx = document.getElementById('myBarChart').getContext('2d');
 const myBarChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5', 'Category 6', 'Category 7', 'Category 8'],
+        labels: <?php echo json_encode($genreNames); ?>,
         datasets: [
             {
                 backgroundColor: '#5f76e8',
                 hoverBackgroundColor: '#3949ab',
-                data: [222, 177, 394, 35, 37, 5, 10, 1],
+                data: <?php echo json_encode($borrowCounts); ?>,
                 borderRadius: 8,  // Rounded corners
                 borderSkipped: false,  // Disable sharp corners
-                label: '2021',
+                label: '2024',
                 maxBarThickness: 10  // Adjust this value to control bar thickness
             },
-            {
-                backgroundColor: '#c1c9ed',
-                hoverBackgroundColor: '#9bacee',
-                data: [25, 18, 43, 35, 37, 10, 10, 1],
-                borderRadius: 8,  // Rounded corners
-                borderSkipped: false,
-                label: '2022',
-                maxBarThickness: 10  // Adjust this value to control bar thickness
-            }
         ]
     },
     options: {
@@ -276,13 +335,13 @@ const myBarChart = new Chart(ctx, {
 
         document.getElementById("button1").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./ReaderDash.html')
+            fetch('./ReaderDash.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
                     initializeViewMoreButtons();
                     document.title = "Readers List"; // Change the page title
-                    document.getElementById("page-title").innerText = "Readers List"; // Change the displayed title
+                    document.getElementById("page-title").innerText = "Readers Lists"; // Change the displayed title
                 })
                 .catch(error => handleError('Error fetching ReaderDash:', error));
         });
@@ -292,7 +351,7 @@ const myBarChart = new Chart(ctx, {
             document.querySelectorAll(".view-more a").forEach(button => {
                 button.addEventListener("click", function(event) {
                     event.preventDefault();
-                    fetch('./ReadersInformation.html')
+                    fetch('./ReadersInformation.php')
                         .then(response => response.text())
                         .then(data => {
                             document.getElementById("body-content").innerHTML = data;
@@ -311,7 +370,7 @@ const myBarChart = new Chart(ctx, {
         }
         document.getElementById("button2").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./InventoryDash.html')
+            fetch('./InventoryDash.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -334,7 +393,7 @@ const myBarChart = new Chart(ctx, {
         });
         document.getElementById("ReturnedBtn").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./TransactionsReturned.html')
+            fetch('./TransactionsReturned.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -467,10 +526,8 @@ const myBarChart = new Chart(ctx, {
 		document.getElementById("current-time").innerHTML = `${formattedTime}`;
 	}
         window.onload = function() {
-            loadDashboard();  // Automatically load the Dashboard content
-			// Call updateTime every second (1000 milliseconds)
-			setInterval(updateTime, 1000);
-
+            loadDashboard();
+			setInterval(updateTime, 1);
 			// Initial call to display the time immediately on page load
 			updateTime();
 				};

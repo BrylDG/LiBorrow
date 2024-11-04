@@ -53,6 +53,42 @@
 					$bookCount = $row['bookCount'];
 				}
 				?>
+				<?php
+	// Database connection (adjust the connection parameters as needed)
+	include ("connection.php");
+	
+	// Query to get the counts from each table
+	$borrowedQuery = "SELECT COUNT(*) AS count FROM borrows";
+	$returnedQuery = "SELECT COUNT(*) AS count FROM returns";
+	$pendingQuery = "SELECT COUNT(*) AS count FROM pendings";
+	$overdueQuery = "SELECT COUNT(*) AS count FROM overdues";
+
+	// Execute queries
+	$borrowedResult = $conn->query($borrowedQuery);
+	$returnedResult = $conn->query($returnedQuery);
+	$pendingResult = $conn->query($pendingQuery);
+	$overdueResult = $conn->query($overdueQuery);
+
+	// Fetch counts
+	$counts = [
+		'Borrowed' => $borrowedResult->fetch_assoc()['count'],
+		'Returned' => $returnedResult->fetch_assoc()['count'],
+		'Pending' => $pendingResult->fetch_assoc()['count'],
+		'Overdue' => $overdueResult->fetch_assoc()['count']
+	];
+
+	// Calculate total books
+	$totalBooks = array_sum($counts);
+
+	// Calculate percentages
+	$percentages = [];
+    foreach ($counts as $status => $count) {
+    $percentages[$status] = ($totalBooks > 0) ? round(($count / $totalBooks) * 100) : 0;
+    }
+
+	// Close the database connection
+	$conn->close();
+	?>
                 <div class="col-6" style="padding-left: 0;">
                     <div class="stat-card">
                         <div class="icon">
@@ -83,10 +119,10 @@
                 <canvas id="myPieChart"></canvas>
                 <!-- Labels similar to the image -->
                 <ul style="list-style: none; padding-left: 20%; text-align: start;">
-                    <li><span style="color: orange; font-size: 30px; padding-right: 2%;">●</span> Borrowed <span style="font-weight: bold; font-size: 17px; padding-left: 32%;">60%</span></li>
-                    <li><span style="color: #5f76e8; font-size: 30px; padding-right: 2%;">●</span> Pending <span style="font-weight: bold; font-size: 17px; padding-left: 35%;">10%</span></li>
-                    <li><span style="color: #ff8c61; font-size: 30px; padding-right: 2%;">●</span> Returned <span style="font-weight: bold; font-size: 17px; padding-left: 33%;">20%</span></li>
-                    <li><span style="color: red; font-size: 30px; padding-right: 2%;">●</span> Overdue <span style="font-weight: bold; font-size: 17px; padding-left: 34%;">10%</span></li>
+                    <li><span style="color: orange; font-size: 30px; padding-right: 2%;">●</span> Borrowed <span style="font-weight: bold; font-size: 17px; padding-left: 32%;"><?php echo $percentages['Borrowed']; ?>%</span></li>
+                    <li><span style="color: #5f76e8; font-size: 30px; padding-right: 2%;">●</span> Pending <span style="font-weight: bold; font-size: 17px; padding-left: 35%;"><?php echo $percentages['Pending']; ?>%</span></li>
+                    <li><span style="color: #ff8c61; font-size: 30px; padding-right: 2%;">●</span> Returned <span style="font-weight: bold; font-size: 17px; padding-left: 33%;"><?php echo $percentages['Returned']; ?>%</span></li>
+                    <li><span style="color: red; font-size: 30px; padding-right: 2%;">●</span> Overdue <span style="font-weight: bold; font-size: 17px; padding-left: 34%;"><?php echo $percentages['Overdue']; ?>%</span></li>
                 </ul>
             </div>
         </div>
@@ -114,10 +150,4 @@ function updateTime() {
     // Update the HTML element with the current time
     document.getElementById("current-time").innerHTML = `Current Time: ${formattedTime}`;
 }
-
-// Call updateTime every second (1000 milliseconds)
-setInterval(updateTime, 1000);
-
-// Initial call to display the time immediately on page load
-updateTime();
 </script>
