@@ -12,7 +12,6 @@
     <!-- NAVBAR SECTION -->
     <nav class="navbar navbar-light p-4">
         <div class="container-fluid d-flex justify-content-between align-items-center">
-            <!-- LOGO -->
             <a class="navbar-brand" href="index.php">
                 <span class="liborrow-logo">Liborrow<span class="dot">.</span></span>
             </a>
@@ -20,43 +19,36 @@
     </nav>
 
     <section class="main-section">
-        <!-- Left Column: Slogan -->
         <div class="col-3 left-column">
             <h1>Your Next <span class="highlight">Chapter</span> Awaits<span class="highlight">.</span></h1>
             <p>Start Borrowing Today: Your next favorite book is waiting.</p>
         </div>
 
-        <!-- Center Column: Sign-in Form and Image -->
         <div class="col-5 center-column">
-            <div class="login-form-container"   >
+            <div class="login-form-container">
                 <h3 class="text-center">Welcome Back!</h3>
                 <?php
-				include('connection.php');
-				session_start();
+                include('connection.php');
+                session_start();
 
-				if ($_SERVER["REQUEST_METHOD"] == "POST") {
-					$email = mysqli_real_escape_string($conn, $_POST["email"]);
-					$pass = mysqli_real_escape_string($conn, $_POST["password"]);
-					
-					$query = "SELECT * FROM users WHERE email='$email' AND password='$pass'";
-					$result = mysqli_query($conn, $query);
-					$count = mysqli_num_rows($result);
-					
-					if ($count == 1) {
-						// Fetch the user's full name
-						$user = mysqli_fetch_assoc($result);
-						$_SESSION['fullname'] = $user['fullname']; // Store full name in session
-						
-						// Redirect to BootDash.php on successful login
-						echo "<script>
-								alert('Login Success!');
-								window.location.href = 'BootDash.php';
-							  </script>";
-					} else {
-						echo "<script>alert('Login Failed')</script>";
-					}
-				}
-				?>
+                $loginMessage = '';
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    $email = mysqli_real_escape_string($conn, $_POST["email"]);
+                    $pass = mysqli_real_escape_string($conn, $_POST["password"]);
+                    
+                    $query = "SELECT * FROM users WHERE email='$email' AND password='$pass'";
+                    $result = mysqli_query($conn, $query);
+                    $count = mysqli_num_rows($result);
+                    
+                    if ($count == 1) {
+                        $user = mysqli_fetch_assoc($result);
+                        $_SESSION['fullname'] = $user['fullname'];
+                        $loginMessage = 'success';
+                    } else {
+                        $loginMessage = 'failed';
+                    }
+                }
+                ?>
                 <form action="login.php" method="post">
                     <div class="mb-5 email-input input-container">
                         <input type="email" class="form-control" id="email" name="email" required>
@@ -70,7 +62,7 @@
                         </span>
                     </div>
                     <div class="text-end mb-3">
-                        <a href="#" class="forgot-password">Forgot Password?</a>
+                        <a href="#" class="forgot-password"> Forgot Password?</a>
                     </div>
                     <button type="submit" class="btn btn-primary">Sign-In</button>
                 </form>
@@ -78,7 +70,6 @@
             </div>
         </div>
 
-        <!-- Right Column: Image-->
         <div class="col-4 right-column">
             <div class="image-container">
                 <img src="Images/gilBrowsingLaptop.png" alt="Person working on laptop" class="img-fluid character-image" />
@@ -86,7 +77,6 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
         <nav>
             <a href="#">About</a>
@@ -97,7 +87,27 @@
         <p>© 2024 Bravo Two All Rights Reserved.</p>
     </footer>
 
-    <!-- BOOTSTRAP SCRIPT -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php
+                    if ($loginMessage == 'success') {
+                        echo 'Login Success! Redirecting...';
+                        echo '<script>setTimeout(function() { window.location.href = "BootDash.php"; }, 2000);</script>';
+                    } elseif ($loginMessage == 'failed') {
+                        echo 'Login Failed. Please check your credentials.';
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function togglePassword() {
@@ -105,15 +115,15 @@
             const eyeIcon = document.getElementById('eye-icon');
             
             if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';  // Show password
+                passwordInput.type = 'text';
                 eyeIcon.classList.remove('bi-eye');
-                eyeIcon.classList.add('bi-eye-slash');  // Change icon to "eye-slash"
-                eyeIcon.style.color = '#FF6600';  // Change color to orange
+                eyeIcon.classList.add('bi-eye-slash');
+                eyeIcon.style.color = '#FF6600';
             } else {
-                passwordInput.type = 'password';  // Hide password
+                passwordInput.type = 'password';
                 eyeIcon.classList.remove('bi-eye-slash');
-                eyeIcon.classList.add('bi-eye');  // Change icon back to "eye"
-                eyeIcon.style.color = '#aaa';  // Change color to gray
+                eyeIcon.classList.add('bi-eye');
+                eyeIcon.style.color = '#aaa';
             }
         }
 
@@ -126,8 +136,11 @@
                 }
             });
         });
-    </script>
 
-    
+        <?php if ($loginMessage): ?>
+            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+        <?php endif; ?>
+    </script>
 </body>
 </html>
