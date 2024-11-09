@@ -13,7 +13,7 @@
     <nav class="navbar navbar-light p-4">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <!-- LOGO -->
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="index.php">
                 <span class="liborrow-logo">Liborrow<span class="dot">.</span></span>
             </a>
         </div>
