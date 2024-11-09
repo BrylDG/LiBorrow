@@ -383,7 +383,7 @@ const myBarChart = new Chart(ctx, {
             
         document.getElementById("BorrowedBtn").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./TransactionsBorrowed.html')
+            fetch('./TransactionsBorrowed.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -405,7 +405,7 @@ const myBarChart = new Chart(ctx, {
         });
         document.getElementById("pendBtn").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./TransactionsDash.html')
+            fetch('./TransactionsDash.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
