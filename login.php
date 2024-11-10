@@ -96,9 +96,12 @@
                 </div>
                 <div class="modal-body">
                     <?php
-                    if ($loginMessage == 'success') {
+                    if ($loginMessage == 'success' && $user['isAdmin'] == 1) {
                         echo 'Login Success! Redirecting...';
                         echo '<script>setTimeout(function() { window.location.href = "BootDash.php"; }, 2000);</script>';
+					} elseif ($loginMessage == 'success' && $user['isAdmin'] == 0) {
+						echo 'Login Success! Redirecting...';
+                        echo '<script>setTimeout(function() { window.location.href = "UserNavTemplate.html"; }, 2000);</script>';
                     } elseif ($loginMessage == 'failed') {
                         echo 'Login Failed. Please check your credentials.';
                     }
