@@ -45,13 +45,31 @@
 					if ($count == 1) {
 						// Fetch the user's full name
 						$user = mysqli_fetch_assoc($result);
+                        
+                        $_SESSION['idno'] = $user['idno']; // Store idno
 						$_SESSION['fullname'] = $user['fullname']; // Store full name in session
-						
-						// Redirect to BootDash.php on successful login
-						echo "<script>
+                        $_SESSION['isAdmin'] = $user['isAdmin']; // Store it's role
+
+                        if($user['isAdmin'] == 1) {
+                            // Redirect to BootDash.php on successful login as Librarian
+                            echo "<script>
 								alert('Login Success!');
 								window.location.href = 'BootDash.php';
-							  </script>";
+							    </script>";
+                        } elseif($user['isAdmin'] == 0) {
+                            // Redirect to UserNavTemplate.html on successful login as Reader
+                            echo "<script>
+								alert('Login Success!');
+								window.location.href = 'UserNavTemplate.php';
+							    </script>";
+                        } else {
+                            // Redirect to UserNavTemplate.html on successful login as Reader
+                            echo "<script>
+								alert('Login Failed');
+								window.location.href = 'logout.php';
+							    </script>";
+                        }
+						exit;
 					} else {
 						echo "<script>alert('Login Failed')</script>";
 					}

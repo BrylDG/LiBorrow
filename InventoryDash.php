@@ -55,8 +55,10 @@ $result = $conn->query($sql);
             </div>
             <div>
                 <div class="addbtn">
-                    <img src="./Images/Add_square_fill.svg" alt="add icon">
-                    Add Book
+                    <a href="#" id="addbtn">
+                        <img src="./Images/Add_square_fill.svg" alt="add icon">
+                        Add Book
+                    </a>
                 </div>
             </div>
             <!-- Table Section -->
@@ -155,6 +157,18 @@ $result = $conn->query($sql);
                 // Add 'active' class to the clicked link
                 this.classList.add('active');
             });
+        });
+
+        document.getElementById("addbtn").addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./AddBook.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "Add Book"; // Change the page title
+                    document.getElementById("page-title").innerText = "Add Book"; // Change the displayed title
+                })
+                .catch(error => console.error('Error fetching content:', error));
         });
     </script>    
 </div>
