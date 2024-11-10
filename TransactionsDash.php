@@ -49,7 +49,7 @@
                 // Output data for each row
                 while($row = $result->fetch_assoc()) {
                     echo '
-                    <div class="pendbox one">
+                    <div class="pendbox-one">
                         <p class="name">' . htmlspecialchars($row["fullname"]) . '</p>
                         <p class="date">Request Date: ' . htmlspecialchars($row["requestdate"]) . '</p>
                         <div class="pendbox global">

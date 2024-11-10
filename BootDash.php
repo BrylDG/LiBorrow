@@ -140,7 +140,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
 	$borrowedQuery = "SELECT COUNT(*) AS count FROM borrows";
 	$returnedQuery = "SELECT COUNT(*) AS count FROM returns";
 	$pendingQuery = "SELECT COUNT(*) AS count FROM pendings";
-	$overdueQuery = "SELECT COUNT(*) AS count FROM overdues";
+	$overdueQuery = "SELECT COUNT(*) AS count FROM borrows WHERE duedate < CURDATE()";
 
 	// Execute queries
 	$borrowedResult = $conn->query($borrowedQuery);
@@ -416,7 +416,7 @@ const myBarChart = new Chart(ctx, {
         });
         document.getElementById("OverdueBtn").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./TransactionsOverdue.html')
+            fetch('./TransactionsOverdue.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -443,7 +443,7 @@ const myBarChart = new Chart(ctx, {
             }
 
             // Fetch and load Transactions content
-            fetch('./TransactionsDash.html') 
+            fetch('./TransactionsDash.php') 
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data; // Update the content div
