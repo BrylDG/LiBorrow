@@ -28,7 +28,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
     <link rel="stylesheet" href="./TransactionsReturned.css">
     <link rel="stylesheet" href="./TransactionsOverdue.css">
     <link rel="stylesheet" href="./ReadersInformation.css">
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title >LiBorrow Dashboard</title>
 </head>
 <body>
@@ -377,10 +377,61 @@ const myBarChart = new Chart(ctx, {
                     document.getElementById("body-content").innerHTML = data;
                     document.title = "Inventory"; // Change the page title
                     document.getElementById("page-title").innerText = "Inventory"; // Change the displayed title
+					
+					 // Set up the event listener for the "Add Book" button
+					setupAddBookButton();
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
-            
+        // Function to set up the "Add Book" button click event
+		function setupAddBookButton() {
+			document.getElementById("addBookButton").addEventListener("click", function(event) {
+				event.preventDefault(); // Prevent default anchor behavior
+				fetch('./addbook.php') // URL of the file to fetch
+					.then(response => {
+						if (!response.ok) {
+							throw new Error('Network response was not ok ' + response.statusText);
+						}
+						return response.text(); // Parse the response as text
+					})
+					.then(data => {
+						document.getElementById("body-content").innerHTML = data; // Insert the content into the body-content div
+						document.title = "Add Book"; // Change the page title
+						document.getElementById("page-title").innerText = "Add Book"; // Change the displayed title
+						
+						setupAddBookFormSubmission();
+					})
+					.catch(error => {
+						console.error('Error fetching content:', error);
+					});
+			});
+		}
+		function setupAddBookFormSubmission() {
+			const form = document.getElementById("addBookForm");
+			if (form) {
+				form.addEventListener("submit", function(event) {
+					event.preventDefault(); // Prevent default form submission
+
+					const formData = new FormData(this); // Collect form data
+
+					fetch('./addbook.php', {
+						method: 'POST',
+						body: formData
+					})
+					.then(response => response.json()) // Parse JSON response
+					.then(data => {
+						const responseMessage = document.getElementById("responseMessage");
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						document.getElementById("responseMessage").innerHTML = `<p style="color:red;">An error occurred. Please try again.</p>`;
+					});
+				});
+			}
+		}		
+		document.addEventListener("DOMContentLoaded", function() {
+            setupAddBookFormSubmission(); // Call the function here
+        });
         document.getElementById("BorrowedBtn").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./TransactionsBorrowed.php')
@@ -497,6 +548,7 @@ const myBarChart = new Chart(ctx, {
             }
         });
         
+		
         document.getElementById("notification").addEventListener("click", function(event) {
             event.preventDefault();
             const dropdown = document.getElementById("notification-dropdown");
@@ -529,6 +581,8 @@ const myBarChart = new Chart(ctx, {
         timeElement.innerHTML = formattedTime;
     } 
 	}
+	
+		
         window.onload = function() {
             loadDashboard();
 			setInterval(updateTime, 1);
