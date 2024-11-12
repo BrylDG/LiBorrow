@@ -1,8 +1,31 @@
 <?php
 include('connection.php'); // Include your database connection
 
-// Fetch data for the current page
-$sql = "SELECT bookid, booktitle, author, genre, pubdate, quantity, descrpt FROM books";
+// Initialize variables for search, sort, and genre filter
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+$sortBy = isset($_GET['sort']) ? $_GET['sort'] : '';
+$genreFilter = isset($_GET['genre']) ? $_GET['genre'] : '';
+$currentPage = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$limit = 10; // Number of records per page
+$offset = ($currentPage - 1) * $limit;
+
+// Fetch data for the current page with search, sort, and filter
+$sql = "SELECT bookid, booktitle, author, genre, pubdate, quantity, descrpt FROM books WHERE 1=1";
+
+if ($searchTerm) {
+    $sql .= " AND (booktitle LIKE '%" . $conn->real_escape_string($searchTerm) . "%' OR author LIKE '%" . $conn->real_escape_string($searchTerm) . "%')";
+}
+
+if ($genreFilter) {
+    $sql .= " AND genre = '" . $conn->real_escape_string($genreFilter) . "'";
+}
+
+if ($sortBy) {
+    $sql .= " ORDER BY " . $conn->real_escape_string($sortBy);
+}
+
+$sql .= " LIMIT $limit OFFSET $offset"; // Add pagination
+
 $result = $conn->query($sql);
 ?>
 
@@ -11,21 +34,25 @@ $result = $conn->query($sql);
         <div id="d1" class="Inventory-box">
             <div class="input">
                 <div class="search-bar">
-                    <input type="text" placeholder=" Search...">
+                    <input type="text" id="search-input" placeholder="Search..." oninput="loadBooks()">
                     <span class="search-icon">
                         <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
                     </span>
                 </div>
-                <button class="sort-btn">
-                    <img src="./Images/Sort.svg" alt="Sort Icon" width="20" height="20">
-                    Sort By
-                    <img src="./Images/vec.svg" alt="Sort Arrow Icon" width="18" height="18">
-                </button>
-                <button class="filter-btn">
-                    <img src="./Images/Filter_alt_fill.svg" alt="Filter Icon" width="20" height="20">
-                    Filter By
-                    <img src="./Images/Expand_down.svg" alt="Expand Icon" width="18" height="18">
-                </button>
+                <select id="sort-dropdown" onchange="loadBooks()">
+                    <option value="">Sort By</option>
+                    <option value="booktitle">Title</option>
+                    <option value="author">Author</option>
+                    <option value="genre">Genre</option>
+                    <option value="pubdate">Publication Date</option>
+                </select>
+                <select id="genre-filter" onchange="loadBooks()">
+                    <option value="">Filter by Genre</option>
+                    <option value="Fiction">Fiction</option>
+                    <option value="Non-Fiction">Non-Fiction</option>
+                    <option value="Science">Science</option>
+                    <option value="History">History</option>
+                </select>
             </div>
             <a href="#" class="addbtn" id="addBookButton" style="cursor: pointer; text-decoration: none;">
                 <img src="./Images/Add_square_fill.svg" alt="Add Icon">
@@ -66,39 +93,5 @@ $result = $conn->query($sql);
         </div>
     </div>
 
-    <script>
 
-            function loadBooks() {
-                if (isLoading) return; // Prevent multiple requests
-                isLoading = true;
-                $('#loading').show(); // Show loading indicator
-
-                $.ajax({
-                    url: `your_inventory_page.php?page=${currentPage + 1}`, // Update with your actual URL
-                    method: 'GET',
-                    success: function(data) {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(data, 'text/html');
-                        const newRows = doc.getElementById('inventory-table-body').innerHTML;
-                        $('#inventory-table-body').append(newRows); // Append new rows
-                        currentPage++; // Increment current page
-                        isLoading = false; // Reset loading state
-                        $('#loading').hide(); // Hide loading indicator
-                    },
-                    error: function(error) {
-                        console.error('Error loading more books:', error);
-                        isLoading = false; // Reset loading state
-                        $('#loading').hide(); // Hide loading indicator
-                    }
-                });
-            }
-
-            // Load more books on scroll
-            $('.Inventory-box div[style*="max-height"]').on('scroll', function() {
-                if (this.scrollTop + this.clientHeight >= this.scrollHeight) {
-                    loadBooks(); // Call loadBooks when scrolled to the bottom
-                }
-            });
-        });
-    </script>
 </div>

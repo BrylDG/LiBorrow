@@ -18,8 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $genre = $_POST['genre'];
         $quantity = $_POST['quantity'];
         $descrpt = $_POST['descrpt'];
-		
-		// Handle the image upload
+        $bookimg = ""; // Initialize bookimg variable
+
+        // Handle the image upload
         if (isset($_FILES['book_image']) && $_FILES['book_image']['error'] == UPLOAD_ERR_OK) {
             $fileTmpPath = $_FILES['book_image']['tmp_name'];
             $fileName = $_FILES['book_image']['name'];
@@ -37,6 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // Move the file to the upload directory
                 if(move_uploaded_file($fileTmpPath, $dest_path)) {
+                    // Set the bookimg variable to the file path
+                    $bookimg = $dest_path;
+
                     // Prepare the SQL statement
                     $stmt = $conn->prepare("INSERT INTO books (bookid, author, booktitle, pubdate, genre, quantity, descrpt, bookimg) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
                     
@@ -58,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo json_encode(['success' => false, 'message' => "Upload failed. Allowed file types: jpg, gif, png, jpeg."]);
             }
         } else {
-            echo json_encode(['success' => false, ' message' => "No image uploaded or there was an upload error."]);
+            echo json_encode(['success' => false, 'message' => "No image uploaded or there was an upload error."]);
         }
 
         // Close the statement
@@ -74,6 +78,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Close the connection
 $conn->close();
 ?>
+
+
 
 <!-- HTML form part -->
 <div class="content-box" id="content2">
@@ -132,24 +138,3 @@ $conn->close();
         </div>
     </div>
 </div>
-<script>
-document.getElementById("addBookForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Prevent default form submission
-
-    const formData = new FormData(this); // Collect form data
-
-    fetch('./addbook.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json()) // Parse JSON response
-    .then(data => {
-        const responseMessage = document.getElementById("responseMessage");
-        responseMessage.innerHTML = `<p style="color:green;">${data.message}</p>`; // Display success message
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        document.getElementById("responseMessage").innerHTML = `<p style="color:red;">An error occurred. Please try again.</p>`;
-    });
-});
-</script>

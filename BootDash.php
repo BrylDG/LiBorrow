@@ -341,97 +341,209 @@ const myBarChart = new Chart(ctx, {
             document.getElementById("body-content").innerHTML = data;
             document.title = "Readers List";
             document.getElementById("page-title").innerText = "Readers Lists";
-            // Call the function to load the first page of readers
-            loadReaderPage();
+            initializeSearchSortFilter(); // Initialize search, sort, and filter
+            initializeViewMoreButtons(); // Initialize View More buttons
         })
         .catch(error => handleError('Error fetching ReaderDash:', error));
 });
 
-        // Function to attach listeners to View More buttons
-        function initializeViewMoreButtons() {
-            document.querySelectorAll(".view-more a").forEach(button => {
-                button.addEventListener("click", function(event) {
-                    event.preventDefault();
-                    fetch('./ReadersInformation.php')
-                        .then(response => response.text())
-                        .then(data => {
-                            document.getElementById("body-content").innerHTML = data;
-                            document.title = "Reader' Information"; // Change the page title
-                            document.getElementById("page-title").innerText = "Reader's Information"; // Change the displayed title
-                        })
-                        .catch(error => handleError('Error fetching ReadersInformation:', error));
+// Function to initialize search, sort, and filter inputs
+function initializeSearchSortFilter() {
+    const searchInput = document.createElement('input');
+    searchInput.id = 'search-input';
+    searchInput.placeholder = 'Search...';
+    searchInput.addEventListener('input', searchUsers);
+
+    const sortDropdown = document.createElement('select');
+    sortDropdown.id = 'sort-dropdown';
+    sortDropdown.innerHTML = `
+        <option value="">Sort By</option>
+        <option value="fullname">Name</option>
+        <option value="email">Email</option>
+    `;
+    sortDropdown.addEventListener('change', sortUsers);
+
+    const filterDropdown = document.createElement('select');
+    filterDropdown.id = 'filter-dropdown';
+    filterDropdown.innerHTML = `
+        <option value="">Filter By Genre</option>
+        <option value="genre1">Genre 1</option>
+        <option value="genre2">Genre 2</option>
+    `;
+    filterDropdown.addEventListener('change', filterUsers);
+
+    // Append search, sort, and filter inputs to the body content
+    const inputArea = document.createElement('div');
+    inputArea.className = 'input-area';
+    inputArea.appendChild(searchInput);
+    inputArea.appendChild(sortDropdown);
+    inputArea.appendChild(filterDropdown);
+
+    document.getElementById("body-content").appendChild(inputArea);
+}
+
+// Function to load users
+function loadUsers() {
+    const searchTerm = document.getElementById('search-input').value;
+    const sortBy = document.getElementById('sort-dropdown').value;
+
+    // Show loading indicator
+    document.getElementById('loading').style.display = 'block';
+
+    fetch(`ReaderDash.php?ajax=1&search=${encodeURIComponent(searchTerm)}&sort=${sortBy}`)
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById("reader-table-body");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            if (data.table_body && data.table_body.length > 0) {
+                data.table_body.forEach(user => {
+                    const row = `<tr>
+                                    <td>${user.idno}</td>
+                                    <td>${user.fullname}</td>
+                                    <td>${user.email}</td>
+                                    <td><a href='#' class='view-more'>View more</a></td>
+                                 </tr>`;
+                    tableBody.innerHTML += row; // Append new rows
                 });
-            });
-        }
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='4'>No results found</td></tr>";
+            }
+        })
+        .catch(error => console.error('Error fetching users:', error))
+        .finally(() => {
+            // Hide loading indicator
+            document.getElementById('loading').style.display = 'none';
+        });
+}
+
+// Function to initialize View More buttons
+function initializeViewMoreButtons() {
+    document.querySelectorAll(".view-more a").forEach(button => {
+        button.addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./ReadersInformation.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "Reader's Information"; // Change the page title
+                    document.getElementById("page-title").innerText = "Reader's Information"; // Change the displayed title
+                })
+                .catch(error => handleError('Error fetching ReadersInformation:', error));
+        });
+    });
+}
+
 		
         // Function to handle errors and display a user-friendly message
         function handleError(message, error) {
             console.error(message, error);
             // You can add code here to display an error message to the user, e.g., using a modal or alert.
         }
-        document.getElementById("button2").addEventListener("click", function(event) {
-            event.preventDefault();
-            fetch('./InventoryDash.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("body-content").innerHTML = data;
-                    document.title = "Inventory"; // Change the page title
-                    document.getElementById("page-title").innerText = "Inventory"; // Change the displayed title
-					
-					 // Set up the event listener for the "Add Book" button
-					setupAddBookButton();
-                })
-                .catch(error => console.error('Error fetching content:', error));
-        });
-        // Function to set up the "Add Book" button click event
-		function setupAddBookButton() {
-			document.getElementById("addBookButton").addEventListener("click", function(event) {
-				event.preventDefault(); // Prevent default anchor behavior
-				fetch('./addbook.php') // URL of the file to fetch
-					.then(response => {
-						if (!response.ok) {
-							throw new Error('Network response was not ok ' + response.statusText);
-						}
-						return response.text(); // Parse the response as text
-					})
-					.then(data => {
-						document.getElementById("body-content").innerHTML = data; // Insert the content into the body-content div
-						document.title = "Add Book"; // Change the page title
-						document.getElementById("page-title").innerText = "Add Book"; // Change the displayed title
-						
-						setupAddBookFormSubmission();
-					})
-					.catch(error => {
-						console.error('Error fetching content:', error);
-					});
-			});
-		}
-		function setupAddBookFormSubmission() {
-			const form = document.getElementById("addBookForm");
-			if (form) {
-				form.addEventListener("submit", function(event) {
-					event.preventDefault(); // Prevent default form submission
+       document.getElementById("button2").addEventListener("click", function(event) {
+    event.preventDefault();
+    fetch('./InventoryDash.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("body-content").innerHTML = data;
+            document.title = "Inventory"; // Change the page title
+            document.getElementById("page-title").innerText = "Inventory"; // Change the displayed title
+            
+            // Set up the event listener for the "Add Book" button
+            setupAddBookButton();
+            loadBooks(); // Load books when the Inventory page is loaded
+        })
+        .catch(error => console.error('Error fetching content:', error));
+});
 
-					const formData = new FormData(this); // Collect form data
+// Initialize loading state and current page
+let isLoading = false;
+let currentPage = 1;
 
-					fetch('./addbook.php', {
-						method: 'POST',
-						body: formData
-					})
-					.then(response => response.json()) // Parse JSON response
-					.then(data => {
-						const responseMessage = document.getElementById("responseMessage");
-					})
-					.catch(error => {
-						console.error('Error:', error);
-						document.getElementById("responseMessage").innerHTML = `<p style="color:red;">An error occurred. Please try again.</p>`;
-					});
-				});
-			}
-		}		
-		document.addEventListener("DOMContentLoaded", function() {
-            setupAddBookFormSubmission(); // Call the function here
+function loadBooks() {
+    if (isLoading) return; // Prevent multiple requests
+    isLoading = true;
+    $('#loading').show(); // Show loading indicator
+    
+    const searchTerm = $('#search-input').val();
+    const sortBy = $('#sort-dropdown').val();
+    const genreFilter = $('#genre-filter').val();
+
+    $.ajax({
+        url: `InventoryDash.php?page=${currentPage}&search=${encodeURIComponent(searchTerm)}&sort=${encodeURIComponent(sortBy)}&genre=${encodeURIComponent(genreFilter)}`,
+        method: 'GET',
+        success: function(data) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data, 'text/html');
+            const newRows = doc.getElementById('inventory-table-body').innerHTML;
+            $('#inventory-table-body').html(newRows); // Update rows
+            isLoading = false; // Reset loading state
+            $('#loading').hide(); // Hide loading indicator
+        },
+        error: function(error) {
+            console.error('Error loading books:', error);
+            isLoading = false; // Reset loading state
+            $('#loading').hide(); // Hide loading indicator
+            alert('Failed to load books. Please try again.'); // User feedback
+        }
+    });
+}
+
+// Function to set up the "Add Book" button click event
+function setupAddBookButton() {
+    document.getElementById("addBookButton").addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent default anchor behavior
+        fetch('./addbook.php') // URL of the file to fetch
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.text(); // Parse the response as text
+            })
+            .then(data => {
+                document.getElementById("body-content").innerHTML = data; // Insert the content into the body-content div
+                document.title = "Add Book"; // Change the page title
+                document.getElementById("page-title").innerText = "Add Book"; // Change the displayed title
+                
+                setupAddBookFormSubmission(); // Set up form submission
+            })
+            .catch(error => {
+                console.error('Error fetching content:', error);
+            });
+    });
+}
+
+function setupAddBookFormSubmission() {
+    const form = document.getElementById("addBookForm");
+    if (form) {
+        form.addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const formData = new FormData(this); // Collect form data
+
+            fetch('./addbook.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json()) // Parse JSON response
+            .then(data => {
+                const responseMessage = document.getElementById("responseMessage");
+                responseMessage.innerHTML = `<p style="color:green;">Book added successfully!</p>`;
+                loadBooks(); // Reload books after adding
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("responseMessage").innerHTML = `<p style="color:red;">An error occurred. Please try again.</p>`;
+            });
         });
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    setupAddBookButton(); // Call the function here
+});
+		
+		//BORROWED
         document.getElementById("BorrowedBtn").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./TransactionsBorrowed.php')
@@ -465,6 +577,7 @@ const myBarChart = new Chart(ctx, {
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+		
         document.getElementById("OverdueBtn").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./TransactionsOverdue.php')
