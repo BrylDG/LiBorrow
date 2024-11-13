@@ -394,3 +394,48 @@ span {
 .profile-options .logout {
     color: orange;
 }
+
+
+@media (max-width: 1440px) {
+
+    #nav-list li a {
+        padding: 1em 7em 1em 5em;
+    }
+
+    #topbar {
+        display: flex;
+        align-items: center;
+        background-color: white;
+        height: 12vh;
+        padding: 0 2em;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.5); /* Add this line for the bottom border */
+        margin-bottom: 3%;
+    }
+
+    #topbar h5 {
+        margin: 2%
+    }
+
+    #burger-icon {
+        padding-top: 28px;
+    }
+}
+
+@media (max-width: 768px) {
+    #topbar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        height: 12vh;
+        padding: 0 2em;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.5); /* Add this line for the bottom border */
+        margin-bottom: 3%;
+        padding-right: 15%;
+    }
+
+    #page-title {
+        padding-right: 35%;
+    }
+}
+
