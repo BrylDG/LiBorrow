@@ -3,7 +3,7 @@ session_start(); // Start the session
 include('connection.php'); // Include your connection file
 
 // Check if the user is logged in
-if (!isset($_SESSION['fullname'])) { // Replace 'user_id' with your session variable for logged-in users
+if (!isset($_SESSION['idno'])) { // Replace 'user_id' with your session variable for logged-in users
     header("Location: login.php"); // Redirect to the login page
     exit(); // Make sure to exit after the redirect
 }
@@ -159,7 +159,7 @@ $role = $_SESSION['isAdmin'];
         //FAVORITES CONTENT
         document.getElementById("button1").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./Favorites.html')
+            fetch('./Favorites.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
