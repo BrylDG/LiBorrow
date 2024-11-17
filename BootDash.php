@@ -29,7 +29,7 @@ $role = $_SESSION['isAdmin'];
     <link rel="stylesheet" href="./TransactionsReturned.css">
     <link rel="stylesheet" href="./TransactionsOverdue.css">
     <link rel="stylesheet" href="./ReadersInformation.css">
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title >LiBorrow Dashboard</title>
 </head>
 <body>
@@ -141,7 +141,7 @@ $role = $_SESSION['isAdmin'];
 	$borrowedQuery = "SELECT COUNT(*) AS count FROM borrows";
 	$returnedQuery = "SELECT COUNT(*) AS count FROM returns";
 	$pendingQuery = "SELECT COUNT(*) AS count FROM pendings";
-	$overdueQuery = "SELECT COUNT(*) AS count FROM overdues";
+	$overdueQuery = "SELECT COUNT(*) AS count FROM borrows WHERE duedate < CURDATE()";
 
 	// Execute queries
 	$borrowedResult = $conn->query($borrowedQuery);
@@ -335,55 +335,224 @@ const myBarChart = new Chart(ctx, {
         }
 
         document.getElementById("button1").addEventListener("click", function(event) {
+    event.preventDefault();
+    fetch('./ReaderDash.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("body-content").innerHTML = data;
+            document.title = "Readers List";
+            document.getElementById("page-title").innerText = "Readers Lists";
+            initializeSearchSortFilter(); // Initialize search, sort, and filter
+            initializeViewMoreButtons(); // Initialize View More buttons
+        })
+        .catch(error => handleError('Error fetching ReaderDash:', error));
+});
+
+// Function to initialize search, sort, and filter inputs
+function initializeSearchSortFilter() {
+    const searchInput = document.createElement('input');
+    searchInput.id = 'search-input';
+    searchInput.placeholder = 'Search...';
+    searchInput.addEventListener('input', searchUsers);
+
+    const sortDropdown = document.createElement('select');
+    sortDropdown.id = 'sort-dropdown';
+    sortDropdown.innerHTML = `
+        <option value="">Sort By</option>
+        <option value="fullname">Name</option>
+        <option value="email">Email</option>
+    `;
+    sortDropdown.addEventListener('change', sortUsers);
+
+    const filterDropdown = document.createElement('select');
+    filterDropdown.id = 'filter-dropdown';
+    filterDropdown.innerHTML = `
+        <option value="">Filter By Genre</option>
+        <option value="genre1">Genre 1</option>
+        <option value="genre2">Genre 2</option>
+    `;
+    filterDropdown.addEventListener('change', filterUsers);
+
+    // Append search, sort, and filter inputs to the body content
+    const inputArea = document.createElement('div');
+    inputArea.className = 'input-area';
+    inputArea.appendChild(searchInput);
+    inputArea.appendChild(sortDropdown);
+    inputArea.appendChild(filterDropdown);
+
+    document.getElementById("body-content").appendChild(inputArea);
+}
+
+// Function to load users
+function loadUsers() {
+    const searchTerm = document.getElementById('search-input').value;
+    const sortBy = document.getElementById('sort-dropdown').value;
+
+    // Show loading indicator
+    document.getElementById('loading').style.display = 'block';
+
+    fetch(`ReaderDash.php?ajax=1&search=${encodeURIComponent(searchTerm)}&sort=${sortBy}`)
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById("reader-table-body");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            if (data.table_body && data.table_body.length > 0) {
+                data.table_body.forEach(user => {
+                    const row = `<tr>
+                                    <td>${user.idno}</td>
+                                    <td>${user.fullname}</td>
+                                    <td>${user.email}</td>
+                                    <td><a href='#' class='view-more'>View more</a></td>
+                                 </tr>`;
+                    tableBody.innerHTML += row; // Append new rows
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='4'>No results found</td></tr>";
+            }
+        })
+        .catch(error => console.error('Error fetching users:', error))
+        .finally(() => {
+            // Hide loading indicator
+            document.getElementById('loading').style.display = 'none';
+        });
+}
+
+// Function to initialize View More buttons
+function initializeViewMoreButtons() {
+    document.querySelectorAll(".view-more a").forEach(button => {
+        button.addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./ReaderDash.php')
+            fetch('./ReadersInformation.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
-                    initializeViewMoreButtons();
-                    document.title = "Readers List"; // Change the page title
-                    document.getElementById("page-title").innerText = "Readers Lists"; // Change the displayed title
+                    document.title = "Reader's Information"; // Change the page title
+                    document.getElementById("page-title").innerText = "Reader's Information"; // Change the displayed title
                 })
-                .catch(error => handleError('Error fetching ReaderDash:', error));
+                .catch(error => handleError('Error fetching ReadersInformation:', error));
         });
+    });
+}
 
-        // Function to attach listeners to View More buttons
-        function initializeViewMoreButtons() {
-            document.querySelectorAll(".view-more a").forEach(button => {
-                button.addEventListener("click", function(event) {
-                    event.preventDefault();
-                    fetch('./ReadersInformation.php')
-                        .then(response => response.text())
-                        .then(data => {
-                            document.getElementById("body-content").innerHTML = data;
-                            document.title = "Reader' Information"; // Change the page title
-                            document.getElementById("page-title").innerText = "Reader's Information"; // Change the displayed title
-                        })
-                        .catch(error => handleError('Error fetching ReadersInformation:', error));
-                });
-            });
-        }
 		
         // Function to handle errors and display a user-friendly message
         function handleError(message, error) {
             console.error(message, error);
             // You can add code here to display an error message to the user, e.g., using a modal or alert.
         }
-        document.getElementById("button2").addEventListener("click", function(event) {
+		
+document.addEventListener("DOMContentLoaded", function() {
+    // Event listener for the Inventory button to load InventoryDash.php
+    const button2 = document.getElementById("button2");
+    if (button2) {
+        button2.addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./InventoryDash.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
-                    document.title = "Inventory"; // Change the page title
-                    document.getElementById("page-title").innerText = "Inventory"; // Change the displayed title
+                    document.title = "Inventory"; 
+                    document.getElementById("page-title").innerText = "Inventory"; 
+
+                    // Now that the Inventory page is loaded, attach the Add Book button listener
+                    setupAddBookButton(); // Set up the Add Book button click event
+                    loadBooks(); // Load books after the Inventory page content is loaded
                 })
-                .catch(error => console.error('Error fetching content:', error));
+                .catch(error => console.error('Error fetching InventoryDash.php:', error));
         });
-            
+    }
+
+    // Function to set up the Add Book button after the Inventory page is loaded
+    function setupAddBookButton() {
+        const addBookButton = document.getElementById("addBookButton");
+        if (addBookButton) {
+            addBookButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                fetch('./addbook.php')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("body-content").innerHTML = data;
+                        document.title = "Add Book";
+                        document.getElementById("page-title").innerText = "Add Book"; 
+                        setupAddBookFormSubmission(); // Set up the form submission for adding a book
+                    })
+                    .catch(error => {
+                        console.error('Error fetching addbook.php:', error);
+                    });
+            });
+        }
+    }
+
+    // Function to handle the form submission for adding a new book
+    function setupAddBookFormSubmission() {
+    const form = document.getElementById("addBookForm");
+    if (form) {
+        form.addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+            const formData = new FormData(this);
+
+            // Send data to the server (addbook.php)
+            fetch('./addbook.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text()) // Get response as text
+            .then(data => {
+                console.log('Raw response:', data);
+
+                // Check if the response is valid JSON
+                try {
+                    const responseData = JSON.parse(data);
+
+                    const responseMessage = document.getElementById("responseMessage");
+
+                    if (responseData.success) {
+                        responseMessage.innerHTML = `<p style="color:green;">${responseData.message}</p>`;
+                    } else {
+                        responseMessage.innerHTML = `<p style="color:red;">${responseData.message}</p>`;
+                    }
+
+                    loadBooks(); // Reload books after adding
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                    console.error('Invalid JSON response:', data); // Log invalid response data
+                    document.getElementById("responseMessage").innerHTML = `<p style="color:red;">An error occurred. Please try again.</p>`;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("responseMessage").innerHTML = `<p style="color:red;">An error occurred. Please try again.</p>`;
+            });
+        });
+    }
+}
+
+    // Function to load books (AJAX)
+    function loadBooks() {
+        const searchTerm = document.getElementById('search-input').value;
+        const sortBy = document.getElementById('sort-dropdown').value;
+        const genreFilter = document.getElementById('genre-filter').value;
+
+        fetch(`InventoryDash.php?page=1&search=${encodeURIComponent(searchTerm)}&sort=${encodeURIComponent(sortBy)}&genre=${encodeURIComponent(genreFilter)}`)
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const newRows = doc.getElementById('inventory-table-body').innerHTML;
+                document.getElementById('inventory-table-body').innerHTML = newRows;
+            })
+            .catch(error => {
+                console.error('Error loading books:', error);
+                alert('Failed to load books. Please try again.');
+            });
+    }
+});
+
+		//BORROWED
         document.getElementById("BorrowedBtn").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./TransactionsBorrowed.html')
+            fetch('./TransactionsBorrowed.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -405,7 +574,7 @@ const myBarChart = new Chart(ctx, {
         });
         document.getElementById("pendBtn").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./TransactionsDash.html')
+            fetch('./TransactionsDash.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -414,9 +583,10 @@ const myBarChart = new Chart(ctx, {
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+		
         document.getElementById("OverdueBtn").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./TransactionsOverdue.html')
+            fetch('./TransactionsOverdue.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -443,7 +613,7 @@ const myBarChart = new Chart(ctx, {
             }
 
             // Fetch and load Transactions content
-            fetch('./TransactionsDash.html') 
+            fetch('./TransactionsDash.php') 
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data; // Update the content div
@@ -508,6 +678,7 @@ const myBarChart = new Chart(ctx, {
             }
         });
         
+		
         document.getElementById("notification").addEventListener("click", function(event) {
             event.preventDefault();
             const dropdown = document.getElementById("notification-dropdown");
@@ -523,6 +694,9 @@ const myBarChart = new Chart(ctx, {
                 dropdown.style.display = "none";
             }
         });
+		
+
+
 		function updateTime() {
 		const now = new Date(); // Get the current date and time
 
@@ -535,8 +709,13 @@ const myBarChart = new Chart(ctx, {
 		const formattedTime = `${hours}:${minutes}:${seconds}`;
 
 		// Update the HTML element with the current time
-		document.getElementById("current-time").innerHTML = `${formattedTime}`;
+		 const timeElement = document.getElementById("current-time");
+    if (timeElement) {
+        timeElement.innerHTML = formattedTime;
+    } 
 	}
+	
+		
         window.onload = function() {
             loadDashboard();
 			setInterval(updateTime, 1);
