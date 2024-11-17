@@ -1,97 +1,174 @@
 <?php
+
 include('connection.php'); // Include your database connection
 
-// Initialize variables for search, sort, and genre filter
-$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
-$sortBy = isset($_GET['sort']) ? $_GET['sort'] : '';
-$genreFilter = isset($_GET['genre']) ? $_GET['genre'] : '';
-$currentPage = isset($_GET['page']) ? intval($_GET['page']) : 1;
-$limit = 10; // Number of records per page
-$offset = ($currentPage - 1) * $limit;
+// Get the total number of records from the returns table
+$total_records_query = "SELECT COUNT(*) FROM books";
+$total_records_result = $conn->query($total_records_query);
+$total_records = $total_records_result->fetch_row()[0];
 
-// Fetch data for the current page with search, sort, and filter
-$sql = "SELECT bookid, booktitle, author, genre, pubdate, quantity, descrpt FROM books WHERE 1=1";
+// Set the number of results per page
+$results_per_page = 5;
 
-if ($searchTerm) {
-    $sql .= " AND (booktitle LIKE '%" . $conn->real_escape_string($searchTerm) . "%' OR author LIKE '%" . $conn->real_escape_string($searchTerm) . "%')";
-}
+// Calculate total pages
+$total_pages = ceil($total_records / $results_per_page);
 
-if ($genreFilter) {
-    $sql .= " AND genre = '" . $conn->real_escape_string($genreFilter) . "'";
-}
+// Get the current page number from the URL, default to 1 if not set
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$current_page = max(1, min($current_page, $total_pages));
 
-if ($sortBy) {
-    $sql .= " ORDER BY " . $conn->real_escape_string($sortBy);
-}
+// Calculate the starting record for the current page
+$start_from = ($current_page - 1) * $results_per_page;
 
-$sql .= " LIMIT $limit OFFSET $offset"; // Add pagination
+// Fetch data for the current page
+$sql = "SELECT bookid, booktitle, author, genre, pubdate, quantity,descrpt FROM books LIMIT $start_from, $results_per_page";
+$result = $conn->query($sql);
 
+// Initial SQL query with pagination
+$sql = "SELECT bookid, booktitle, author, genre, pubdate, quantity,descrpt FROM books WHERE 1=1";
+
+// Add pagination limits
+$sql .= " LIMIT $start_from, $results_per_page";
 $result = $conn->query($sql);
 ?>
-
 <div class="content-box" id="content2">
     <div class="container">
+
         <div id="d1" class="Inventory-box">
-            <div class="input">
+            <div class="input" >
                 <div class="search-bar">
-                    <input type="text" id="search-input" placeholder="Search..." oninput="loadBooks()">
+                    <input type="text" placeholder=" Search...">
                     <span class="search-icon">
                         <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
                     </span>
                 </div>
-                <select id="sort-dropdown" onchange="loadBooks()">
-                    <option value="">Sort By</option>
-                    <option value="booktitle">Title</option>
-                    <option value="author">Author</option>
-                    <option value="genre">Genre</option>
-                    <option value="pubdate">Publication Date</option>
-                </select>
-                <select id="genre-filter" onchange="loadBooks()">
-                    <option value="">Filter by Genre</option>
-                    <option value="Fiction">Fiction</option>
-                    <option value="Non-Fiction">Non-Fiction</option>
-                    <option value="Science">Science</option>
-                    <option value="History">History</option>
-                </select>
+                <button class="sort-btn">
+                    <img src="./Images/Sort.svg" alt="Icon Before" width="20" height="20"> <!-- Icon before text -->
+                    Sort By
+                    <img src="./Images/vec.svg" alt="Icon After" width="18" height="18"> <!-- Icon after text -->
+                </button>
+                <button class="filter-btn">
+                    <img src="./Images/Filter_alt_fill.svg" alt="Icon Before" width="20" height="20"> <!-- Icon before text -->
+                    Filter By
+                    <img src="./Images/Expand_down.svg" alt="Icon After" width="18" height="18"> <!-- Icon after text -->
+                </button>
             </div>
-            <a href="#" class="addbtn" id="addBookButton" style="cursor: pointer; text-decoration: none;">
-                <img src="./Images/Add_square_fill.svg" alt="Add Icon">
-                Add Book
-            </a>
-            <!-- Scrollable Table Section -->
-            <div style="max-height: 400px; overflow-y: auto; width: 100%;">
-                <table class="Inventory-table" style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr>
-                            <th>Book Id</th>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Genre</th>
-                            <th>Details</th>
-                        </tr>
-                    </thead>
-                    <tbody id="inventory-table-body">
-                        <?php
-                        if ($result && $result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>
-                                        <td>" . htmlspecialchars($row["bookid"]) . "</td>
-                                        <td>" . htmlspecialchars($row["booktitle"]) . "</td>
-                                        <td>" . htmlspecialchars($row["author"]) . "</td>
-                                        <td>" . htmlspecialchars($row["genre"]) . "</td>
-                                        <td><a href='#' class='view-more'>View more</a></td>
-                                      </tr>";
+            <div>
+                <div class="addbtn">
+                    <a href="#" id="addbtn">
+                        <img src="./Images/Add_square_fill.svg" alt="add icon">
+                        Add Book
+                    </a>
+                </div>
+            </div>
+            <!-- Table Section -->
+            <table class="Inventory-table">
+                <thead>
+                    <tr>
+                        <th>Book Id</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Genre</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        include("connection.php");
+                        
+                        $query = "SELECT bookid, booktitle, author, genre FROM books";
+                        $result = $conn->query($query);
+
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo "<tr><td>" . $row["bookid"]. "</td><td>" . $row["booktitle"]. "</td><td>" . $row["author"]. "</td><td>" . $row["genre"]. "</td><td><a href='#' class='view-more'>View more</a></td></tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='5'>No data found</td></tr>";
+                            echo "<tr><td colspan='3'>No data found</td></tr>";
                         }
-                        ?>
-                    </tbody>
-                </table>
-                <div id="loading" style="display: none;">Loading more books...</div>
-            </div>
+                    ?>
+
+                    <!-- <tr>
+                        <td>0001</td>
+                        <td>Alice in Wonderland</td>
+                        <td>Lewis Carroll</td>
+                        <td>Fantasy/Adventure</td> 
+                        <td class="act"><a href="#">View More</a></td>
+                    </tr>
+                    <tr>
+                        <td>0002</td>
+                        <td>Treasure Land</td>
+                        <td>Lewis Carroll</td>
+                        <td>Fantasy/Adventure</td> 
+                        <td class="act"><a href="#">View More</a></td>
+                    </tr>
+                    <tr>
+                        <td>0003</td>
+                        <td>Treasure Land</td>
+                        <td>Lewis Carroll</td>
+                        <td>Fantasy/Adventure</td> 
+                        <td class="act"><a href="#">View More</a></td>
+                    </tr>
+                    <tr>
+                        <td>0004</td>
+                        <td>Treasure Land</td>
+                        <td>Lewis Carroll</td>
+                        <td>Fantasy/Adventure</td> 
+                        <td class="act"><a href="#">View More</a></td>
+                    </tr>
+                    <tr>
+                        <td>0005</td>
+                        <td>Treasure Land</td>
+                        <td>Lewis Carroll</td>
+                        <td>Fantasy/Adventure</td> 
+                        <td class="act"><a href="#">View More</a></td>
+                    </tr> -->
+                    
+                </tbody>
+            </table>
+            <div class="Inventory-pagination">
+                <?php if ($current_page > 1): ?>
+                    <a href="?page=<?php echo $current_page - 1; ?>" class="prev">Previous</a>
+                <?php endif; ?>
+
+                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                    <a href="?page=<?php echo $i; ?>" class="page-number <?php echo ($i === $current_page) ? 'active' : ''; ?>">
+                        <?php echo $i; ?>
+                    </a>
+                <?php endfor; ?>
+
+                <?php if ($current_page < $total_pages): ?>
+                    <a href="?page=<?php echo $current_page + 1; ?>" class="next">Next</a>
+                <?php endif; ?>
+            </div>            
         </div>
     </div>
 
+    <script>
+        document.querySelectorAll('button-group a').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default anchor behavior
+    
+                // Remove 'active' class from all links
+                document.querySelectorAll('button-group a').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add 'active' class to the clicked link
+                this.classList.add('active');
+            });
+        });
 
+        document.getElementById("addbtn").addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./AddBook.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "Add Book"; // Change the page title
+                    document.getElementById("page-title").innerText = "Add Book"; // Change the displayed title
+                })
+                .catch(error => console.error('Error fetching content:', error));
+        });
+    </script>    
 </div>

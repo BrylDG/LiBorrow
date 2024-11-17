@@ -2,12 +2,12 @@ body, html {
     font-family: 'Poppins', sans-serif;
 }
 
-
 .Reader-MyBooks {
     overflow-y: auto;
     height: 890px;
     display: flex;
     flex-direction: column;
+    width: 100%; /* Full width to automatically scale with screen */
 }
 
 .inputSection {
@@ -115,5 +115,75 @@ body, html {
     height: 307px;
     display: flex;
     align-items: flex-end;
+}
+
+@media (max-width: 1440px) {
+    .MBcontainer {
+        padding-left: 5% !important;
+    }
+}
+
+@media (max-width: 1366px) {
+    .MBcontainer {
+        height: 600px;
+        padding-left: 2% !important;
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .MBcontainer {
+        height: 600px;
+        padding: 5%;
+        overflow-y: auto;
+    }
+
+    .search-bar {
+        width: 510px;
+    }
+    .Reader-MyBooks {
+        height: auto; /* Adjust height as content stacks vertically */
+        padding: 0 5%; /* Add some padding for smaller screens */
+    }
+
+    /* Adjust the search bar width */
+    .search-bar input {
+        width: 100%; /* Full width to fit smaller screens */
+    }
+
+    /* Reduce the size of BookContainer for smaller screens */
+    .BookContainer {
+        width: 100%; /* Make it responsive to screen width */
+        align-items: center; /* Center align for better mobile display */
+    }
+
+    /* Reduce width of Books */
+    .Books img {
+        width: 100px; /* Adjust image size for smaller screens */
+        height: auto;
+    }
+
+    .sort-btn, .filter-btn {
+        width: 150px; /* Adjust button size */
+        font-size: 10px; /* Slightly smaller font */
+        padding: 8px 12px; /* Adjust padding for smaller buttons */
+    }
+
+    /* Adjust shelf width to fit container */
+    .Shelf {
+        width: 100%;
+    }
+
+    .top-row {
+        position: static;
+        justify-self: center;
+    }
+
+    .bottom-row {
+        position: static;
+        justify-self: center;
+    }
+
+
 }
 

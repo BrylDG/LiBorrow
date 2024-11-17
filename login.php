@@ -7,13 +7,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="LoginStyles.css">
-    <!-- Include SweetAlert CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
     <!-- NAVBAR SECTION -->
     <nav class="navbar navbar-light p-4">
         <div class="container-fluid d-flex justify-content-between align-items-center">
+            <!-- LOGO -->
             <a class="navbar-brand" href="index.php">
                 <span class="liborrow-logo">Liborrow<span class="dot">.</span></span>
             </a>
@@ -21,36 +20,61 @@
     </nav>
 
     <section class="main-section">
+        <!-- Left Column: Slogan -->
         <div class="col-3 left-column">
             <h1>Your Next <span class="highlight">Chapter</span> Awaits<span class="highlight">.</span></h1>
             <p>Start Borrowing Today: Your next favorite book is waiting.</p>
         </div>
 
+        <!-- Center Column: Sign-in Form and Image -->
         <div class="col-5 center-column">
-            <div class="login-form-container">
+            <div class="login-form-container"   >
                 <h3 class="text-center">Welcome Back!</h3>
                 <?php
-                include('connection.php');
-                session_start();
+				include('connection.php');
+				session_start();
 
-                $loginMessage = '';
-                if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $email = mysqli_real_escape_string($conn, $_POST["email"]);
-                    $pass = mysqli_real_escape_string($conn, $_POST["password"]);
-                    
-                    $query = "SELECT * FROM users WHERE email='$email' AND password='$pass'";
-                    $result = mysqli_query($conn, $query);
-                    $count = mysqli_num_rows($result);
-                    
-                    if ($count == 1) {
-                        $user = mysqli_fetch_assoc($result);
-                        $_SESSION['fullname'] = $user['fullname'];
-                        $loginMessage = 'success';
-                    } else {
-                        $loginMessage = 'failed';
-                    }
-                }
-                ?>
+				if ($_SERVER["REQUEST_METHOD"] == "POST") {
+					$email = mysqli_real_escape_string($conn, $_POST["email"]);
+					$pass = mysqli_real_escape_string($conn, $_POST["password"]);
+					
+					$query = "SELECT * FROM users WHERE email='$email' AND password='$pass'";
+					$result = mysqli_query($conn, $query);
+					$count = mysqli_num_rows($result);
+					
+					if ($count == 1) {
+						// Fetch the user's full name
+						$user = mysqli_fetch_assoc($result);
+                        
+                        $_SESSION['idno'] = $user['idno']; // Store idno
+						$_SESSION['fullname'] = $user['fullname']; // Store full name in session
+                        $_SESSION['isAdmin'] = $user['isAdmin']; // Store it's role
+
+                        if($user['isAdmin'] == 1) {
+                            // Redirect to BootDash.php on successful login as Librarian
+                            echo "<script>
+								alert('Login Success!');
+								window.location.href = 'BootDash.php';
+							    </script>";
+                        } elseif($user['isAdmin'] == 0) {
+                            // Redirect to UserNavTemplate.html on successful login as Reader
+                            echo "<script>
+								alert('Login Success!');
+								window.location.href = 'UserNavTemplate.php';
+							    </script>";
+                        } else {
+                            // Redirect to UserNavTemplate.html on successful login as Reader
+                            echo "<script>
+								alert('Login Failed');
+								window.location.href = 'logout.php';
+							    </script>";
+                        }
+						exit;
+					} else {
+						echo "<script>alert('Login Failed')</script>";
+					}
+				}
+				?>
                 <form action="login.php" method="post">
                     <div class="mb-5 email-input input-container">
                         <input type="email" class="form-control" id="email" name="email" required>
@@ -64,7 +88,7 @@
                         </span>
                     </div>
                     <div class="text-end mb-3">
-                        <a href="#" class="forgot-password"> Forgot Password?</a>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
                     </div>
                     <button type="submit" class="btn btn-primary">Sign-In</button>
                 </form>
@@ -72,6 +96,7 @@
             </div>
         </div>
 
+        <!-- Right Column: Image-->
         <div class="col-4 right-column">
             <div class="image-container">
                 <img src="Images/gilBrowsingLaptop.png" alt="Person working on laptop" class="img-fluid character-image" />
@@ -79,6 +104,7 @@
         </div>
     </section>
 
+    <!-- FOOTER -->
     <footer>
         <nav>
             <a href="#">About</a>
@@ -89,23 +115,23 @@
         <p>© 2024 Bravo Two All Rights Reserved.</p>
     </footer>
 
+    <!-- BOOTSTRAP SCRIPT -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById(' eye-icon');
+            const eyeIcon = document.getElementById('eye-icon');
             
             if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
+                passwordInput.type = 'text';  // Show password
                 eyeIcon.classList.remove('bi-eye');
-                eyeIcon.classList.add('bi-eye-slash');
-                eyeIcon.style.color = '#FF6600';
+                eyeIcon.classList.add('bi-eye-slash');  // Change icon to "eye-slash"
+                eyeIcon.style.color = '#FF6600';  // Change color to orange
             } else {
-                passwordInput.type = 'password';
+                passwordInput.type = 'password';  // Hide password
                 eyeIcon.classList.remove('bi-eye-slash');
-                eyeIcon.classList.add('bi-eye');
-                eyeIcon.style.color = '#aaa';
+                eyeIcon.classList.add('bi-eye');  // Change icon back to "eye"
+                eyeIcon.style.color = '#aaa';  // Change color to gray
             }
         }
 
@@ -118,28 +144,8 @@
                 }
             });
         });
-
-        <?php if ($loginMessage): ?>
-            if ('<?php echo $loginMessage; ?>' === 'success') {
-                Swal.fire({
-                    title: 'Login Success!',
-                    text: 'Redirecting...',
-                    icon: 'success',
-                    timer: 2000,
-                    timerProgressBar: true,
-                    willClose: () => {
-                        window.location.href = '<?php echo $user['isAdmin'] == 1 ? "BootDash.php" : "User NavTemplate.html"; ?>';
-                    }
-                });
-            } else if ('<?php echo $loginMessage; ?>' === 'failed') {
-                Swal.fire({
-                    title: 'Login Failed',
-                    text: 'Please check your credentials.',
-                    icon: 'error',
-                    confirmButtonText: 'Try Again'
-                });
-            }
-        <?php endif; ?>
     </script>
+
+    
 </body>
 </html>

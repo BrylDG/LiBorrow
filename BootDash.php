@@ -9,6 +9,7 @@ if (!isset($_SESSION['fullname'])) { // Replace 'user_id' with your session vari
 }
 // Retrieve the full name from the session
 $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // Default to 'User ' if not set
+$role = $_SESSION['isAdmin'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -119,7 +120,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
 
                     <div id="profile-dropdown" class="profile-dropdown">
                         <div class="profile-options">
-                            <a href="#" class="settings">
+                            <a href="#" class="settings" id="SettingsBtn">
                                 <img src="./Images/settings.svg" alt="Settings Icon"> Settings
                             </a>
                             <a href="logout.php" class="logout">
@@ -640,7 +641,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
         });
         
-			
         document.getElementById("button4").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./HistoryDash.html')
@@ -649,6 +649,18 @@ document.addEventListener("DOMContentLoaded", function() {
                     document.getElementById("body-content").innerHTML = data;
                     document.title = "History"; // Change the page title
                     document.getElementById("page-title").innerText = "History"; // Change the displayed title
+                })
+                .catch(error => console.error('Error fetching content:', error));
+        });
+
+        document.getElementById("SettingsBtn").addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./Settings.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "User Profile"; // Change the page title
+                    document.getElementById("page-title").innerText = "User Profile"; // Change the displayed title
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });

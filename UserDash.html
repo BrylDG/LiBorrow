@@ -222,10 +222,14 @@
                 <h1>Recommendations</h1>
                 <p id="BookSimilar">Books Similar to <a href="#">Pride and Prejudice</a></p>
                 <div class="RecommendedBook">
-                    <img src="./Images/creation.svg" id="RecommendationImage">
-                    <p id="RecoBook">Creation Lake</p>
-                    <p id="RecoAuthor">Rachel Kushner</p>
-                    <img src="./Images/RatingComponent.svg" id="BookRating">
+                    <div class="RecommendedBookImg">
+                        <img src="./Images/creation.svg" id="RecommendationImage">
+                    </div>
+                    <div class="RecommendedBookDetails">
+                        <p id="RecoBook">Creation Lake</p>
+                        <p id="RecoAuthor">Rachel Kushner</p>
+                        <img src="./Images/RatingComponent.svg" id="BookRating">
+                    </div>
                 </div>
                 <button class="MoreButton"> More Like This</button>
             </div>
@@ -234,3 +238,29 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function moveRightSide() {
+        const rightSide = document.querySelector('.Right-Side');
+        const leftSide = document.querySelector('.Left-Side');
+        const bottomSection = document.querySelector('.bottom-section');
+
+        // Check screen width
+        if (window.innerWidth <= 1440) {
+            // Append Right-Side to Left-Side only if it hasn't been moved yet
+            if (!leftSide.contains(rightSide)) {
+                leftSide.appendChild(rightSide);
+            }
+        } else {
+            // Move Right-Side back to the original bottom-section if screen size is greater than 1440px
+            if (!bottomSection.contains(rightSide)) {
+                bottomSection.appendChild(rightSide);
+            }
+        }
+    }
+
+    // Call function on window resize
+    window.addEventListener('resize', moveRightSide);
+
+    // Call function on initial load
+    moveRightSide();
+</script>

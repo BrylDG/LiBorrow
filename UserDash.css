@@ -232,7 +232,7 @@
         width: 430px;
         background-color: white;
         /* box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); */
-        margin-bottom: 15%;
+        margin-bottom: 10%;
         border-radius: 10px;
         text-align: center;
         padding: 10%;
@@ -397,4 +397,459 @@
         font-weight: 200;
         font-family: 'Poppins', sans-serif;
         margin-bottom: 0px;
+    }
+
+    @media (max-width: 1440px) {
+
+        .Left-Side {
+            padding-left: 5%;
+
+        }
+
+        .FeaturedBooksContainer, .NewReleaseContainer {
+            max-width: 750px;
+            max-height: 300px;
+            margin-bottom: 40px;
+        }
+
+        .FeaturedBooksContainer .Books, .NewReleaseContainer .Books {
+            padding:10px;
+            height:150px;
+            margin: 5% auto;
+        }
+    
+        /* Resize content within FeaturedStoriesSectionContainer */
+        .FeaturedStoriesSectionContainer .Books img {
+            width: 100px; /* Scale images */
+            height: auto;
+        }
+    
+        .FeaturedStoriesSectionContainer .Books .Title {
+            font-size: 14px; /* Adjust font size */
+        }
+    
+        .FeaturedStoriesSectionContainer .Books .Author {
+            font-size: 12px;
+        }
+    
+        /* Resize content within NewReleaseSectionContainer */
+        .NewReleaseSectionContainer .Books img {
+            width: 100px;
+            height: auto;
+        }
+    
+        .NewReleaseSectionContainer .Books .Title {
+            font-size: 14px;
+        }
+    
+        .NewReleaseSectionContainer .Books .Author {
+            font-size: 12px;
+        }
+        .GenreSection {
+            width: 1120px;
+        }
+
+        .Section {
+            width: 265px;
+        }
+
+        .Right-Side {
+            width: 30%;
+            margin-top: 46.1%;
+        }
+        /* Resize content within Right-Side */
+        .Right-Side .MyBooksContainer {
+            width: 336px; /* Make inner containers match new width */
+            height: 390px;
+            padding: 0; /* Adjust padding as needed */
+            margin: 5%;
+        }
+
+        .RecommendationsContainer
+        {
+            width: 336px; /* Make inner containers match new width */
+            height: 300px;
+            padding: 0; /* Adjust padding as needed */
+            margin: 5%;
+        }
+
+        .Right-Side .MyBooksContainer h1, .Right-Side .RecommendationsContainer h1 {
+            font-size: 20px; /* Resize headings */
+            padding: 3%;
+        }
+    
+        .Right-Side .MyBook img {
+            width: 100px; /* Scale down images */
+            height: auto;
+        }
+
+        #RecommendationImage {
+            width: 150px;
+            height: 150px;
+            margin-top: 2%;
+        }
+    
+        .Right-Side .BookTitle {
+            font-size: 12px; /* Adjust book title font size */
+            margin:0;
+        }
+
+        .Right-Side .ViewDetailsButton {
+            font-size: 10px;
+        }
+    
+        .Right-Side .BookAuthor {
+            font-size: 9px;
+            margin-bottom: 0;
+        }
+
+        #BelovedBook.BookTitle {
+            padding-top: 0;
+        }
+
+        .ProgressStatus {
+            font-size: 8px;
+            margin-bottom: 0;
+        }
+
+        .ProgBarContainer {
+            padding: 1%;
+        }
+    
+        /* Adjust padding and margins for consistent look */
+        .FeaturedStoriesSectionContainer, .NewReleaseSectionContainer, .Right-Side {
+            padding: 10px;
+        }
+
+        .inputSection {
+            padding-left: 5%;
+        }
+
+        .SeeAllButton, .MoreButton {
+            height: 30px;
+            width: 130px;
+            font-size: 9px;
+            margin-top: 15px;
+        }
+
+        #BookSimilar {
+            padding-bottom: 2%;
+        }
+
+        #RecoBook, #RecoAuthor {
+            padding-bottom: 2%;
+        }
+
+        .RecommendedBook {
+            display: flex;
+            margin: 0;
+        }
+        .RecommendedBookDetails {
+            text-align: start;
+            width: 50%;
+        }
+
+        #BookSimilar {
+            font-size: small;
+            margin: 0px;
+        }
+    }
+    
+
+    @media (max-width: 1366px) {
+
+        .Left-Side {
+            padding-left: 5%;
+            height: 1600px;
+        }
+
+        .ContentHeader {
+            width: 1020px;
+        }
+    
+        .GenreSection {
+            width: 1020px;
+        }
+    
+        .Section {
+            width: 240px;
+        }
+    
+        .Section .right {
+            text-align: end;
+        }
+    
+        .Section .left {
+            width:60%;
+        }
+    
+        .Section h3 {
+            margin-bottom: 10px;
+        }
+
+        .Section h4 {
+            font-size: 20px;
+        }
+        
+        .Section p {
+            margin: 0;
+        }
+
+        .FeaturedBooksContainer, .NewReleaseContainer {
+            max-width: 700px;
+            max-height: 300px;
+        }
+
+        .FeaturedBooksContainer .Books, .NewReleaseContainer .Books {
+            padding:10px;
+            height:150px;
+            margin: 5% auto;
+        }
+    
+        /* Resize content within FeaturedStoriesSectionContainer */
+        .FeaturedStoriesSectionContainer .Books img {
+            width: 100px; /* Scale images */
+            height: auto;
+        }
+    
+        .FeaturedStoriesSectionContainer .Books .Title {
+            font-size: 14px; /* Adjust font size */
+        }
+    
+        .FeaturedStoriesSectionContainer .Books .Author {
+            font-size: 12px;
+        }
+    
+        /* Resize content within NewReleaseSectionContainer */
+        .NewReleaseSectionContainer .Books img {
+            width: 100px;
+            height: auto;
+        }
+    
+        .NewReleaseSectionContainer .Books .Title {
+            font-size: 14px;
+        }
+    
+        .NewReleaseSectionContainer .Books .Author {
+            font-size: 12px;
+        }
+        
+        .Right-Side {
+            width: 30%;
+            margin-top: 47.7%;
+        }
+        /* Resize content within Right-Side */
+        .Right-Side .MyBooksContainer {
+            width: 336px; /* Make inner containers match new width */
+            height: 390px;
+            padding: 0; /* Adjust padding as needed */
+            margin: 5%;
+        }
+
+        .RecommendationsContainer
+        {
+            width: 336px; /* Make inner containers match new width */
+            height: 300px;
+            padding: 0; /* Adjust padding as needed */
+            margin: 5%;
+        }
+
+        .Right-Side .MyBooksContainer h1, .Right-Side .RecommendationsContainer h1 {
+            font-size: 20px; /* Resize headings */
+            padding: 3%;
+        }
+    
+        .Right-Side .MyBook img {
+            width: 100px; /* Scale down images */
+            height: auto;
+        }
+
+        #RecommendationImage {
+            width: 150px;
+            height: 150px;
+            margin-top: 2%;
+        }
+    
+        .Right-Side .BookTitle {
+            font-size: 12px; /* Adjust book title font size */
+            margin:0;
+        }
+
+        .Right-Side .ViewDetailsButton {
+            font-size: 10px;
+        }
+    
+        .Right-Side .BookAuthor {
+            font-size: 9px;
+            margin-bottom: 0;
+        }
+
+        #BelovedBook.BookTitle {
+            padding-top: 0;
+        }
+
+        .ProgressStatus {
+            font-size: 8px;
+            margin-bottom: 0;
+        }
+
+        .ProgBarContainer {
+            padding: 1%;
+        }
+    
+        /* Adjust padding and margins for consistent look */
+        .FeaturedStoriesSectionContainer, .NewReleaseSectionContainer, .Right-Side {
+            padding: 10px;
+        }
+
+        .inputSection {
+            padding-left: 5%;
+        }
+
+        .SeeAllButton, .MoreButton {
+            height: 30px;
+            width: 130px;
+            font-size: 9px;
+            margin-top: 15px;
+        }
+
+        #BookSimilar {
+            padding-bottom: 2%;
+        }
+
+        #RecoBook, #RecoAuthor {
+            padding-bottom: 2%;
+        }
+
+        .RecommendedBook {
+            display: flex;
+            margin: 0;
+        }
+        .RecommendedBookDetails {
+            text-align: start;
+            width: 50%;
+        }
+
+        #BookSimilar {
+            font-size: small;
+            margin: 0px;
+        }
+    }
+
+
+    @media (max-width: 768px) {
+        .search-bar {
+            width: 510px;
+        }
+
+        .ContentHeader {
+            width: 690px;
+        }
+
+        .GenreSectionContainer {
+            width: 690px;
+        }
+
+        .GenreSection {
+            width: 690px;
+            justify-content: center;
+        }
+
+        .GenreSection h4 {
+            margin-top: 10%;
+            margin-bottom: 10%;
+            font-size: 25px;
+        }
+
+        .Section p {
+            font-weight: 100;
+            margin-bottom: 5%;
+        }
+
+        #Non-Fiction h4{
+            font-size: 23px;
+        }
+        .GenreSection h3 {
+            margin-top: 20%;
+            margin-bottom: 10%;
+            font-size: 30px;
+        }
+
+        .FeaturedBooksContainer, .NewReleaseContainer {
+            max-width: 690px;
+            max-height: 300px;
+        }
+
+        .FeaturedBooksContainer .Books, .NewReleaseContainer .Books {
+            padding:10px;
+            height:150px;
+            margin: 5% auto;
+        }
+    
+        /* Resize content within FeaturedStoriesSectionContainer */
+        .FeaturedStoriesSectionContainer .Books img {
+            width: 100px; /* Scale images */
+            height: auto;
+        }
+    
+        .FeaturedStoriesSectionContainer .Books .Title {
+            font-size: 12px; /* Adjust font size */
+        }
+    
+        .FeaturedStoriesSectionContainer .Books .Author {
+            font-size: 10px;
+        }
+    
+        /* Resize content within NewReleaseSectionContainer */
+        .NewReleaseSectionContainer .Books img {
+            width: 100px;
+            height: auto;
+        }
+    
+        .NewReleaseSectionContainer .Books .Title {
+            font-size: 12px;
+        }
+    
+        .NewReleaseSectionContainer .Books .Author {
+            font-size: 10px;
+        }
+
+        .bottom-section {
+            display:contents;
+        }
+
+        .Right-Side {
+            margin-top: 0;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10%;
+            width: 100%;
+            padding-left: 3%;
+        }
+
+        .RecommendationsContainer {
+            margin: 3%;
+            width: 350px;
+            height: 450px;
+        }
+        .MyBooksContainer {
+            margin: 3% !important;
+            width: 350px !important;
+            height: 450px !important;
+        }
+
+        .RecommendedBook {
+            display:contents;
+            margin: 0;
+        }
+        .RecommendedBookDetails {
+            text-align: center;
+            width: 100%;
+        }
+
+        #RecommendationImage {
+            width: 177px;
+            height: 150px;
+            margin-top: 5%;
+        }
     }
