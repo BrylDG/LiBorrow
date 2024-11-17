@@ -70,6 +70,7 @@ h5 {
     margin-left: 0;
     margin-right: 0;
     display: flex;
+    justify-content: space-between;
 }
 
 .col-md-4 {
@@ -125,15 +126,6 @@ h5 {
     align-items: center;
     justify-content: center;
 }
-/* Adjust Pie chart size and centering */
-.chart-container .pie-chart {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 300px;
-    margin-bottom: 30px;
-}
-
 
 canvas {
     display: block;
@@ -148,14 +140,24 @@ canvas {
 }
 
 .pie-container {
+    position: relative;
     margin-top: 30px;
 }
 
 .bar-chart-container {
+    position: relative;
     margin-top: 50px;
     height: 100%;
 }
 
+/* Adjust Pie chart size and centering */
+.chart-container .pie-chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    margin-bottom: 30px;
+}
 
 .bar-chart-container {
     height: 400px;
@@ -178,28 +180,4 @@ canvas {
 .pie-container li {
     font-size: 17px;
     height: 35px;
-}
-@media (max-width: 900px) {
-    #body-side {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        height: auto;
-        margin-top: 20px;
-    }
-
-    .pie-container,
-    .bar-chart-container {
-        width: 80vh;
-        margin: 0;
-    }
-
-    #myPieChart {
-        margin: 0;
-    }
-
-    #dashboard{
-        margin: 0;
-        padding: 0;
-    }
 }
