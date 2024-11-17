@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="LoginStyles.css">
+    <!-- Include SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
     <!-- NAVBAR SECTION -->
@@ -87,35 +89,12 @@
         <p>© 2024 Bravo Two All Rights Reserved.</p>
     </footer>
 
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">Login Status</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <?php
-                    if ($loginMessage == 'success' && $user['isAdmin'] == 1) {
-                        echo 'Login Success! Redirecting...';
-                        echo '<script>setTimeout(function() { window.location.href = "BootDash.php"; }, 2000);</script>';
-					} elseif ($loginMessage == 'success' && $user['isAdmin'] == 0) {
-						echo 'Login Success! Redirecting...';
-                        echo '<script>setTimeout(function() { window.location.href = "UserNavTemplate.html"; }, 2000);</script>';
-                    } elseif ($loginMessage == 'failed') {
-                        echo 'Login Failed. Please check your credentials.';
-                    }
-                    ?>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('eye-icon');
+            const eyeIcon = document.getElementById(' eye-icon');
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
@@ -141,8 +120,25 @@
         });
 
         <?php if ($loginMessage): ?>
-            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-            loginModal.show();
+            if ('<?php echo $loginMessage; ?>' === 'success') {
+                Swal.fire({
+                    title: 'Login Success!',
+                    text: 'Redirecting...',
+                    icon: 'success',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    willClose: () => {
+                        window.location.href = '<?php echo $user['isAdmin'] == 1 ? "BootDash.php" : "User NavTemplate.html"; ?>';
+                    }
+                });
+            } else if ('<?php echo $loginMessage; ?>' === 'failed') {
+                Swal.fire({
+                    title: 'Login Failed',
+                    text: 'Please check your credentials.',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
+            }
         <?php endif; ?>
     </script>
 </body>
