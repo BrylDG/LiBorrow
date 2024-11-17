@@ -29,6 +29,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
     <link rel="stylesheet" href="./TransactionsOverdue.css">
     <link rel="stylesheet" href="./ReadersInformation.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title >LiBorrow Dashboard</title>
 </head>
 <body>
@@ -475,6 +476,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         document.title = "Add Book";
                         document.getElementById("page-title").innerText = "Add Book"; 
                         setupAddBookFormSubmission(); // Set up the form submission for adding a book
+						setupCancelButton();
                     })
                     .catch(error => {
                         console.error('Error fetching addbook.php:', error);
@@ -484,7 +486,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Function to handle the form submission for adding a new book
-    function setupAddBookFormSubmission() {
+  function setupAddBookFormSubmission() {
     const form = document.getElementById("addBookForm");
     if (form) {
         form.addEventListener("submit", function(event) {
@@ -496,36 +498,50 @@ document.addEventListener("DOMContentLoaded", function() {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.text()) // Get response as text
-            .then(data => {
-                console.log('Raw response:', data);
-
-                // Check if the response is valid JSON
-                try {
-                    const responseData = JSON.parse(data);
-
-                    const responseMessage = document.getElementById("responseMessage");
-
-                    if (responseData.success) {
-                        responseMessage.innerHTML = `<p style="color:green;">${responseData.message}</p>`;
-                    } else {
-                        responseMessage.innerHTML = `<p style="color:red;">${responseData.message}</p>`;
-                    }
-
+            .then(() => {
+                // Show success message using SweetAlert
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Book added successfully.',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    form.reset(); // Reset the form after successful submission
                     loadBooks(); // Reload books after adding
-                } catch (error) {
-                    console.error('Error parsing JSON:', error);
-                    console.error('Invalid JSON response:', data); // Log invalid response data
-                    document.getElementById("responseMessage").innerHTML = `<p style="color:red;">An error occurred. Please try again.</p>`;
-                }
+                });
             })
             .catch(error => {
+                // Show error message using SweetAlert
                 console.error('Error:', error);
-                document.getElementById("responseMessage").innerHTML = `<p style="color:red;">An error occurred. Please try again.</p>`;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An error occurred. Please try again.',
+                    confirmButtonText: 'OK'
+                });
             });
         });
     }
 }
+	function setupCancelButton() {
+        const cancelButton = document.querySelector('button[type="button"]'); // Assuming "Cancel" button has `type="button"`
+        if (cancelButton) {
+            cancelButton.addEventListener("click", function () {
+                // Fetch and load the Inventory page dynamically
+                fetch('./InventoryDash.php')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("body-content").innerHTML = data;
+                        document.title = "Inventory";
+                        document.getElementById("page-title").innerText = "Inventory";
+                        loadBooks(); // Load books after returning to Inventory
+                        setupAddBookButton(); // Reattach listeners for Add Book button
+                    })
+                    .catch(error => console.error('Error fetching InventoryDash.php:', error));
+            });
+        }
+    }
+
 
     // Function to load books (AJAX)
     function loadBooks() {
@@ -682,6 +698,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 dropdown.style.display = "none";
             }
         });
+		
 		
 
 
