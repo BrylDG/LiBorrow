@@ -9,30 +9,10 @@ if (!isset($_SESSION['fullname'])) {
     exit();
 }
 
-// Get the total number of records from the returns table
-$total_records_query = "SELECT COUNT(*) FROM returns";
-$total_records_result = $conn->query($total_records_query);
-$total_records = $total_records_result->fetch_row()[0];
-
-// Set the number of results per page
-$results_per_page = 5;
-
-// Calculate total pages
-$total_pages = ceil($total_records / $results_per_page);
-
-// Get the current page number from the URL, default to 1 if not set
-$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$current_page = max(1, min($current_page, $total_pages));
-
-// Calculate the starting record for the current page
-$start_from = ($current_page - 1) * $results_per_page;
-
 // Fetch data for the current page
-$sql = "SELECT bookname, author, status, username, datereturned, image FROM returns LIMIT $start_from, $results_per_page";
+$sql = "SELECT bookname, author, status, username, datereturned, image FROM returns";
 $result = $conn->query($sql);
 
-// Initial SQL query with pagination
-$sql = "SELECT bookname, author, status, username, datereturned, image FROM returns WHERE 1=1";
 
 // Add search filter if provided
 if (!empty($_GET['search'])) {
@@ -54,14 +34,10 @@ if (!empty($_GET['sort'])) {
     // Default sorting by bookname
     $sql .= " ORDER BY bookname";
 }
-
-// Add pagination limits
-$sql .= " LIMIT $start_from, $results_per_page";
-$result = $conn->query($sql);
 ?>
     <div class="content-box" id="content2">
         <div class="container">
-            <div id="Returend-d1" class="Returned-box">
+            <div id="Returend-d1" class="Returned-box" overflow-x:auto; overflow-y: auto;>
                 <div class="input">
                     <!-- Search, Sort, and Filter Section -->
                     <div class="search-bar">
@@ -119,37 +95,8 @@ $result = $conn->query($sql);
                     </tbody>
                 </table>
                 
-                <!-- Pagination Section -->
-                <div class="Returned-pagination">
-                    <?php if ($current_page > 1): ?>
-                        <a href="?page=<?php echo $current_page - 1; ?>" class="prev">Previous</a>
-                    <?php endif; ?>
-
-                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                        <a href="?page=<?php echo $i; ?>" class="page-number <?php echo ($i === $current_page) ? 'active' : ''; ?>">
-                            <?php echo $i; ?>
-                        </a>
-                    <?php endfor; ?>
-
-                    <?php if ($current_page < $total_pages): ?>
-                        <a href="?page=<?php echo $current_page + 1; ?>" class="next">Next</a>
-                    <?php endif; ?>
-                </div>
+                
             </div>
         </div>
 
-        <script>
-            document.querySelectorAll('.Returned-pagination a').forEach(link => {
-                link.addEventListener('click', function(event) {
-                    event.preventDefault(); // Prevent default anchor behavior
-
-                    // Remove 'active' class from all links
-                    document.querySelectorAll('.Returned-pagination a').forEach(btn => {
-                        btn.classList.remove('active');
-                    });
-                    
-                    // Add 'active' class to the clicked link
-                    this.classList.add('active');
-                });
-            });
-        </script>
+ 

@@ -248,7 +248,7 @@
         });
 
         function loadUserDashboard() {
-            fetch('./UserDash.html')
+            fetch('./UserDash.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;

@@ -61,7 +61,7 @@
 	$borrowedQuery = "SELECT COUNT(*) AS count FROM borrows";
 	$returnedQuery = "SELECT COUNT(*) AS count FROM returns";
 	$pendingQuery = "SELECT COUNT(*) AS count FROM pendings";
-	$overdueQuery = "SELECT COUNT(*) AS count FROM overdues";
+	$overdueQuery = "SELECT COUNT(*) AS count FROM borrows WHERE duedate < CURDATE()";
 
 	// Execute queries
 	$borrowedResult = $conn->query($borrowedQuery);

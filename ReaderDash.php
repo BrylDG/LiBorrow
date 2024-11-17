@@ -1,99 +1,104 @@
 <?php
-include('connection.php'); // Include your database connection
+include('connection.php');
 
-// Get the total number of records from the 'users' table
-$total_records_query = "SELECT COUNT(*) FROM users";
-$total_records_result = $conn->query($total_records_query);
-$total_records = $total_records_result->fetch_row()[0];
+// Function to get all users with optional search and sorting
+function getAllUsers($conn, $searchTerm = '', $sortBy = '') {
+    $sql = "SELECT idno, fullname, email FROM users WHERE fullname LIKE ?";
+    
+    // Prepare the search term
+    $searchTerm = '%' . $conn->real_escape_string($searchTerm) . '%';
 
-// Set the number of results per page
-$results_per_page = 5;
+    // Add sorting
+    if ($sortBy) {
+        $sql .= " ORDER BY " . $conn->real_escape_string($sortBy);
+    }
 
-// Calculate total pages
-$total_pages = ceil($total_records / $results_per_page);
+    // Prepare the statement
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('s', $searchTerm);
+    
+    $stmt->execute();
+    return $stmt->get_result();
+}
 
-// Get the current page number from the URL, default to 1 if not set
-$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$current_page = max(1, min($current_page, $total_pages));
+// Initialize variables for search and sort
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+$sortBy = isset($_GET['sort']) ? $_GET['sort'] : '';
 
-// Calculate the starting record for the current page
-$start_from = ($current_page - 1) * $results_per_page;
+// Get users based on search and sort
+$result = getAllUsers($conn, $searchTerm, $sortBy);
 
-// Fetch data for the current page
-$sql = "SELECT idno, fullname, email FROM users LIMIT $start_from, $results_per_page";
-$result = $conn->query($sql);
+// Check if it's an AJAX request
+if (isset($_GET['ajax'])) {
+    $data = [];
+    
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $data[] = [
+                'idno' => htmlspecialchars($row["idno"]),
+                'fullname' => htmlspecialchars($row["fullname"]),
+                'email' => htmlspecialchars($row["email"]),
+            ];
+        }
+    }
+
+    // Return JSON response
+    echo json_encode(['table_body' => $data]);
+    exit; // Stop further execution
+}
+
+// If it's not an AJAX request, display the full page
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Reader's Information</title>
-</head>
-<body>
 <div class="content-box" id="readers-info-content">
     <div class="container">
         <div id="d1" class="Reader-box">
-            <!-- Input text field and buttons centered on top -->
             <div class="input-area">
                 <div class="search-bar">
-                    <input type="text" placeholder="Search...">
+                    <input type="text" id="search-input" placeholder="Search..." oninput="loadUsers()">
                     <span class="search-icon">
                         <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
                     </span>
                 </div>
-                <button class="sort-btn">
-                    <img src="./Images/Sort.svg" alt="Sort Icon" width="20" height="20"> 
-                    Sort By
-                    <img src="./Images/vec.svg" alt="Sort Arrow" width="18" height="18">
-                </button>
-                <button class="filter-btn">
-                    <img src="./Images/Filter_alt_fill.svg" alt="Filter Icon" width="20" height="20"> 
-                    Filter By
-                    <img src="./Images/Expand_down.svg" alt="Filter Arrow" width="18" height="18">
-                </button>
+                <select id="sort-dropdown" onchange="loadUsers()">
+                    <option value="">Sort By</option>
+                    <option value="fullname">Name</option>
+                    <option value="email">Email</option>
+                </select>
             </div>
 
-            <!-- Table Section -->
-            <table class="reader-table">
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr><td>" . $row["idno"]. "</td><td>" . $row["fullname"]. "</td><td>" . $row["email"]. "</td><td><a href='#' class='view-more'>View more</a></td></tr>";
+            <!-- Scrollable Table Section -->
+            <div style="max-height: 400px; overflow-y: auto; width: 95%;">
+                <table class="reader-table" style="width: 95%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reader-table-body">
+                        <?php
+                        if ($result && $result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr>
+                                        <td>" . htmlspecialchars($row["idno"]) . "</td>
+                                        <td>" . htmlspecialchars($row["fullname"]) . "</td>
+                                        <td>" . htmlspecialchars($row["email"]) . "</td>
+                                        <td><a href='#' class='view-more'>View more</a></td>
+                                      </tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='4'>No data found</td></tr>";
                         }
-                    } else {
-                        echo "<tr><td colspan='4'>No data found</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-
-            <!-- Pagination Section -->
-            <div class="Reader-pagination">
-            <?php if ($current_page > 1): ?>
-             <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?page=<?php echo $current_page - 1; ?>" class="prev">Previous</a>
-            <?php endif; ?>
-
-            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?page=<?php echo $i; ?>" class="page-number <?php echo ($i === $current_page) ? 'active' : ''; ?>">
-                    <?php echo $i; ?>
-                </a>
-            <?php endfor; ?>
-
-            <?php if ($current_page < $total_pages): ?>
-                <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?page=<?php echo $current_page + 1; ?>" class="next">Next</a>
-            <?php endif; ?>
+                        ?>
+                    </tbody>
+                </table>
             </div>
+
+            <!-- Loading Indicator -->
+            <div id="loading" style="display: none;">Loading more users...</div>
         </div>
     </div>
 </div>
-</body>
-</html>
+
