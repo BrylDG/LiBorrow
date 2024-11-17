@@ -1,140 +1,99 @@
 <?php
-include ('connection.php');
+// Include the database connection
+include 'connection.php';
 
-// Initialize the message variable
-$message = "";
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-// Check if the form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Collect form data
+    $bookId = $_POST['bookid'] ?? '';
+    $author = $_POST['author'] ?? '';
+    $bookTitle = $_POST['booktitle'] ?? '';
+    $pubDate = $_POST['pubdate'] ?? '';
+    $genre = $_POST['genre'] ?? '';
+    $quantity = $_POST['quantity'] ?? '';
+    $descrpt = $_POST['descrpt'] ?? '';
 
-    // Check if required fields are not empty
-    if (!empty($_POST['bookid']) && !empty($_POST['author']) && !empty($_POST['booktitle']) && !empty($_POST['pubdate']) && !empty($_POST['genre']) && !empty($_POST['quantity']) && !empty($_POST['descrpt'])) {
+    // Validate input fields
+    if (empty($bookId) || empty($author) || empty($bookTitle) || empty($pubDate) || empty($genre) || empty($quantity)) {
+        echo json_encode(['success' => false, 'message' => 'Please fill in all fields.']);
+        exit;
+    }
 
-        // Get the input values from the form
-        $bookid = $_POST['bookid'];
-        $author = $_POST['author'];
-        $booktitle = $_POST['booktitle'];
-        $pubdate = $_POST['pubdate'];
-        $genre = $_POST['genre'];
-        $quantity = $_POST['quantity'];
-        $descrpt = $_POST['descrpt'];
-        $bookimg = ""; // Initialize bookimg variable
+    // Handle image upload
+    $imagePath = '';
+    if (isset($_FILES['book_image']) && $_FILES['book_image']['error'] == 0) {
+        $targetDir = '/Images/';
+        $targetFile = basename($_FILES['book_image']['name']);
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
-        // Handle the image upload
-        if (isset($_FILES['book_image']) && $_FILES['book_image']['error'] == UPLOAD_ERR_OK) {
-            $fileTmpPath = $_FILES['book_image']['tmp_name'];
-            $fileName = $_FILES['book_image']['name'];
-            $fileSize = $_FILES['book_image']['size'];
-            $fileType = $_FILES['book_image']['type'];
-            $fileNameCmps = explode(".", $fileName);
-            $fileExtension = strtolower(end($fileNameCmps));
-
-            // Define allowed file extensions
-            $allowedfileExtensions = ['jpg', 'gif', 'png', 'jpeg'];
-            if (in_array($fileExtension, $allowedfileExtensions)) {
-                // Set upload file path
-                $uploadFileDir = './images/';
-                $dest_path = $uploadFileDir . $fileName;
-
-                // Move the file to the upload directory
-                if(move_uploaded_file($fileTmpPath, $dest_path)) {
-                    // Set the bookimg variable to the file path
-                    $bookimg = $dest_path;
-
-                    // Prepare the SQL statement
-                    $stmt = $conn->prepare("INSERT INTO books (bookid, author, booktitle, pubdate, genre, quantity, descrpt, bookimg) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-                    
-                    // Bind parameters
-                    $stmt->bind_param("issssiss", $bookid, $author, $booktitle, $pubdate, $genre, $quantity, $descrpt, $bookimg);
-
-                    // Execute the statement and check for success
-                    if ($stmt->execute()) {
-                        // Return a success response for AJAX
-                        echo json_encode(['success' => true, 'message' => "New record created successfully"]);
-                    } else {
-                        // Return an error response for AJAX
-                        echo json_encode(['success' => false, 'message' => "Error: " . $stmt->error]);
-                    }
-                } else {
-                    echo json_encode(['success' => false, 'message' => "Error moving the uploaded file."]);
-                }
+        if (getimagesize($_FILES['book_image']['tmp_name']) && $_FILES['book_image']['size'] <= 5000000 && in_array($imageFileType, ['jpg', 'jpeg', 'png', 'gif'])) {
+            if (move_uploaded_file($_FILES['book_image']['tmp_name'], $targetFile)) {
+                $imagePath = $targetFile;
             } else {
-                echo json_encode(['success' => false, 'message' => "Upload failed. Allowed file types: jpg, gif, png, jpeg."]);
+                echo json_encode(['success' => false, 'message' => 'Image upload failed.']);
+                exit;
             }
         } else {
-            echo json_encode(['success' => false, 'message' => "No image uploaded or there was an upload error."]);
+            echo json_encode(['success' => false, 'message' => 'Invalid image or file too large.']);
+            exit;
         }
+    }
 
-        // Close the statement
-        $stmt->close();
-        exit(); // Stop further execution
+    // Insert data into the database using the connection from connection.php
+    $query = "INSERT INTO books (bookid, author, booktitle, pubdate, genre, quantity, descrpt, bookimg) 
+              VALUES ('$bookId', '$author', '$bookTitle', '$pubDate', '$genre', '$quantity', '$descrpt', '$imagePath')";
+
+    if (mysqli_query($conn, $query)) {
+        echo json_encode(['success' => true, 'message' => 'Book added successfully.']);
     } else {
-        // Return an error response for AJAX
-        echo json_encode(['success' => false, 'message' => "Please fill in all fields."]);
-        exit();
+        echo json_encode(['success' => false, 'message' => 'Failed to add book. Error: ' . mysqli_error($conn)]);
     }
 }
-
-// Close the connection
-$conn->close();
 ?>
 
-
-
-<!-- HTML form part -->
-<div class="content-box" id="content2">
+<!-- HTML Form -->
+<div class="content-box">
     <div class="container">
-        <div id="Readd1" class="Binfobox">
-            <div class="Readbox Rglobal" id="BboxView">
-                <div class="Bview input-container" id="image-container">
-                    <img src="./Images/AddBook.png" alt="Book one" id="book-image">
-                    <input type="file" name="book_image" accept="image/*" required> <!-- File input for image -->
-                </div>
-                <div id="Book-details">
-                    <form id="addBookForm" method="POST" enctype="multipart/form-data"> <!-- Add ID to the form -->
-                        <div class="input-row">
-                            <div class="input-container">
-                                <input type="text" name="bookid" id="input-one" placeholder=" " required>
-                                <label for="input-one">Book ID</label>
-                            </div>
-                            <div class="input-container">
-                                <input type="text" name="author" id="input-two" placeholder=" " required>
-                                <label for="input-two">Author</label>
-                            </div>
-                        </div>
-                        <div class="input-container">
-                            <input type="text" name="booktitle" id="input-three" placeholder=" " required>
-                            <label for="input-three">Title</label>
-                        </div>
-                        <div class="input-row">
-                            <div class="input-container">
-                                <input type="date" name="pubdate" id="input-four" required>
-                                <label for="input-four">Publication Date</label>
-                            </div>
-                            <div class="input-container">
-                                <select name="genre" id="input-five" required> <!-- Removed extra space -->
-                                    <option value="">Select a genre</option>
-                                    <option value="fiction">Fiction</option>
-                                    <option value="non-fiction">Non-Fiction</option>
-                                    <option value="mystery">Mystery</option>
-                                    <option value="sci-fi">Sci-Fi</option>
-                                    <option value="fantasy">Fantasy</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="input-container">
-                            <input type="number" name="quantity" id="input-six" placeholder=" " required>
-                            <label for="input-quantity">Quantity</label>
-                        </div>
-                        <textarea name="descrpt" id="myTextarea" rows="4" cols="50" placeholder="Description..."></textarea>
-                        <div class="updatedelete-btn">
-                            <button type="submit" class="update-btn" id="Adbtn">Add</button>
-                            <button type="button" class="update-btn" id="banbtn" onclick="window.location.href='#';">Cancel</button>
-                        </div>
-                    </form> <!-- Form ends here -->
-                    <div id="responseMessage"></div> <!-- Placeholder for response message -->
-                </div>                   
+        <form id="addBookForm" method="POST" enctype="multipart/form-data">
+            <div class="input-container">
+                <input type="text" name="bookid" placeholder="Book ID" required>
+                <label>Book ID</label>
             </div>
-        </div>
+            <div class="input-container">
+                <input type="text" name="author" placeholder="Author" required>
+                <label>Author</label>
+            </div>
+            <div class="input-container">
+                <input type="text" name="booktitle" placeholder="Book Title" required>
+                <label>Title</label>
+            </div>
+            <div class="input-container">
+                <input type="date" name="pubdate" required>
+                <label>Publication Date</label>
+            </div>
+            <div class="input-container">
+                <select name="genre" required>
+                    <option value="">Select Genre</option>
+                    <option value="fiction">Fiction</option>
+                    <option value="non-fiction">Non-Fiction</option>
+                    <option value="mystery">Mystery</option>
+                    <option value="sci-fi">Sci-Fi</option>
+                    <option value="fantasy">Fantasy</option>
+                </select>
+                <label>Genre</label>
+            </div>
+            <div class="input-container">
+                <input type="number" name="quantity" placeholder="Quantity" required>
+                <label>Quantity</label>
+            </div>
+            <textarea name="descrpt" placeholder="Description..."></textarea>
+            <div class="input-container">
+                <input type="file" name="book_image" accept="image/*" required>
+                <label>Upload Book Image</label>
+            </div>
+            <button type="submit">Add Book</button>
+        </form>
     </div>
 </div>
