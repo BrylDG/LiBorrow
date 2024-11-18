@@ -17,12 +17,10 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 63svh;
-    margin-top: 3.6em;
-	max-height: 400px; /* Adjust the height as needed */
+    max-height: 200px; /* Set a maximum height for scrolling */
     overflow-y: auto;  /* Enables vertical scrolling */
+    margin-top: 3.6em; /* Space above the History box */
 }
-
 
 hr {
     height: 2px;
@@ -48,12 +46,7 @@ hr {
     position: relative;
     right: 20em;
     bottom: 4em;
-    
 }
-
-/* .search-bar {
-    position: relative;
-} */
 
 .search-bar input {
     width: 300px;
@@ -71,7 +64,7 @@ hr {
     position: absolute;
     left: 90%;
     top: 50%;
-    transform: translateY(-50%);
+    transform : translateY(-50%);
 }
 
 /* Buttons */
@@ -82,58 +75,47 @@ hr {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+
 .addbtn {
     position: relative;
     left: 34em;
     font-size: 16px;
-    margin: 20px  20px 5px 20px;
+    margin: 20px 20px 5px 20px;
     padding: 10px 20px;
     border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+
 .addbtn {
     background-color: #ff6600;
     color: white;
     border: none;
 }
+
 .sort-btn {
     background-color: #ff6600;
     color: white;
     border: none;
 }
-.sort-btn{
+
+.sort-btn {
     float: right;
 }
-/* .sort-btn img:hover{
-    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
-}
 
-.sort-btn:hover{
-    background-color: white;
-    color: #ff6600;
-    border: 1px solid #ff6600;
-} */
 .filter-btn {
     border: 1px solid #ff6600;
     background-color: white;
     color: #ff6600;
-    
 }
-/* .filter-btn:hover {
-    border: 1px solid #ff6600;
-    background-color: #ff6600;
-    color: white;
-} */
+
 .sort-btn img, .filter-btn img {
     margin: 0 5px;
 }
-/* .filter-btn img:hover {
-    filter: brightness(0) invert(1); 
-} */
+
 /* User Table */
 .History-table {
-    width: 95%;
+    width: 100%; /* Ensure the table takes the full width */
     margin: 15px auto;
     border-collapse: collapse;
     margin-top: 5em;
@@ -142,7 +124,7 @@ hr {
 .History-table th,
 .History-table td {
     text-align: left;
-    padding: 20px;
+    padding: 10px; /* Adjust padding for better appearance */
 }
 
 .History-table th {
