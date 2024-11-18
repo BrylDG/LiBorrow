@@ -76,8 +76,6 @@
 .action-buttons {
     display: flex;
     gap: 10px; /* Space between buttons */
-    margin-right: 10em;
-    
 }
 
 .approve-btn, .decline-btn {

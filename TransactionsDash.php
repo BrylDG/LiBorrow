@@ -49,19 +49,17 @@
                 // Output data for each row
                 while($row = $result->fetch_assoc()) {
                     echo '
-                    <div class="pendbox-one">
-                        <p class="name">' . htmlspecialchars($row["fullname"]) . '</p>
-                        <p class="date">Request Date: ' . htmlspecialchars($row["requestdate"]) . '</p>
-                        <div class="pendbox global">
+                    <div class="pendbox one">
+                        <div class="pendbox-globals">
                             <img src="' . htmlspecialchars($row["bookimg"]) . '" alt="Book image" class="book-img">
-                            <div class="book-details">
+                                <p class="name">' . htmlspecialchars($row["fullname"]) . '</p>
+                                <p class="date">Request Date: ' . htmlspecialchars($row["requestdate"]) . '</p>
                                 <p class="btitle">' . htmlspecialchars($row["booktitle"]) . '</p>
                                 <p class="author">' . htmlspecialchars($row["author"]) . '</p>
+                            <div class="action-buttons">
+                                <button class="approve-btn">Approve</button>
+                                <button class="decline-btn">Decline</button>
                             </div>
-                        </div>
-                        <div class="action-buttons">
-                            <button class="approve-btn">Approve</button>
-                            <button class="decline-btn">Decline</button>
                         </div>
                     </div>';
                 }
