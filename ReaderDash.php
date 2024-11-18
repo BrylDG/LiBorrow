@@ -67,7 +67,7 @@ if (isset($_GET['ajax'])) {
             </div>
 
             <!-- Scrollable Table Section -->
-            <div style="max-height: 400px; overflow-y: auto; width: 95%;">
+            <div style="max-height: 550px; overflow-y: auto; width: 95%;">
                 <table class="reader-table" style="width: 95%; border-collapse: collapse;">
                     <thead>
                         <tr>

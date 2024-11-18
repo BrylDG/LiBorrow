@@ -15,9 +15,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $quantity = $_POST['quantity'] ?? '';
     $descrpt = $_POST['descrpt'] ?? '';
 
+    // Debugging: Check if fields are being received correctly
+    error_log('bookId: ' . $bookId);
+    error_log('author: ' . $author);
+    error_log('bookTitle: ' . $bookTitle);
+    error_log('pubDate: ' . $pubDate);
+    error_log('genre: ' . $genre);
+    error_log('quantity: ' . $quantity);
+    error_log('descrpt: ' . $descrpt);
+
     // Validate input fields
     if (empty($bookId) || empty($author) || empty($bookTitle) || empty($pubDate) || empty($genre) || empty($quantity)) {
-        echo json_encode(['success' => false, 'message' => 'Please fill in all fields.']);
+        echo 'Please fill in all fields.';
         exit;
     }
 
@@ -31,12 +40,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (getimagesize($_FILES['book_image']['tmp_name']) && $_FILES['book_image']['size'] <= 5000000 && in_array($imageFileType, ['jpg', 'jpeg', 'png', 'gif'])) {
             if (move_uploaded_file($_FILES['book_image']['tmp_name'], $targetFile)) {
                 $imagePath = $targetFile;
+                error_log('Image Path: ' . $imagePath); // Debugging image upload
             } else {
-                echo json_encode(['success' => false, 'message' => 'Image upload failed.']);
+                echo 'Image upload failed.';
                 exit;
             }
         } else {
-            echo json_encode(['success' => false, 'message' => 'Invalid image or file too large.']);
+            echo 'Invalid image or file too large.';
             exit;
         }
     }
@@ -46,9 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               VALUES ('$bookId', '$author', '$bookTitle', '$pubDate', '$genre', '$quantity', '$descrpt', '$imagePath')";
 
     if (mysqli_query($conn, $query)) {
-        echo json_encode(['success' => true, 'message' => 'Book added successfully.']);
+        echo 'success'; // Return a simple success message
     } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to add book. Error: ' . mysqli_error($conn)]);
+        error_log('Database Insert Error: ' . mysqli_error($conn)); // Debugging database error
+        echo 'error'; // Return a simple error message
     }
 }
 ?>
@@ -94,6 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label>Upload Book Image</label>
             </div>
             <button type="submit">Add Book</button>
+			<!-- Cancel Button -->
+            <button type="button">Cancel</button>
         </form>
     </div>
 </div>

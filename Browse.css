@@ -85,57 +85,18 @@
 #browse-books{
     margin-right: 5em;
 }
-
 #User-books {
-    height:100%;
-}
-
-
-.userbooks-container {
     display: flex;
     flex-wrap: wrap; /* Allows wrapping to a new line */
     gap: 20px; /* Adds space between the divs */
     justify-content: flex-start; /* Aligns the divs to the left */
     padding: 20px;
-    padding-bottom: 30%;
     overflow-y: auto;
     overflow-x: hidden;
     height: 100%;
     background-color: #f5f5f5;
-
-}
-/* Stacking layout for screens 1600px wide or smaller */
-@media (max-width: 1600px) {
-    #User-books {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .book-container {
-        width: 80%; /* Adjust width as needed */
-        margin-bottom: 20px;
-    }
 }
 
-@media (max-width: 1600px) {
-        .UserBrowsebox {
-        height: auto;
-        overflow-x: auto;
-        overflow-y: hidden;
-        white-space: nowrap; /* Prevents wrapping */
-    }
-
-
-    .browse-genre {
-        display: flex;
-        justify-content: flex-start; /* Align items to the left */
-        overflow-x: auto; /* Makes the container horizontally scrollable */
-        flex-wrap: nowrap; /* Prevents icons from wrapping */
-    }
-    .pendbox{
-        display: block;
-    }
-}
 #Book-Author{
     font-size: 14px;
     margin-top: -10px;
@@ -154,9 +115,9 @@
     background-color: white; /* Optional background for visibility */
     border-radius: 10px; /* Optional rounded corners */
     flex-direction: column;
-    margin-top: 3%;    
+    
+    
 }
-
 .button-container {
     display: flex;
     justify-content: space-between;
@@ -273,13 +234,11 @@
 }
 
 .global {
-    gap: auto;  
     height: 18vh;
+    background-color: white;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap; /* Allows items to wrap to the next line */
-    overflow-y: auto;
+    justify-content: space-between; /* Space between book details and buttons */
+    align-items: center; /* Center align items vertically */
 }
 
 /* Search */
@@ -291,7 +250,6 @@
     gap: 10px;
     position: relative;
     right: 25.4em;
-    margin-bottom:1%;
 }
 
 /* Search bar input styling */
@@ -335,275 +293,4 @@
 
 .sort-btn img {
     margin: 0 5px;
-}
-
-@media (max-width: 1440px) {
-
-    
-    #content2 {
-        padding-left: 2%;
-    }
-
-    /* Adjust main browse container */
-    .browse-box {
-        width: 100%; /* Scale down */
-        padding: 10px; /* Adjust padding as needed */
-        padding-right: 20px;
-    }
-
-    /* Adjust genre section */
-    .browse-genre {
-        flex-wrap: wrap;
-        justify-content: space-between; /* Center items */
-        gap: 5px; /* Adjust gap */
-        width: 98%;
-    }
-    
-
-    #genre-heading {
-        font-size: 20px; /* Scale down heading */
-    }
-
-    .icon-container {
-        width: 70px; /* Scale down icon container */
-    }
-
-    .genre-icon {
-        width: 50px; /* Resize genre icons */
-        height: 50px;
-    }
-
-    .icon-label {
-        font-size: 12px; /* Adjust label font size */
-    }
-
-    /* Adjust book container */
-    .book-container {
-        width: 200px; /* Reduce width */
-        height: auto; /* Allow height to adjust with content */
-        padding: 5px; /* Adjust padding */
-    }
-
-    .book-container img.book-image {
-        width: 80%; /* Scale down book images */
-        height: auto;
-    }
-
-    .book-container #B-title {
-        font-size: 14px; /* Scale down title font */
-    }
-
-    .book-container #Book-Author {
-        font-size: 12px; /* Adjust author font size */
-    }
-
-    /* Button adjustments */
-    #borbtn, #borbtn2, #stats-btn, #stats-btn2, #stats-btn3 {
-        padding: 6px 15px; /* Adjust padding */
-        font-size: 12px; /* Adjust button text */
-    }
-
-    .sort-btn {
-        padding: 6px 15px; /* Adjust sort button padding */
-        font-size: 14px; /* Adjust font size */
-    }
-
-    .search-bar input {
-        width: 250px; /* Scale down search bar width */
-        height: 35px;
-    }
-
-    .forsearch-icon img {
-        width: 18px;
-        height: 18px;
-    }
-
-    .Userinput {
-        padding-left: 5%;
-    }
-
-    #search-bok {
-        padding-left: 0; /* Remove left padding */
-        position: static; /* Ensures default positioning at the start */
-        align-self: flex-start;
-    }
-
-    #User-books {
-        display: flex;
-        flex-wrap: wrap; /* Enables wrapping to the next line */
-        align-items: center;
-        justify-content: flex-start; /* Aligns items to the left */
-        gap: 30px; /* Adds space between items */
-        /* padding-bottom: 30%; */
-    }
-    
-    .pendbox .book-container {
-        width: 250px; /* Adjust width based on preferred stacking */
-        height: auto;
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    /* Scale down book image */
-    .pendbox .book-container img.book-image {
-        width: 70%; /* Scale down image size */
-        height: auto;
-    }
-
-    /* Adjust book title and author text size */
-    .pendbox .book-container #B-title {
-        font-size: 14px; /* Reduce title font size */
-    }
-
-    .pendbox .book-container #Book-Author {
-        font-size: 12px; /* Reduce author font size */
-    }
-
-    /* Adjust button sizes within .pendbox */
-    .pendbox #borbtn, .pendbox #borbtn2, .pendbox #stats-btn, .pendbox #stats-btn2, .pendbox #stats-btn3 {
-        padding: 5px 15px; /* Adjust padding for smaller buttons */
-        font-size: 10px; /* Reduce button font size */
-    }
-
-    /* Adjust icon sizes */
-    .pendbox .icon-container {
-        width: 70px; /* Scale down icon container */
-    }
-
-    .pendbox .genre-icon {
-        width: 45px; /* Resize genre icons */
-        height: 45px;
-    }
-
-    .pendbox .icon-label {
-        font-size: 12px; /* Adjust label font size */
-    }
-}
-
-@media (max-width: 768px) {
-    .row {
-        height: 2000px;
-    }
-
-    /* Center align .Userinput */
-    .Userinput {
-        padding-left: 27%;
-    }
-
-    #search-bok {
-        padding-left: 0; /* Remove left padding */
-        position: static; /* Ensures default positioning at the start */
-        align-self: center;
-    }
-
-    .search-bar input {
-        width: 250px; /* Adjust the width of the search bar for smaller screens */
-        height: 35px;
-    }
-
-    .forsearch-icon img {
-        width: 18px;
-        height: 18px;
-    }
-
-    #User-books {
-        display: flex;
-        flex-wrap: wrap; /* Enables wrapping to the next line */
-        align-items: center;
-        justify-content: center; /* Aligns items to the left */
-        gap: 45px; /* Adds space between items */
-    }
-
-    .pendbox .book-container {
-        width: 250px; /* Adjust width based on preferred stacking */
-        height: auto;
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    
-    /* Scale down book image */
-    .pendbox .book-container img.book-image {
-        width: 70%; /* Scale down image size */
-        height: auto;
-    }
-
-    /* Adjust book title and author text size */
-    .pendbox .book-container #B-title {
-        font-size: 14px; /* Reduce title font size */
-    }
-
-    .pendbox .book-container #Book-Author {
-        font-size: 12px; /* Reduce author font size */
-    }
-
-    /* Adjust button sizes within .pendbox */
-    .pendbox #borbtn, .pendbox #borbtn2, .pendbox #stats-btn, .pendbox #stats-btn2, .pendbox #stats-btn3 {
-        padding: 5px 10px; /* Adjust padding for smaller buttons */
-        font-size: 10px; /* Reduce button font size */
-    }
-
-    /* Adjust icon sizes */
-    .pendbox .icon-container {
-        width: 50px; /* Scale down icon container */
-    }
-
-    .pendbox .genre-icon {
-        width: 40px; /* Resize genre icons */
-        height: 40px;
-    }
-
-    .pendbox .icon-label {
-        font-size: 12px; /* Adjust label font size */
-    }
-
-    .browse-genre {
-        flex-wrap: wrap;
-        justify-content: space-between; /* Center items */
-        gap: 1px; /* Adjust gap */
-        width: 100%;
-        height:auto;
-    }
-    .icon-container {
-        width: 50px; /* Scale down icon container */
-    }
-
-    .genre-icon {
-        width: 40px; /* Resize genre icons */
-        height: 40px;
-    }
-
-    .icon-label {
-        font-size: 10px; /* Adjust label font size */
-    }
-
-    .userbooks-container {
-        justify-content: center;
-        gap: 10%;
-    }
-
-    #content2 {
-        padding-bottom: 50px;
-        height: 900px !important;
-    }
-}
-
-@media (max-width: 1366px) {
-    .Userinput {
-        justify-content: start; /* Centers items horizontally */
-        align-items: center; /* Centers items vertically */
-        position: relative;
-        right: 33%; /* Reset right positioning */
-    }
-
-    #content2 {
-        height: 600px;
-    }
-
 }

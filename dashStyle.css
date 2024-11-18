@@ -15,42 +15,6 @@ body, html {
     justify-items: center;
 }
 
-#sidebar {
-    transition: transform 0.3s ease;
-}
-
-/* Burger icon styling */
-#burger-icon {
-    display: none;
-    position: absolute;
-    top: 20px;
-    left: 5px;
-    cursor: pointer;
-}
-
-/* Sidebar hidden and burger icon displayed on smaller screens */
-@media (max-width: 1220px) {
-    #sidebar {
-        transform: translateX(-100%);
-        position: fixed;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 250px;
-        background-color: #ff6600; /* Adjust as needed */
-        z-index: 10;
-    }
-
-    #burger-icon {
-        display: block;
-    }
-}
-
-/* Sidebar active class for when it's open */
-#sidebar.active {
-    transform: translateX(0);
-}
-
 #sidebar img {
     margin-right:2%;
 }
