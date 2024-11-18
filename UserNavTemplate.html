@@ -21,13 +21,7 @@
 <body>
     <div class="container-fluid" style="padding: 0;">
         <div class="row">
-            <div id="burger-icon" onclick="toggleSidebar()">
-                <img src="./Images/burgerIcon.svg" alt="Menu" width="24" height="24">
-            </div>
             <div id="sidebar" class="col-2">
-                <div id="burger-icon" onclick="toggleSidebar()">
-                    <img src="./Images/burgerIcon.svg" alt="Menu" width="24" height="24">
-                </div>
                 <h3 id="brand-name">LiBorrow.</h3>
                 <ul id="nav-list">
                     <li>
@@ -63,7 +57,7 @@
                 </ul>
             </div>
 
-            <div id="main-content" class="col-sm-12 col-lg-10">
+            <div id="main-content" class="col-10">
                 <div id="topbar">
                     <h3 id="page-title">Dashboard</h3>
                     <div id="profile-section" class="col-3">
@@ -110,9 +104,6 @@
 
     <script>
         //FUNCTIONS
-        function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('active');
-    }
         //DASHBOARD CONTENT
         document.getElementById("button0").addEventListener("click", function(event) {
             event.preventDefault();

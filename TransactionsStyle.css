@@ -59,7 +59,7 @@
 
 .global {
     height: 18vh;
-    background-color: rgb(245, 245, 245);
+    background-color: white;
     display: flex;
     justify-content: space-between; /* Space between book details and buttons */
     align-items: center; /* Center align items vertically */
