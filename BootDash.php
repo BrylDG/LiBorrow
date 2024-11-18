@@ -643,7 +643,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			
         document.getElementById("button4").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./HistoryDash.html')
+            fetch('./HistoryDash.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
