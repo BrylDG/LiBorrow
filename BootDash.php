@@ -119,7 +119,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
 
                     <div id="profile-dropdown" class="profile-dropdown">
                         <div class="profile-options">
-                            <a href="#" class="settings">
+                            <a href="usersettings.php" class="settings">
                                 <img src="./Images/settings.svg" alt="Settings Icon"> Settings
                             </a>
                             <a href="logout.php" class="logout">

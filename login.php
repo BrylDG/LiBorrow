@@ -45,6 +45,7 @@
                     if ($count == 1) {
                         $user = mysqli_fetch_assoc($result);
                         $_SESSION['fullname'] = $user['fullname'];
+						$_SESSION['idno'] = $user['idno'];
                         $loginMessage = 'success';
                     } else {
                         $loginMessage = 'failed';
@@ -64,7 +65,7 @@
                         </span>
                     </div>
                     <div class="text-end mb-3">
-                        <a href="#" class="forgot-password"> Forgot Password?</a>
+                        <a href="forgot_password.php" class="forgot-password">Forgot Password?</a>
                     </div>
                     <button type="submit" class="btn btn-primary">Sign-In</button>
                 </form>

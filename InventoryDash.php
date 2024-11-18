@@ -1,5 +1,14 @@
 <?php
-include('connection.php'); // Include your database connection
+session_start(); // Start the session
+include('connection.php'); // Include your connection file
+
+// Check if the user is logged in
+if (!isset($_SESSION['fullname'])) { // Replace 'user_id' with your session variable for logged-in users
+    header("Location: login.php"); // Redirect to the login page
+    exit(); // Make sure to exit after the redirect
+}
+// Retrieve the full name from the session
+$fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // Default to 'User ' if not set
 
 // Initialize variables for search, sort, and genre filter
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
