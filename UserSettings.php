@@ -1,36 +1,71 @@
-<?php 
+<?php
 session_start(); // Start the session
-include('connection.php'); // Include your connection file
+include('connection.php'); // Include your database connection file
 
+// Redirect to login page if not logged in
 if (!isset($_SESSION['fullname'])) {
-    // Redirect to login page if not logged in
     header("Location: login.php");
     exit();
 }
 
 $user_data = null;
+$user_id = $_SESSION['idno']; // Fetch user data using session's idno
 
-if(isset($_SESSION['idno'])) {
-    $user_id = $_SESSION['idno'];
-    
-    // Fetch user data based on idno from the database
-    $sql = "SELECT * FROM users WHERE idno = ?";
+// Fetch user data from the database
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // When the form is submitted (non-AJAX, via POST)
+    $updatedFullname = $_POST['fullname'];
+    $updatedUsername = $_POST['username'];
+    $updatedEmail = $_POST['email'];
+    $newPassword = $_POST['new_password'];
+    $confirmPassword = $_POST['confirm_password'];
+    $oldPassword = $_POST['old_password'];
+
+    // Check if old password matches the current password in the database
+    $sql = "SELECT password FROM users WHERE idno = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $user_data = $result->fetch_assoc();
+    $user = $result->fetch_assoc();
+    
+    if (password_verify($oldPassword, $user['password'])) {
+        if ($newPassword === $confirmPassword) {
+            // Hash the new password
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+            // Update user data along with the password
+            $sql = "UPDATE users SET fullname = ?, username = ?, email = ?, password = ? WHERE idno = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ssssi", $updatedFullname, $updatedUsername, $updatedEmail, $hashedPassword, $user_id);
+            if ($stmt->execute()) {
+                $message = "User information and password updated successfully!";
+            } else {
+                $message = "Error updating user information: " . $stmt->error;
+            }
+        } else {
+            $message = "New password and confirmation do not match!";
+        }
     } else {
-        echo "No user data found.";
-        exit();
+        $message = "Old password is incorrect!";
     }
-} else {
-    echo "Please log in to view your profile.";
-    exit;
+    
+    $stmt->close(); // Close the statement
 }
-$conn->close();
+
+// Fetch user data from the database
+$sql = "SELECT * FROM users WHERE idno = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($result->num_rows > 0) {
+    $user_data = $result->fetch_assoc();
+} else {
+    echo "No user data found.";
+    exit();
+}
+$stmt->close(); // Close the statement
+$conn->close(); // Close the database connection
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +82,6 @@ $conn->close();
     <div class="container">
         <h3 id="sett-header">User Profile</h3>
         <hr>
-        <!-- Stacking 5 divs inside the Settingsbox class -->
         <div class="Settingsbox">
             <div class="Sbox global">
                 <img src="./Images/Profile.svg" width="100" height="100" alt="Profile Picture" id="book1">
@@ -59,103 +93,70 @@ $conn->close();
                     <button class="change-btn">Change Profile</button>
                 </div>
             </div>
-                                    
-            <!-- Input section starts here -->
 
             <div class="input-section" id="info-box">
-                <label for="fullname">Full Name</label>
-                <div class="input-icon">
-                    <input type="text" id="full-name" placeholder="<?php echo isset($user_data) ? htmlspecialchars($user_data['fullname']) : ''; ?>" disabled>
-                    <span class="pencil-icon" name="full-name">
-                        <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
-                    </span>
-                </div>
-
-                <label for="email">User Name</label>
-                <div class="input-icon">
-                    <input type="text" id="username" name="username" placeholder="<?php echo isset($user_data) ? htmlspecialchars($user_data['username']) : ''; ?>" disabled>
-                    <span class="pencil-icon">
-                        <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
-                    </span>
-                </div>
-
-                <label for="email">Email Address</label>
-                <div class="input-icon">
-                    <i class="fas fa-envelope" id="ic"></i> <!-- Email icon -->
-                    <input type="email" id="email" name="email" placeholder="<?php echo isset($user_data) ? htmlspecialchars($user_data['email']) : ''; ?>" disabled>
-                    <span class="pencil-icon">
-                        <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
-                    </span>
-                </div>
-
-                <label for="phone-number">Phone Number</label>
-                <div class="input-icon">
-                    <i class="fas fa-phone" id="ic"></i> <!-- Phone icon -->
-                    <input type="tel" id="phone-number" name="phone-number" placeholder="<?php echo isset($user_data) ? htmlspecialchars($user_data['phoneno']) : ''; ?>" disabled>
-                    <span class="pencil-icon">
-                        <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
-                    </span>
-                </div>
-
-                <label for="address">Address</label>
-                <div class="input-icon">
-                    <i class="fas fa-map-marker-alt" id="ic"></i> <!-- Address icon -->
-                    <input type="text" id="address" name="address" placeholder="<?php echo isset($user_data) ? htmlspecialchars($user_data['address']) : ''; ?>" disabled>
-                                        <span class="pencil-icon">
-                        <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
-                    </span>
-                </div>
-
-                <!-- Container for current and new password fields to be aligned horizontally -->
-                <div class="password-container">
-                    <div class="input-field">
-                        <label for="password">Current Password</label>
-                        <div class="input-icon">
-                            <i class="fas fa-key" id="ic"></i> <!-- Lock icon -->
-                            <input type="password" id="password" name="password" placeholder="*********" disabled>
-                            <span class="pencil-icon">
-                                <i class="fa fa-eye" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
-                            </span>
-                        </div>
+                <!-- Display messages -->
+                <?php if (isset($message)) { echo "<p>$message</p>"; } ?>
+                
+                <form method="POST" action="settings.php">
+                    <label for="fullname">Full Name</label>
+                    <div class="input-icon">
+                        <input type="text" id="fullname" name="fullname" value="<?php echo isset($user_data) ? htmlspecialchars($user_data['fullname']) : ''; ?>" readonly>
+                        <button class="pencil-btn" type="button" onclick="enableEditing('fullname')">
+                            <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i>
+                        </button>
                     </div>
 
-                    <div class="input-field">
-                        <label for="new-password">New Password</label>
-                        <div class="input-icon">
-                            <i class="fas fa-key" id="ic"></i> <!-- Lock icon -->
-                            <input type="password" id="new-password" name="new-password" placeholder="*****************" disabled>
-                            <span class="pencil-icon">
-                                <i class="fa fa-eye" aria-hidden="true" id="pass-ic"></i> <!-- Pencil Icon -->
-                            </span>
-                        </div>
+                    <label for="username">User Name</label>
+                    <div class="input-icon">
+                        <input type="text" id="username" name="username" value="<?php echo isset($user_data) ? htmlspecialchars($user_data['username']) : ''; ?>" readonly>
+                        <button class="pencil-btn" type="button" onclick="enableEditing('username')">
+                            <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i>
+                        </button>
                     </div>
-                </div>
 
-                <label for="confirm-password">Confirm Password</label>
-                <div class="input-icon">
-                    <i class="fas fa-key" id="ic"></i> <!-- Lock icon -->
-                    <input type="password" id="confirm-password" name="confirm-password" placeholder="*****************" disabled>
-                    <span class="pencil-icon">
-                        <i class="fa fa-eye" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
-                    </span>
-                </div>
+                    <label for="email">Email Address</label>
+                    <div class="input-icon">
+                        <i class="fas fa-envelope" id="ic"></i>
+                        <input type="email" id="email" name="email" value="<?php echo isset($user_data) ? htmlspecialchars($user_data['email']) : ''; ?>" readonly>
+                        <button class="pencil-btn" type="button" onclick="enableEditing('email')">
+                            <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i>
+                        </button>
+                    </div>
+
+                    <!-- Password Section -->
+                    <label for="old_password">Old Password</label>
+                    <div class="input-icon">
+                        <input type="password" id="old_password" name="old_password" required>
+                    </div>
+
+                    <label for="new_password">New Password</label>
+                    <div class="input-icon">
+                        <input type="password" id="new_password" name="new_password" required>
+                    </div>
+
+                    <label for="confirm_password">Confirm New Password</label>
+                    <div class="input-icon">
+                        <input type="password" id="confirm_password" name="confirm_password" required>
+                    </div>
+
+                    <!-- Additional fields can be added here as needed -->
+
+                    <button type="submit" id="save-btn" style="display:none;">Save Changes</button>
+                </form>
             </div>
-
-            <div class="SaveCancel-btn">
-                <button class="usersave-btn">
-                    Save
-                </button>
-                <button class="usercancel-btn">
-                    Save
-                </button>
-            </div>  
         </div>
     </div>
 </div>
- <script>
 
-
- </script>
+<script>
+// Enable the input fields when the pencil icon is clicked
+function enableEditing(fieldId) {
+    const inputField = document.getElementById(fieldId);
+    inputField.removeAttribute('readonly');
+    document.getElementById('save-btn').style.display = 'block'; // Show Save button
+}
+</script>
 
 </body>
 </html>

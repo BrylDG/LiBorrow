@@ -3,7 +3,6 @@
     width: 100%;
     height: 80vh;
     overflow: auto;
-
 }
 
 .container {
@@ -12,7 +11,6 @@
     align-items: center;
     justify-content: center;
     background-color: #f5f5f5;
-    
 }
 
 .prof-details {
@@ -29,8 +27,8 @@
     height: 62vh;
     margin-top: 2em;
     background-color: #f5f5f5;
-    
 }
+
 #info-box {
     width: 100%;
     /* overflow-y: auto;
@@ -48,10 +46,10 @@
 .Sbox img {
     padding: 5px;
 }
-.Sbox{
+
+.Sbox {
     border-radius: 10px;
 }
-
 
 .global {
     height: 18vh;
@@ -59,7 +57,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
 }
 
 #Name {
@@ -85,12 +82,9 @@
     width: 200px;
 }
 
-
-
 #sett-header {
     padding: 0;
     margin-right: 40em;
-    
 }
 
 #book1 {
@@ -133,7 +127,8 @@
     margin-top: 20em;
 }
 
-.usersave-btn, .usercancel-btn {
+.usersave-btn,
+.usercancel-btn {
     border: none;
     margin: 10px;
     font-size: 16px;
@@ -144,6 +139,7 @@
     margin-bottom: 10px;
     width: 100px;
 }
+
 .usercancel-btn {
     color: #ff6600;
     background-color: white;
@@ -156,73 +152,85 @@
     margin-bottom: -100px;
 }
 
-
 /* Styles for input fields with icons */
 .input-icon {
     position: relative;
-   
 }
 
-#pen-ic{
+#pen-ic {
     position: absolute;
     left: 95%;
     top: 37%;
     transform: translateY(-50%);
     color: #999;
+}
 
- }
- #pass-ic{
+#pass-ic {
     position: absolute;
     left: 90%;
     top: 37%;
     transform: translateY(-50%);
     color: #999;
- }
- #Fpen-ic{
+}
+
+#Fpen-ic {
     position: absolute;
     left: 95%;
     top: 40%;
     transform: translateY(-50%);
     color: #999;
+}
 
- }
-#ic{
+#ic {
     position: absolute;
     left: 10px;
     top: 37%;
     transform: translateY(-50%);
     color: #999;
-
- }
- hr{
-    color: #ff6600;
- }
-
-.input-icon input {
-    padding-left: 35px; /* Add padding for the icon */
-    border: none;
-    border-radius: 10px;
 }
 
-/* Keep all the existing styles below intact */
-/* Styles for input fields with icons */
+hr {
+    color: #ff6600;
+}
+
+/* Make sure pencil icon button is aligned to the right within input fields */
 .input-icon {
+    display: flex;
+    align-items: center;
     position: relative;
 }
 
+/* Style for the pencil icon button */
+.pencil-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pencil-btn i {
+    font-size: 18px; /* Adjust the size of the pencil icon */
+    color: #ff6600; /* Matching color with your other buttons */
+}
+
+.pencil-btn:hover i {
+    color: #cc5200; /* Darker shade on hover */
+}
+
+/* Eye icon positioned outside the input box on the right */
+.input-icon button.pencil-btn {
+    position: absolute;
+    right: 10px; /* Adjust if needed */
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 5px;
+}
 
 /* Adjust padding for input fields with left icon */
 .input-icon input {
     padding-left: 35px;
     padding-right: 35px; /* Add padding for the right eye icon */
 }
-
-/* Eye icon positioned outside the input box on the right */
-/* .eye-icon .toggle-password {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #999;
-} */
