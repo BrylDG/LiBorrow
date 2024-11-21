@@ -6,39 +6,63 @@
         header("Location: login.php");
         exit();
     }
-    
+
     $UserID = $_SESSION['idno'];
     
-    $query = "
-            SELECT 
-                b.bookid,
-                b.booktitle,
-                b.author,
-                CASE 
-                    WHEN br.status = 1 THEN 'RETURN'
-                    ELSE 'BORROW'   
-                END AS BorrowButton
-            FROM books b
-            INNER JOIN favorites f ON b.BookID = f.BookID
-            LEFT JOIN borrows br ON b.bookid = br.bookid AND br.idno = ?
-            WHERE f.idno = ?";
+    $query = "SELECT f.bookid, 
+                     f.booktitle, 
+                     f.author, 
+                     f.bookimg,
+                     CASE
+                        WHEN br.status = 1 THEN 'RETURN'
+                        ELSE 'BORROW'
+                     END AS BorrowButton,
+                     CASE
+                        WHEN br.status = 1 THEN 'stats-btn2'
+                        ELSE 'stats-btn'
+                     END AS BorrowStatus,
+                     CASE
+                        WHEN br.status = 1 THEN './Images/Check.svg'
+                        ELSE './Images/Unavalable.svg'
+                     END AS BorrowIcon
+               FROM favorites f
+               LEFT JOIN borrows br ON f.bookid = br.bookid AND br.idno = ?
+               WHERE f.idno = ?";
 
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ii", $UserID, $UserID);
     $stmt->execute();
     $result = $stmt->get_result();
-    $favorites = $result->fetch_all(MYSQLI_ASSOC);
+    $books = $result->fetch_all(MYSQLI_ASSOC);
+
+    foreach($books as $book) {
+        $bookid = $book['bookid'];
+        $idno = $_SESSION['idno']; // Assume idno is stored in session
+        $borrowed = false;
+
+        $borrow_query = "SELECT * FROM borrows WHERE bookid = ? AND idno = ?";
+        $stmt = $conn->prepare($borrow_query);
+        $stmt->bind_param("ii", $bookid, $idno);
+        $stmt->execute();
+        $borrow_result = $stmt->get_result();
+
+        if ($borrow_result->num_rows > 0) {
+            $borrowed = true;
+        }
+    }
     
+
     $stmt->close();
     $conn->close();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en">    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transactions Section</title>
     <link rel="stylesheet" href="./TransactionsStyle.css"> <!-- Linking the CSS file here -->
+    <link rel="stylesheet" href="./Browse.css">
 </head>
 <body>
 
@@ -58,20 +82,23 @@
                 <img src="./Images/vec.svg" alt="Icon After" width="18" height="18"> <!-- Icon after text -->
             </button>
         </div>
-
             <div class="pendbox global" id="User-books">
-                <?php foreach ($favorites as $book): ?>
+                <?php foreach ($books as $book): ?>
                     <div class="book-container">
                         <div class="button-container">
-                            <button id="stats-btn3">
-                                <img  src="./Images/Reading.svg" alt="Book status" class="book-status" id="bookstaticon" width="30" height="30">
-                                Currently Reading
+                            <button id="<?php echo $book['BorrowStatus'] ?>">
+                                <img src="<?php echo $book['BorrowIcon'] ?>" alt="Book status" class="book-status" id="bookstaticon" width="30" height="30">
+                                Borrowed
                             </button>
-                            <button id="addtofav-btn">
-                                <img src="./Images/AddedtoFav.svg" alt="Book fav" class="book-fav">
-                            </button>
+                            <form action="RemoveFromFav.php" method="POST" style="display:inline;">
+                                <input type="hidden" name="bookid" value="<?php echo htmlspecialchars($book['bookid']); ?>">
+                                <input type="hidden" name="idno" value="<?php echo htmlspecialchars($_SESSION['idno']); ?>">
+                                <button type="submit" id="addtofav-btn">
+                                    <img src="./Images/AddedtoFav.svg" alt="Book fav" class="book-fav">
+                                </button>
+                            </form>
                         </div>
-                        <img src="./Images/handmaid.svg" alt="Book one" class="book-image" id="book-opacity">
+                        <img src="<?php echo htmlspecialchars($book['bookimg']) ?>" alt="Book Thumbnail" class="book-image" id="book-opacity">
                         <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
                         <p id="B-title"><?php echo htmlspecialchars($book['booktitle']); ?></p>
                         <p id="Book-Author"><?php echo htmlspecialchars($book['author']); ?></p>
