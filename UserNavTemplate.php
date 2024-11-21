@@ -31,6 +31,27 @@ $role = $_SESSION['isAdmin'];
     <title>LiBorrow User's Dashboard</title>
 </head>
 <body>
+    <script>
+        <?php if (isset($_GET['message'])): ?>
+            <?php if ($_GET['message'] === 'added_successfully'): ?>
+                alert("Book added to favorites successfully!");
+            <?php elseif ($_GET['message'] === 'already_in_favorites'): ?>
+                alert("This book is already in your favorites!");
+            <?php elseif ($_GET['message'] === 'error'): ?>
+                alert("Error: <?php echo isset($_GET['error']) ? htmlspecialchars($_GET['error']) : 'Unknown error.'; ?>");
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <?php if (isset($_GET['message'])): ?>
+        <?php if ($_GET['message'] === 'added_to_pendings'): ?>
+            alert("Book request successfully submitted!");
+        <?php elseif ($_GET['message'] === 'already_in_pendings'): ?>
+            alert("This book is already in pending request.");
+        <?php elseif ($_GET['message'] === 'error'): ?>
+            alert("Error: <?php echo isset($_GET['error']) ? htmlspecialchars($_GET['error']) : 'Unknown error.'; ?>");
+        <?php endif; ?>
+    <?php endif; ?>
+    </script>
     <div class="container-fluid" style="padding: 0;">
         <div class="row">
             <div id="burger-icon" onclick="toggleSidebar()">
@@ -144,7 +165,7 @@ $role = $_SESSION['isAdmin'];
         //BROWSE CONTENT
         document.getElementById("buttonbrowse").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./Browse.html')
+            fetch('./Browse.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -159,7 +180,7 @@ $role = $_SESSION['isAdmin'];
         //FAVORITES CONTENT
         document.getElementById("button1").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./Favorites.php')
+            fetch('./Favorites.php')    
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -174,7 +195,7 @@ $role = $_SESSION['isAdmin'];
         //BORROWED BOOKS CONTENT
         document.getElementById("button2").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./UserMyBooks.html')
+            fetch('./UserMyBooks.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -187,7 +208,7 @@ $role = $_SESSION['isAdmin'];
         //BOOK REQUEST CONENT
         document.getElementById("button3").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./BookRequest.html')
+            fetch('./BookRequest.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
@@ -366,9 +387,6 @@ function initializeSeeAllButtons() {
                     .catch(error => handleError('Error fetching ReadersInformation:', error));
             });
         }
-
-
-        
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

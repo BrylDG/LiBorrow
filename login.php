@@ -45,7 +45,8 @@
                     if ($count == 1) {
                         $user = mysqli_fetch_assoc($result);
                         $_SESSION['fullname'] = $user['fullname'];
-						$_SESSION['idno'] = $user['idno'];
+                        $_SESSION['idno'] = $user['idno'];
+                        $_SESSION['isAdmin'] = $user['isAdmin'];
                         $loginMessage = 'success';
                     } else {
                         $loginMessage = 'failed';
@@ -129,7 +130,7 @@
                     timer: 2000,
                     timerProgressBar: true,
                     willClose: () => {
-                        window.location.href = '<?php echo $user['isAdmin'] == 1 ? "BootDash.php" : "User NavTemplate.html"; ?>';
+                        window.location.href = '<?php echo $user['isAdmin'] == 1 ? "BootDash.php" : "UserNavTemplate.php"; ?>';
                     }
                 });
             } else if ('<?php echo $loginMessage; ?>' === 'failed') {

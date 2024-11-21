@@ -11,14 +11,22 @@
     $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // Default to 'User ' if not set
     $role = $_SESSION['isAdmin'];
 
-    $query = "SELECT bookid, booktitle, author FROM books";
+    $selected_genre = isset($_GET['genre']) ? $_GET['genre'] : null;
+
+    $query = "SELECT bookid, booktitle, author, bookimg, genre FROM books";
+
+    if ($selected_genre) {
+        $query .= " WHERE genre = ?";
+    }
+
     $stmt = $conn->prepare($query);
+    if ($selected_genre) {
+        $stmt->bind_param("s", $selected_genre);
+    }
     $stmt->execute();
     $result = $stmt->get_result();
     $books = $result->fetch_all(MYSQLI_ASSOC);
-
     $stmt->close();
-    $conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,72 +64,72 @@
                     
                     <img src="./images/Expand_left.svg" alt="Vector " class="expand-icon">
                     <!-- Icon 1 -->
-                    <a href="#" id="function">
+                    <a href="Browse.php?genre=Romance Fiction" id="function">
                         <div class="icon-container">
                             <img src="./images/Genre-Romance.svg" alt="Romance Genre" class="genre-icon">
                             <p class="icon-label">Romance</p>
                         </div>
                     </a>
                     <!-- Icon 2 -->
-                    <a href="#" id="function">
+                    <a href="Browse.php?genre=Horror Fiction" id="function">
                         <div class="icon-container">
-                            <img src="./images/Horror.svg" alt="Romance Genre" class="genre-icon">
+                            <img src="./images/Horror.svg" alt="Horror Genre" class="genre-icon">
                             <p class="icon-label">Horror</p>
                         </div>
                     </a>
                     <!-- Icon 3 -->
-                    <a href="#" id="function">
+                    <a href="Browse.php?genre=Science Fiction" id="function">
                         <div class="icon-container">
-                            <img src="./images/Sci-fi.svg" alt="Romance Genre" class="genre-icon">
+                            <img src="./images/Sci-fi.svg" alt="Scifi Genre" class="genre-icon">
                             <p class="icon-label">Scifi</p>
                         </div>
                     </a>
                     <!-- Icon 4 -->
-                    <a href="#" id="function">
+                    <a href="Browse.php?genre=Cooking Fiction" id="function">
                         <div class="icon-container">
-                            <img src="./images/Cooking.svg" alt="Romance Genre" class="genre-icon">
+                            <img src="./images/Cooking.svg" alt="Cooking Genre" class="genre-icon">
                             <p class="icon-label">Cooking</p>
                         </div>
                     </a>
                     <!-- Icon 5 -->
-                    <a href="#" id="function">
+                    <a href="Browse.php?genre=Historical Fiction" id="function">
                         <div class="icon-container">
-                            <img src="./images/Historical.svg" alt="Romance Genre" class="genre-icon">
+                            <img src="./images/Historical.svg" alt="Historical Genre" class="genre-icon">
                             <p class="icon-label">Historical</p>
                         </div>
                     </a>
                     <!-- Icon 6 -->
-                    <a href="#" id="function">
+                    <a href="Browse.php?genre=Fantasy Fiction" id="function">
                         <div class="icon-container">
-                            <img src="./images/Fantasy.svg" alt="Romance Genre" class="genre-icon">
+                            <img src="./images/Fantasy.svg" alt="Fantasy Genre" class="genre-icon">
                             <p class="icon-label">Fantasy</p>
                         </div>
                     </a>
                     <!-- Icon 7 -->
-                    <a href="#" id="function">
+                    <a href="Browse.php?genre=Mystery Fiction" id="function">
                         <div class="icon-container">
-                            <img src="./images/Msytery.svg" alt="Romance Genre" class="genre-icon">
+                            <img src="./images/Msytery.svg" alt="Mystery Genre" class="genre-icon">
                             <p class="icon-label">Mystery</p>
                         </div>
                     </a>
                     <!-- Icon 8 -->
-                    <a href="#" id="function">
+                    <a href="Browse.php?genre=Philosophical Fiction" id="function">
                         <div class="icon-container">
-                            <img src="./images/Philosophy.svg" alt="Romance Genre" class="genre-icon">
+                            <img src="./images/Philosophy.svg" alt="Philosophy Genre" class="genre-icon">
                             <p class="icon-label">Philosophy</p>
                         </div>
                     </a>
                     <!-- Icon 9 -->
-                    <a href="#" id="function">
+                    <a href="Browse.php?genre=Business Fiction" id="function">
                         <div class="icon-container">
-                            <img src="./images/Business.svg" alt="Romance Genre" class="genre-icon">
+                            <img src="./images/Business.svg" alt="Business Genre" class="genre-icon">
                             <p class="icon-label">Business</p>
                         </div>
                     </a>
                     <!-- Icon 10 -->
-                    <a href="#" id="function">
+                    <a href="Browse.php?genre=Comedy Fiction" id="function">
                         <div class="icon-container">
-                            <img src="./images/Comedy.svg" alt="Romance Genre" class="genre-icon">
+                            <img src="./images/Comedy.svg" alt="Comedy Genre" class="genre-icon">
                             <p class="icon-label">Comedy</p>
                         </div>
                     </a>
@@ -133,21 +141,66 @@
             <div class="pendbox global" id="User-books">
                 <div class="userbooks-container">
                     <?php foreach ($books as $book): ?>
+                        <?php
+                            $bookid = $book['bookid'];
+                            $idno = $_SESSION['idno']; // Assume idno is stored in session
+                            $borrowed = false;
+                    
+                            $borrow_query = "SELECT * FROM borrows WHERE bookid = ? AND idno = ?";
+                            $stmt = $conn->prepare($borrow_query);
+                            $stmt->bind_param("ii", $bookid, $idno);
+                            $stmt->execute();
+                            $borrow_result = $stmt->get_result();
+                    
+                            if ($borrow_result->num_rows > 0) {
+                                $borrowed = true; // The book has been borrowed by the user
+                            }
+                        ?>
                         <div class="book-container">
                             <div class="button-container">
-                                <button id="stats-btn">
-                                    <img  src="./Images/Unavalable.svg" alt="Book status" class="book-status" id="bookstaticon" width="30" height="30">
-                                    Borrowed
+                            <button id="<?php echo $borrowed ? 'stats-btn2' : 'stats-btn' ?>">
+                                <img src="<?php echo $borrowed ? './Images/Check.svg' : './Images/Unavalable.svg'; ?>" alt="Book status" class="book-status" id="bookstaticon" width="30" height="30">
+                                Borrowed
+                            </button>
+                            <?php
+                                $bookid = $book['bookid'];
+                                $idno = $_SESSION['idno']; // Assume idno is stored in session
+                                $favorite = false;
+                        
+                                $fav = "SELECT * FROM favorites WHERE bookid = ? AND idno = ?";
+                                $stmt = $conn->prepare($fav);
+                                $stmt->bind_param("ii", $bookid, $idno);
+                                $stmt->execute();
+                                $fav_res = $stmt->get_result();
+                        
+                                if ($fav_res->num_rows > 0) {
+                                    $favorite = true;
+                                }
+                                $stmt->close();
+                            ?>    
+                            <form action="AddToFav.php" method="POST">
+                                <input type="hidden" name="bookid" value="<?php echo htmlspecialchars($book['bookid']); ?>">
+                                <input type="hidden" name="idno" value="<?php echo htmlspecialchars($_SESSION['idno']); ?>">
+                                <input type="hidden" name="booktitle" value="<?php echo htmlspecialchars($book['booktitle']); ?>">
+                                <input type="hidden" name="author" value="<?php echo htmlspecialchars($book['author']); ?>">
+                                <input type="hidden" name="bookimg" value="<?php echo htmlspecialchars($book['bookimg']); ?>">
+                                <button type="submit" id="addtofav-btn">
+                                    <img src="<?php echo $favorite ? './Images/AddedtoFav.svg' : './Images/fav.svg' ?>" alt="Book fav" class="book-fav">
                                 </button>
-                                <button id="addtofav-btn">
-                                    <img src="./Images/fav.svg" alt="Book fav" class="book-fav" >
-                                </button>
+                            </form>
                             </div>
-                            <img src="" alt="">
-                            <img src="" alt="">
+                            <img src="<?php echo htmlspecialchars($book['bookimg']); ?>" alt="Book Thumbnail">
+                            <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
                             <p id="B-title"><?php echo htmlspecialchars($book['booktitle']); ?></p>
                             <p id="Book-Author"><?php echo htmlspecialchars($book['author']); ?></p>
-                            <button id="borbtn">Borrow</button>
+                            <form action="BorrowBook.php" method="POST">
+                                <input type="hidden" name="bookid" value="<?php echo htmlspecialchars($book['bookid']); ?>">
+                                <input type="hidden" name="fullname" value="<?php echo htmlspecialchars($fullname); ?>">
+                                <input type="hidden" name="booktitle" value="<?php echo htmlspecialchars($book['booktitle']); ?>">
+                                <input type="hidden" name="author" value="<?php echo htmlspecialchars($book['author']); ?>">
+                                <input type="hidden" name="bookimg" value="<?php echo htmlspecialchars($book['bookimg']); ?>">
+                                <button id="<?php echo $borrowed ? 'borbtn2' : 'borbtn' ?>">Borrow</button>
+                            </form>
                         </div>
                     <?php endforeach; ?>
                 </div>
