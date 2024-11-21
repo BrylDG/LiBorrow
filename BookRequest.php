@@ -6,10 +6,11 @@
         header("Location: login.php");
         exit();
     }
-    
+    $idno = $_SESSION['idno'];
 
-    $query = "SELECT * FROM pendings";
+    $query = "SELECT * FROM pendings WHERE idno = ?";
     $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $idno);
     $stmt->execute();
     $result = $stmt->get_result();
     $books = $result->fetch_all(MYSQLI_ASSOC);
