@@ -14,13 +14,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result) {
         $user = mysqli_fetch_assoc($result);
-        if ($user && password_verify($pass, $user['password'])) { // Assuming passwords are hashed
+        // Check if the user exists and if the password matches
+        if ($user && $pass === $user['password']) { // Compare plain text passwords
             $_SESSION['fullname'] = $user['fullname'];
             $_SESSION['idno'] = $user['idno'];
             $_SESSION['isAdmin'] = $user['isAdmin'];
             $loginMessage = 'success';
         } else {
-            $loginMessage = 'failed';
+            $loginMessage = 'failed'; // Invalid credentials
         }
     } else {
         // Handle SQL error
@@ -87,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </section>
 
     <footer>
- <nav>
+        <nav>
             <a href="#">About</a>
             <a href="#">Privacy</a>
             <a href="#">Terms</a>
@@ -96,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p>© 2024 Bravo Two All Rights Reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap @5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function togglePassword() {
