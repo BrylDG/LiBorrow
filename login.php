@@ -136,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     timer: 1000,
                     timerProgressBar: true,
                     willClose: () => {
-                        window.location.href = '<?php echo isset($user) && $user['isAdmin'] == 1 ? "BootDash.php" : "User NavTemplate.php"; ?>';
+                        window.location.href = '<?php echo isset($user) && $user['isAdmin'] == 1 ? "BootDash.php" : "UserNavTemplate.php"; ?>';
                     }
                 });
             } else if ('<?php echo $loginMessage; ?>' === 'failed') {
