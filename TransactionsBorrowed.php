@@ -2,9 +2,8 @@
 // Database configuration
 include ('connection.php');
 
-
 // Fetch data from borrows table
-$sql = "SELECT bookimg, booktitle, author, count FROM borrows";
+$sql = "SELECT bookimg, booktitle, author, COUNT(*) AS count FROM borrows GROUP BY bookimg, booktitle, author";
 $result = $conn->query($sql);
 ?>
 
@@ -15,7 +14,6 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Borrowed Books</title>
     <link rel="stylesheet" href="styles.css">
-    
 </head>
 <body>
     <div class="content-box" id="content2">
@@ -37,14 +35,13 @@ $result = $conn->query($sql);
                 </button>
             </div>
             <div id="borrowContainer" class="Borrowbox">
-
                 <?php
                 if ($result->num_rows > 0) {
                     // Output data for each row
                     while ($book = $result->fetch_assoc()) {
                         echo '
                         <div class="Borrbox Bglobal">
-                            <img src="' . htmlspecialchars($book['bookimg']) . '" alt="' . htmlspecialchars($book['booktitle']) . '">
+                            <img src="' . htmlspecialchars($book['bookimg']) . '" alt="' . htmlspecialchars($book['booktitle']) . '" width="100" height="150">
                             <div class="book-details">
                                 <p class="book-title">' . htmlspecialchars($book['booktitle']) . '</p>
                                 <p class="author">' . htmlspecialchars($book['author']) . '</p>
