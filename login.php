@@ -1,3 +1,34 @@
+<?php
+include('connection.php');
+session_start();
+
+$loginMessage = '';
+$user = null; // Initialize the user variable
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = mysqli_real_escape_string($conn, $_POST["email"]);
+    $pass = mysqli_real_escape_string($conn, $_POST["password"]);
+
+    // Adjust the query to select only by email
+    $query = "SELECT * FROM users WHERE email='$email'";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        $user = mysqli_fetch_assoc($result);
+        if ($user && password_verify($pass, $user['password'])) { // Assuming passwords are hashed
+            $_SESSION['fullname'] = $user['fullname'];
+            $_SESSION['idno'] = $user['idno'];
+            $_SESSION['isAdmin'] = $user['isAdmin'];
+            $loginMessage = 'success';
+        } else {
+            $loginMessage = 'failed';
+        }
+    } else {
+        // Handle SQL error
+        $loginMessage = 'failed';
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,11 +38,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="LoginStyles.css">
-    <!-- Include SweetAlert CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
-    <!-- NAVBAR SECTION -->
     <nav class="navbar navbar-light p-4">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <a class="navbar-brand" href="index.php">
@@ -29,30 +58,6 @@
         <div class="col-5 center-column">
             <div class="login-form-container">
                 <h3 class="text-center">Welcome Back!</h3>
-                <?php
-                include('connection.php');
-                session_start();
-
-                $loginMessage = '';
-                if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $email = mysqli_real_escape_string($conn, $_POST["email"]);
-                    $pass = mysqli_real_escape_string($conn, $_POST["password"]);
-                    
-                    $query = "SELECT * FROM users WHERE email='$email' AND password='$pass'";
-                    $result = mysqli_query($conn, $query);
-                    $count = mysqli_num_rows($result);
-                    
-                    if ($count == 1) {
-                        $user = mysqli_fetch_assoc($result);
-                        $_SESSION['fullname'] = $user['fullname'];
-                        $_SESSION['idno'] = $user['idno'];
-                        $_SESSION['isAdmin'] = $user['isAdmin'];
-                        $loginMessage = 'success';
-                    } else {
-                        $loginMessage = 'failed';
-                    }
-                }
-                ?>
                 <form action="login.php" method="post">
                     <div class="mb-5 email-input input-container">
                         <input type="email" class="form-control" id="email" name="email" required>
@@ -66,7 +71,7 @@
                         </span>
                     </div>
                     <div class="text-end mb-3">
-                        <a href="forgot_password.php" class="forgot-password">Forgot Password?</a>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
                     </div>
                     <button type="submit" class="btn btn-primary">Sign-In</button>
                 </form>
@@ -82,7 +87,7 @@
     </section>
 
     <footer>
-        <nav>
+ <nav>
             <a href="#">About</a>
             <a href="#">Privacy</a>
             <a href="#">Terms</a>
@@ -96,7 +101,7 @@
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById(' eye-icon');
+            const eyeIcon = document.getElementById('eye-icon');
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
@@ -130,7 +135,7 @@
                     timer: 1000,
                     timerProgressBar: true,
                     willClose: () => {
-                        window.location.href = '<?php echo $user['isAdmin'] == 1 ? "BootDash.php" : "UserNavTemplate.php"; ?>';
+                        window.location.href = '<?php echo isset($user) && $user['isAdmin'] == 1 ? "BootDash.php" : "User NavTemplate.php"; ?>';
                     }
                 });
             } else if ('<?php echo $loginMessage; ?>' === 'failed') {
