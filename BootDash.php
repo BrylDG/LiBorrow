@@ -110,7 +110,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                             <a href="#" class="info-column">
                                 <img src="./Images/Profile.svg" id="profile-image" alt="Profile" height="60" width="60">
                                 <div id="profile-info">
-                                    <span><?php echo $fullname; ?></span>
+                                    <span><?php echo $_SESSION['fullname']; ?></span>
                                     <h5>Librarian</h5>
                                 </div>
                             </a>
@@ -119,7 +119,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
 
                     <div id="profile-dropdown" class="profile-dropdown">
                         <div class="profile-options">
-                            <a href="usersettings.php" class="settings">
+                            <a href="usersettings.php" class="settings" id="SettingsBtn">
                                 <img src="./Images/settings.svg" alt="Settings Icon"> Settings
                             </a>
                             <a href="logout.php" class="logout">
@@ -616,6 +616,18 @@ function initializeViewMoreButtons() {
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+
+        document.getElementById("SettingsBtn").addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./Settings.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "User Profile"; // Change the page title
+                    document.getElementById("page-title").innerText = "User Profile"; // Change the displayed title
+                })
+                .catch(error => console.error('Error fetching content:', error));
+        });
         
 		
         document.querySelector("#button3").addEventListener("click", function(event) {
@@ -705,8 +717,31 @@ function initializeViewMoreButtons() {
             }
         });
 		
-		
+        function enableEditing(fieldId) {
+            const inputField = document.getElementById(fieldId);
 
+            if (inputField.hasAttribute('readonly')) {
+                inputField.removeAttribute('readonly');
+            }
+
+            if (inputField.hasAttribute('disabled')) {
+                inputField.removeAttribute('disabled');
+            }
+
+            inputField.focus();
+        }
+		//dISABLE input fields when cancel button is napislit
+        function disableEdit() {
+            const cancelBtn = document.getElementById('cancelsetbtn');
+            const inputs = document.querySelectorAll('#info-box .inputs');
+
+            cancelBtn.addEventListener('click', function () {
+                inputs.forEach(input => {
+                    input.readOnly = true;
+                    input.disabled = true;
+                });
+            });
+        };
 
 		function updateTime() {
 		const now = new Date(); // Get the current date and time

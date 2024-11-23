@@ -117,7 +117,7 @@ $role = $_SESSION['isAdmin'];
                             <a href="#" class="info-column">
                                 <img src="./Images/Profile.svg" id="profile-image" alt="Profile" height="60" width="60">
                                 <div id="profile-info">
-                                    <span><?php echo $fullname; ?></span>
+                                    <span><?php echo $_SESSION['fullname'] ?></span>
                                     <h5>Reader</h5>
                                 </div>
                             </a>
@@ -377,7 +377,7 @@ function initializeSeeAllButtons() {
             const updateButton = document.querySelector(".Usersettings"); // Use querySelector for a single element
             updateButton.addEventListener("click", function(event) {
                 event.preventDefault();
-                fetch('./UserSettings.html')
+                fetch('./UserSettings.php')
                     .then(response => response.text())
                     .then(data => {
                         document.getElementById("body-content").innerHTML = data;
@@ -387,6 +387,31 @@ function initializeSeeAllButtons() {
                     .catch(error => handleError('Error fetching ReadersInformation:', error));
             });
         }
+        function enableEditing(fieldId) {
+            const inputField = document.getElementById(fieldId);
+
+            if (inputField.hasAttribute('readonly')) {
+                inputField.removeAttribute('readonly');
+            }
+
+            if (inputField.hasAttribute('disabled')) {
+                inputField.removeAttribute('disabled');
+            }
+
+            inputField.focus();
+        }
+        //dISABLE input fields when cancel button is napislit
+        function disableEdit() {
+            const cancelBtn = document.getElementById('cancelsetbtn');
+            const inputs = document.querySelectorAll('#info-box .inputs');
+
+            cancelBtn.addEventListener('click', function () {
+                inputs.forEach(input => {
+                    input.readOnly = true;
+                    input.disabled = true;
+                });
+            });
+        };
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
