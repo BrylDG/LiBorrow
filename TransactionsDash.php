@@ -1,13 +1,53 @@
+<?php
+include("connection.php");
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $booktitle = $conn->real_escape_string($_POST['booktitle']);
+    $fullname = $conn->real_escape_string($_POST['fullname']);
+
+    if (isset($_POST['approve'])) {
+        // Approval logic
+        $sql = "SELECT idno, bookimg, author FROM pendings WHERE TRIM(booktitle) = TRIM('$booktitle') AND TRIM(fullname) = TRIM('$fullname')";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $borrowDate = date('Y-m-d H:i:s');
+            $dueDate = date('Y-m-d H:i:s', strtotime('+30 days'));
+
+            $insertSql = "INSERT INTO borrows (idno, fullname, bookimg, booktitle, author, borrowdate, duedate) 
+                          VALUES ('{$row['idno']}', '$fullname', '{$row['bookimg']}', '$booktitle', '{$row['author']}', '$borrowDate', '$dueDate')";
+            
+            if ($conn->query($insertSql) === TRUE) {
+                $conn->query("DELETE FROM pendings WHERE TRIM(booktitle) = TRIM('$booktitle') AND TRIM(fullname) = TRIM('$fullname')");
+                echo "Request approved successfully.";
+            } else {
+                echo "Error: " . $conn->error;
+            }
+        } else {
+            echo "No matching record found.";
+        }
+    } elseif (isset($_POST['cancel'])) {
+        // Cancellation logic
+        $deleteSql = "DELETE FROM pendings WHERE TRIM(booktitle) = TRIM('$booktitle') AND TRIM(fullname) = TRIM('$fullname')";
+        echo $conn->query($deleteSql) === TRUE ? "Request canceled successfully." : "Error: " . $conn->error;
+    }
+}
+
+// Query to display pending requests
+$sql = "SELECT fullname, requestdate, booktitle, author, bookimg FROM pendings";
+$result = $conn->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transactions Section</title>
-    <link rel="stylesheet" href="./TransactionsStyle.css"> <!-- Linking the CSS file here -->
+    <link rel="stylesheet" href="./TransactionsStyle.css">
 </head>
 <body>
-
 <div class="content-box" id="content2">
     <div class="container">
         <div class="input">
@@ -18,67 +58,37 @@
                 </span>
             </div>
             <button class="sort-btn">
-                <img src="./Images/Sort.svg" alt="Icon Before" width="20" height="20"> <!-- Icon before text -->
-                Sort By
-                <img src="./Images/vec.svg" alt="Icon After" width="18" height="18"> <!-- Icon after text -->
+                <img src="./Images/Sort.svg" alt="Sort Icon" width="20" height="20"> Sort By
+                <img src="./Images/vec.svg" alt="Icon After" width="18" height="18">
             </button>
             <button class="filter-btn">
-                <img src="./Images/Filter_alt_fill.svg" alt="Icon Before" width="20" height="20"> <!-- Icon before text -->
-                Filter By
-                <img src="./Images/Expand_down.svg" alt="Icon After" width="18" height="18"> <!-- Icon after text -->
+                <img src="./Images/Filter_alt_fill.svg" alt="Filter Icon" width="20" height="20"> Filter By
+                <img src="./Images/Expand_down.svg" alt="Expand Icon" width="18" height="18">
             </button>
         </div>
 
-        <!-- Dynamic pending request boxes -->
         <div id="td1" class="Trbox">
-            <?php
-            // Connect to the database
-            include("connection.php");
-
-            // Check the connection
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
-            // Query the pendings table
-            $sql = "SELECT fullname, requestdate, booktitle, author, bookimg FROM pendings";
-            $result = $conn->query($sql);
-
-            // Check if there are results
-            if ($result->num_rows > 0) {
-                // Output data for each row
-                while($row = $result->fetch_assoc()) {
-                    echo '
+            <?php if ($result->num_rows > 0): ?>
+                <?php while($row = $result->fetch_assoc()): ?>
                     <div class="pendbox-one">
-                        <p class="name">' . htmlspecialchars($row["fullname"]) . '</p>
-                        <p class="date">Request Date: ' . htmlspecialchars($row["requestdate"]) . '</p>
+                        <p class="name"><?= htmlspecialchars($row["fullname"]) ?></p>
+                        <p class="date">Request Date: <?= htmlspecialchars($row["requestdate"]) ?></p>
                         <div class="pendbox global">
-                            <img src="' . htmlspecialchars($row["bookimg"]) . '" alt="Book image" class="book-img" width="100" height="150">
-                            <div class="book-details">
-                                <p class="btitle">' . htmlspecialchars($row["booktitle"]) . '</p>
-                                <p class="author">' . htmlspecialchars($row["author"]) . '</p>
-                            </div>
-                        </div>
-                        <div class="action-buttons">
+                            <img src="<?= htmlspecialchars($row["bookimg"]) ?>" alt="Book Image" width="100" height="150">
+                            <p class="book-title"><?= htmlspecialchars($row["booktitle"]) ?></p>
+                            <p class="author"><?= htmlspecialchars($row["author"]) ?></p>
+                            <input type="hidden" class="booktitle" value="<?= htmlspecialchars($row["booktitle"]) ?>">
+                            <input type="hidden" class="fullname" value="<?= htmlspecialchars($row["fullname"]) ?>">
                             <button class="approve-btn">Approve</button>
-                            <button class="decline-btn">Decline</button>
+                            <button class="decline-btn">Cancel</button>
                         </div>
-                    </div>';
-                }
-            } else {
-                echo "<p>No pending requests found.</p>";
-            }
-
-            // Close the connection
-            $conn->close();
-            ?>
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p>No pending requests found.</p>
+            <?php endif; ?>
         </div>
     </div>
-
-    <script>
-        // JavaScript for button functionality can be added here if needed
-    </script>    
 </div>
-
 </body>
 </html>

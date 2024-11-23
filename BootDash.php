@@ -593,18 +593,82 @@ function initializeViewMoreButtons() {
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
-        document.getElementById("pendBtn").addEventListener("click", function(event) {
-            event.preventDefault();
-            fetch('./TransactionsDash.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("body-content").innerHTML = data;
-                    document.title = "Pending"; // Change the page title
-                    document.getElementById("page-title").innerText = "Pending"; // Change the displayed title
-                })
-                .catch(error => console.error('Error fetching content:', error));
-        });
 		
+		document.addEventListener("DOMContentLoaded", function() {
+			const pendBtn = document.getElementById("pendBtn");
+			if (pendBtn) {
+				pendBtn.addEventListener("click", function(event) {
+					event.preventDefault();
+					fetch('./TransactionsDash.php')
+						.then(response => response.text())
+						.then(data => {
+							document.getElementById("body-content").innerHTML = data;
+							document.title = "Pending"; 
+							document.getElementById("page-title").innerText = "Pending"; 
+							setupButtons();
+						})
+						.catch(error => console.error('Error fetching TransactionsDash.php:', error));
+				});
+			}
+
+			setupButtons();
+		});
+
+		function setupButtons() {
+			document.querySelectorAll('.approve-btn').forEach(button => {
+				button.addEventListener('click', function(event) {
+					event.preventDefault();
+					const booktitle = this.parentElement.querySelector('.booktitle').value;
+					const fullname = this.parentElement.querySelector('.fullname').value;
+
+					fetch('TransactionsDash.php', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						},
+						body: new URLSearchParams({
+							booktitle: booktitle,
+							fullname: fullname,
+							approve: true
+						})
+					})
+					.then(response => response.text())
+					.then(data => {
+						alert(data);
+						document.getElementById("pendBtn").click();
+					})
+					.catch(error => console.error('Error:', error));
+				});
+			});
+
+			document.querySelectorAll('.decline-btn').forEach(button => {
+				button.addEventListener('click', function(event) {
+					event.preventDefault();
+					const booktitle = this.parentElement.querySelector('.booktitle').value;
+					const fullname = this.parentElement.querySelector('.fullname').value;
+
+					fetch('TransactionsDash.php', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						},
+						body: new URLSearchParams({
+							booktitle: booktitle,
+							fullname: fullname,
+							cancel: true
+						})
+					})
+					.then(response => response.text())
+					.then(data => {
+						alert(data);
+						document.getElementById("pendBtn").click();
+					})
+					.catch(error => console.error('Error:', error));
+				});
+			});
+		}
+
+		//OVERDUE
         document.getElementById("OverdueBtn").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./TransactionsOverdue.php')
