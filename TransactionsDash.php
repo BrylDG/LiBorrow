@@ -53,7 +53,7 @@
                         <p class="name">' . htmlspecialchars($row["fullname"]) . '</p>
                         <p class="date">Request Date: ' . htmlspecialchars($row["requestdate"]) . '</p>
                         <div class="pendbox global">
-                            <img src="' . htmlspecialchars($row["bookimg"]) . '" alt="Book image" class="book-img">
+                            <img src="' . htmlspecialchars($row["bookimg"]) . '" alt="Book image" class="book-img" width="100" height="150">
                             <div class="book-details">
                                 <p class="btitle">' . htmlspecialchars($row["booktitle"]) . '</p>
                                 <p class="author">' . htmlspecialchars($row["author"]) . '</p>

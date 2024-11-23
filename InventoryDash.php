@@ -3,12 +3,13 @@ session_start(); // Start the session
 include('connection.php'); // Include your connection file
 
 // Check if the user is logged in
-if (!isset($_SESSION['fullname'])) { // Replace 'user_id' with your session variable for logged-in users
+if (!isset($_SESSION['fullname'])) {
     header("Location: login.php"); // Redirect to the login page
     exit(); // Make sure to exit after the redirect
 }
+
 // Retrieve the full name from the session
-$fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // Default to 'User ' if not set
+$fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User  '; // Default to 'User  ' if not set
 
 // Initialize variables for search, sort, and genre filter
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
@@ -19,21 +20,25 @@ $limit = 10; // Number of records per page
 $offset = ($currentPage - 1) * $limit;
 
 // Fetch data for the current page with search, sort, and filter
-$sql = "SELECT bookid, booktitle, author, genre, pubdate, quantity, descrpt FROM books WHERE 1=1";
+$sql = "SELECT b.bookid, b.booktitle, b.author, GROUP_CONCAT(g.name SEPARATOR ', ') AS genres, b.pubdate, b.quantity, b.descrpt 
+        FROM books b
+        LEFT JOIN bookgenres bg ON b.bookid = bg.bookid
+        LEFT JOIN genres g ON bg.genreid = g.genreid
+        WHERE 1=1";
 
 if ($searchTerm) {
-    $sql .= " AND (booktitle LIKE '%" . $conn->real_escape_string($searchTerm) . "%' OR author LIKE '%" . $conn->real_escape_string($searchTerm) . "%')";
+    $sql .= " AND (b.booktitle LIKE '%" . $conn->real_escape_string($searchTerm) . "%' OR b.author LIKE '%" . $conn->real_escape_string($searchTerm) . "%')";
 }
 
 if ($genreFilter) {
-    $sql .= " AND genre = '" . $conn->real_escape_string($genreFilter) . "'";
+    $sql .= " AND g.name = '" . $conn->real_escape_string($genreFilter) . "'";
 }
 
 if ($sortBy) {
     $sql .= " ORDER BY " . $conn->real_escape_string($sortBy);
 }
 
-$sql .= " LIMIT $limit OFFSET $offset"; // Add pagination
+$sql .= " GROUP BY b.bookid LIMIT $limit OFFSET $offset"; // Add pagination and group by bookid
 
 $result = $conn->query($sql);
 ?>
@@ -52,7 +57,6 @@ $result = $conn->query($sql);
                     <option value="">Sort By</option>
                     <option value="booktitle">Title</option>
                     <option value="author">Author</option>
-                    <option value="genre">Genre</option>
                     <option value="pubdate">Publication Date</option>
                 </select>
                 <select id="genre-filter" onchange="loadBooks()">
@@ -87,7 +91,7 @@ $result = $conn->query($sql);
                                         <td>" . htmlspecialchars($row["bookid"]) . "</td>
                                         <td>" . htmlspecialchars($row["booktitle"]) . "</td>
                                         <td>" . htmlspecialchars($row["author"]) . "</td>
-                                        <td>" . htmlspecialchars($row["genre"]) . "</td>
+                                        <td>" . htmlspecialchars($row["genres"]) . "</td>
                                         <td><a href='#' class='view-more'>View more</a></td>
                                       </tr>";
                             }
@@ -101,6 +105,4 @@ $result = $conn->query($sql);
             </div>
         </div>
     </div>
-
-
 </div>

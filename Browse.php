@@ -1,32 +1,43 @@
 <?php
-    session_start(); // Start the session
-    include('connection.php'); // Include your connection file
-    
-    // Check if the user is logged in
-    if (!isset($_SESSION['idno'])) { // Replace 'user_id' with your session variable for logged-in users
-        header("Location: login.php"); // Redirect to the login page
-        exit(); // Make sure to exit after the redirect
-    }
-    // Retrieve the full name from the session
-    $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // Default to 'User ' if not set
-    $role = $_SESSION['isAdmin'];
+	session_start(); // Start the session
+	include('connection.php'); // Include your connection file
 
-    $selected_genre = isset($_GET['genre']) ? $_GET['genre'] : null;
+	// Check if the user is logged in
+	if (!isset($_SESSION['idno'])) { // Replace 'user_id' with your session variable for logged-in users
+		header("Location: login.php"); // Redirect to the login page
+		exit(); // Make sure to exit after the redirect
+	}
 
-    $query = "SELECT bookid, booktitle, author, bookimg, genre FROM books";
+	// Retrieve the full name from the session
+	$fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User  '; // Default to 'User  ' if not set
+	$role = $_SESSION['isAdmin'];
 
-    if ($selected_genre) {
-        $query .= " WHERE genre = ?";
-    }
+	// Get the selected genre from the GET parameters
+	$selected_genre = isset($_GET['genre']) ? $_GET['genre'] : null;
 
-    $stmt = $conn->prepare($query);
-    if ($selected_genre) {
-        $stmt->bind_param("s", $selected_genre);
-    }
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $books = $result->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
+	// Prepare the base query
+	$query = "SELECT b.bookid, b.booktitle, b.author, b.bookimg, 
+					 GROUP_CONCAT(g.name SEPARATOR ', ') AS genres 
+			  FROM books b 
+			  JOIN bookgenres bg ON b.bookid = bg.bookid 
+			  JOIN genres g ON bg.genreid = g.genreid";
+
+	if ($selected_genre) {
+		// Use a prepared statement to prevent SQL injection
+		$query .= " WHERE g.name = ?";
+	}
+
+	// Group by bookid to avoid duplicates
+	$query .= " GROUP BY b.bookid";
+
+	$stmt = $conn->prepare($query);
+	if ($selected_genre) {
+		$stmt->bind_param("s", $selected_genre);
+	}
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$books = $result->fetch_all(MYSQLI_ASSOC);
+	$stmt->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -189,7 +200,7 @@
                                 </button>
                             </form>
                             </div>
-                            <img src="<?php echo htmlspecialchars($book['bookimg']); ?>" alt="Book Thumbnail">
+                            <img src="<?php echo htmlspecialchars($book['bookimg']); ?>" alt="Book Thumbnail" width="100" height="150">
                             <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
                             <p id="B-title"><?php echo htmlspecialchars($book['booktitle']); ?></p>
                             <p id="Book-Author"><?php echo htmlspecialchars($book['author']); ?></p>

@@ -127,7 +127,7 @@
                     title: 'Login Success!',
                     text: 'Redirecting...',
                     icon: 'success',
-                    timer: 2000,
+                    timer: 1000,
                     timerProgressBar: true,
                     willClose: () => {
                         window.location.href = '<?php echo $user['isAdmin'] == 1 ? "BootDash.php" : "UserNavTemplate.php"; ?>';

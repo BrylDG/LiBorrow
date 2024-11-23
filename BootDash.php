@@ -342,46 +342,9 @@ const myBarChart = new Chart(ctx, {
             document.getElementById("body-content").innerHTML = data;
             document.title = "Readers List";
             document.getElementById("page-title").innerText = "Readers Lists";
-            initializeSearchSortFilter(); // Initialize search, sort, and filter
-            initializeViewMoreButtons(); // Initialize View More buttons
         })
         .catch(error => handleError('Error fetching ReaderDash:', error));
 });
-
-// Function to initialize search, sort, and filter inputs
-function initializeSearchSortFilter() {
-    const searchInput = document.createElement('input');
-    searchInput.id = 'search-input';
-    searchInput.placeholder = 'Search...';
-    searchInput.addEventListener('input', searchUsers);
-
-    const sortDropdown = document.createElement('select');
-    sortDropdown.id = 'sort-dropdown';
-    sortDropdown.innerHTML = `
-        <option value="">Sort By</option>
-        <option value="fullname">Name</option>
-        <option value="email">Email</option>
-    `;
-    sortDropdown.addEventListener('change', sortUsers);
-
-    const filterDropdown = document.createElement('select');
-    filterDropdown.id = 'filter-dropdown';
-    filterDropdown.innerHTML = `
-        <option value="">Filter By Genre</option>
-        <option value="genre1">Genre 1</option>
-        <option value="genre2">Genre 2</option>
-    `;
-    filterDropdown.addEventListener('change', filterUsers);
-
-    // Append search, sort, and filter inputs to the body content
-    const inputArea = document.createElement('div');
-    inputArea.className = 'input-area';
-    inputArea.appendChild(searchInput);
-    inputArea.appendChild(sortDropdown);
-    inputArea.appendChild(filterDropdown);
-
-    document.getElementById("body-content").appendChild(inputArea);
-}
 
 // Function to load users
 function loadUsers() {
@@ -442,87 +405,130 @@ function initializeViewMoreButtons() {
             // You can add code here to display an error message to the user, e.g., using a modal or alert.
         }
 		
-document.addEventListener("DOMContentLoaded", function() {
-    // Event listener for the Inventory button to load InventoryDash.php
-    const button2 = document.getElementById("button2");
-    if (button2) {
-        button2.addEventListener("click", function(event) {
-            event.preventDefault();
-            fetch('./InventoryDash.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("body-content").innerHTML = data;
-                    document.title = "Inventory"; 
-                    document.getElementById("page-title").innerText = "Inventory"; 
+		document.addEventListener("DOMContentLoaded", function() {
+			 const genreSelect = document.getElementById('genre-select');
+				if (genreSelect) {
+					genreSelect.blur(); // Remove focus from the dropdown
+				}
+			// Event listener for the Inventory button to load InventoryDash.php
+			const button2 = document.getElementById("button2");
+			if (button2) {
+				button2.addEventListener("click", function(event) {
+					event.preventDefault();
+					fetch('./InventoryDash.php')
+						.then(response => response.text())
+						.then(data => {
+							document.getElementById("body-content").innerHTML = data;
+							document.title = "Inventory"; 
+							document.getElementById("page-title").innerText = "Inventory"; 
 
-                    // Now that the Inventory page is loaded, attach the Add Book button listener
-                    setupAddBookButton(); // Set up the Add Book button click event
-                    loadBooks(); // Load books after the Inventory page content is loaded
-                })
-                .catch(error => console.error('Error fetching InventoryDash.php:', error));
-        });
-    }
+							// Now that the Inventory page is loaded, attach the Add Book button listener
+							setupAddBookButton(); // Set up the Add Book button click event
+							loadBooks(); // Load books after the Inventory page content is loaded
+						})
+						.catch(error => console.error('Error fetching InventoryDash.php:', error));
+				});
+			}
+		});
 
-    // Function to set up the Add Book button after the Inventory page is loaded
-    function setupAddBookButton() {
-        const addBookButton = document.getElementById("addBookButton");
-        if (addBookButton) {
-            addBookButton.addEventListener("click", function(event) {
-                event.preventDefault();
-                fetch('./addbook.php')
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById("body-content").innerHTML = data;
-                        document.title = "Add Book";
-                        document.getElementById("page-title").innerText = "Add Book"; 
-                        setupAddBookFormSubmission(); // Set up the form submission for adding a book
-						setupCancelButton();
-                    })
-                    .catch(error => {
-                        console.error('Error fetching addbook.php:', error);
-                    });
-            });
-        }
-    }
+		function setupAddBookButton() {
+			const addBookButton = document.getElementById("addBookButton");
+			if (addBookButton) {
+				addBookButton.addEventListener("click", function(event) {
+					event.preventDefault();
+					fetch('./addbook.php')
+						.then(response => response.text())
+						.then(data => {
+							document.getElementById("body-content").innerHTML = data;
+							document.title = "Add Book";
+							document.getElementById("page-title").innerText = "Add Book"; 
+							setupAddBookFormSubmission(); // Set up the form submission for adding a book
+							setupGenreSelection(); // Set up the genre selection
+							setupCancelButton();
+						})
+						.catch(error => {
+							console.error('Error fetching addbook.php:', error);
+						});
+				})
+			}
+		}
 
-    // Function to handle the form submission for adding a new book
-  function setupAddBookFormSubmission() {
-    const form = document.getElementById("addBookForm");
-    if (form) {
-        form.addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent default form submission
-            const formData = new FormData(this);
+		// Function to handle the form submission for adding a new book
+		function setupAddBookFormSubmission() {
+			const form = document.getElementById("addBookForm");
+			const checkboxContainer = document.getElementById('checkbox-container'); // Reference to checkbox container
 
-            // Send data to the server (addbook.php)
-            fetch('./addbook.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(() => {
-                // Show success message using SweetAlert
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: 'Book added successfully.',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    form.reset(); // Reset the form after successful submission
-                    loadBooks(); // Reload books after adding
-                });
-            })
-            .catch(error => {
-                // Show error message using SweetAlert
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'An error occurred. Please try again.',
-                    confirmButtonText: 'OK'
-                });
-            });
-        });
-    }
-}
+			if (form) {
+				form.addEventListener("submit", function(event) {
+					event.preventDefault(); // Prevent default form submission
+					const formData = new FormData(this);
+
+					// Send data to the server (addbook.php)
+					fetch('./addbook.php', {
+						method: 'POST',
+						body: formData
+					})
+					.then(() => {
+						// Show success message using SweetAlert
+						Swal.fire({
+							icon: 'success',
+							title: 'Success!',
+							text: 'Book added successfully.',
+							confirmButtonText: 'OK'
+						}).then(() => {
+							form.reset(); // Reset the form after successful submission
+							checkboxContainer.innerHTML = ''; // Clear all checkboxes
+							loadBooks(); // Reload books after adding
+						});
+					})
+					.catch(error => {
+						// Show error message using SweetAlert
+						console.error('Error:', error);
+						Swal.fire({
+							icon: 'error',
+							title: 'Error!',
+							text: 'An error occurred. Please try again.',
+							confirmButtonText: 'OK'
+						});
+					});
+				});
+			}
+		}
+
+		// Function to set up genre selection with dynamic checkboxes
+		function setupGenreSelection() {
+			const genreSelect = document.getElementById('genre-select');
+			const checkboxContainer = document.getElementById('checkbox-container');
+
+			genreSelect.addEventListener('change', function() {
+				// Clear existing checkboxes
+				checkboxContainer.innerHTML = '';
+
+				// Get selected options
+				const selectedOptions = Array.from(genreSelect.selectedOptions);
+
+				// Create checkboxes for selected options
+				selectedOptions.forEach(option => {
+					const checkboxId = option.value;
+
+					// Create a new checkbox
+					const checkbox = document.createElement('input');
+					checkbox.type = 'checkbox';
+					checkbox.id = checkboxId;
+					checkbox.value = option.value;
+					checkbox.checked = true; // Automatically check the checkbox
+
+					// Create a label for the checkbox
+					const label = document.createElement('label');
+					label.htmlFor = checkboxId;
+					label.textContent = option.text;
+
+					// Append checkbox and label to the container
+					checkboxContainer.appendChild(checkbox);
+					checkboxContainer.appendChild(label);
+				});
+			});
+		}
 	function setupCancelButton() {
         const cancelButton = document.querySelector('button[type="button"]'); // Assuming "Cancel" button has `type="button"`
         if (cancelButton) {
@@ -562,7 +568,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 alert('Failed to load books. Please try again.');
             });
     }
-});
+
 
 		//BORROWED
         document.getElementById("BorrowedBtn").addEventListener("click", function(event) {
