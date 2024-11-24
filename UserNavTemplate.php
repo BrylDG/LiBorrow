@@ -222,7 +222,7 @@ $role = $_SESSION['isAdmin'];
         //HISTORY CONENT
         document.getElementById("button4").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./UserHistory.html')
+            fetch('./UserHistory.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;

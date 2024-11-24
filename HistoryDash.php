@@ -36,7 +36,7 @@ $result = $conn->query($sql);
             </button>
         </div>
         <div id="d1" class="History-box">
-            <div style="max-height: 400px; overflow-y: auto; width: 100%;">
+            <div style="max-height: 800px; overflow-y: auto; width: 100%;">
                 <table class="History-table">
                     <thead>
                         <tr>
