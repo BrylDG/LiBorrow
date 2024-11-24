@@ -21,9 +21,11 @@
     width: 100%;
     background-color: #f5f5f5;
 
+
 }
 #td1{
     overflow: hidden;
+    height: 75vh;
 }
 .browse-genre {
     display: flex;
@@ -105,7 +107,7 @@
 }
 
 .book-container {
-    width: 297px; /* Set the width */
+    width: 294px; /* Set the width */
     height: 440px; /* Set the height */
     display: flex;
     justify-content: space-around;
@@ -227,8 +229,8 @@
 
 
 .book-image {
-    width: 100; /* Image will fit the width of the container */
-    height: 150px; /* Maintain the aspect ratio */
+    width: 65%; /* Image will fit the width of the container */
+    height: 200px; /* Maintain the aspect ratio */
 }
 
 .global {
