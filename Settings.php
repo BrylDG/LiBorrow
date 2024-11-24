@@ -37,7 +37,6 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transactions Section</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="./Settings.css"> <!-- Linking the CSS file -->
 </head>
@@ -61,48 +60,50 @@ $conn->close();
             </div>
                                     
             <!-- Input section starts here -->
-            <div class="input-section" id="info-box">
-                <label for="fullname">Full Name</label>
-                <div class="input-icon">
-                    <input type="text" id="full-name" placeholder="<?php echo isset($user_data) ? htmlspecialchars($user_data['fullname']) : ''; ?>" disabled>
-                    <span class="pencil-icon" name="full-name">
-                        <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
-                    </span>
-                </div>
+            <form method="POST" action="Update_Profile.php">
+                <div class="input-section" id="info-box">
+                    <label for="full-name">Full Name</label>
+                    <div class="input-icon" id>
+                        <input class="inputs" type="text" id="full-name" name="full-name" value="<?php echo isset($user_data) ? htmlspecialchars($user_data['fullname']) : ''; ?>" readonly disabled>
+                        <span class="pencil-icon" name="full-name" onclick="enableEditing('full-name')">
+                            <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
+                        </span>
+                    </div>
 
-                <label for="username">User Name</label>
-                <div class="input-icon">
-                    <input type="text" id="username" name="username" placeholder="<?php echo isset($user_data) ? htmlspecialchars($user_data['username']) : ''; ?>" disabled>
-                    <span class="pencil-icon">
-                        <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
-                    </span>
-                </div>
+                    <label for="username">User Name</label>
+                    <div class="input-icon">
+                        <input class="inputs" type="text" id="username" name="username" value="<?php echo isset($user_data) ? htmlspecialchars($user_data['username']) : ''; ?>" readonly disabled>
+                        <span class="pencil-icon" onclick="enableEditing('username')"> 
+                            <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
+                        </span>
+                    </div>
 
-                <label for="email">Email Address</label>
-                <div class="input-icon">
-                    <i class="fas fa-envelope" id="ic"></i> <!-- Email icon -->
-                    <input type="email" id="email" name="email" placeholder="<?php echo isset($user_data) ? htmlspecialchars($user_data['email']) : ''; ?>" disabled>
-                    <span class="pencil-icon">
-                        <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
-                    </span>
-                </div>
+                    <label for="email">Email Address</label>
+                    <div class="input-icon">
+                        <i class="fas fa-envelope" id="ic"></i> <!-- Email icon -->
+                        <input class="inputs" type="email" id="email" name="email" value="<?php echo isset($user_data) ? htmlspecialchars($user_data['email']) : ''; ?>" readonly disabled>
+                        <span class="pencil-icon" onclick="enableEditing('email')">
+                            <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
+                        </span>
+                    </div>
 
-                <label for="phone-number">Phone Number</label>
-                <div class="input-icon">
-                    <i class="fas fa-phone" id="ic"></i> <!-- Phone icon -->
-                    <input type="tel" id="phone-number" name="phone-number" placeholder="<?php echo isset($user_data) ? htmlspecialchars($user_data['phoneno']) : ''; ?>" disabled>
-                    <span class="pencil-icon">
-                        <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
-                    </span>
-                </div>
+                    <label for="phone-number">Phone Number</label>
+                    <div class="input-icon">
+                        <i class="fas fa-phone" id="ic"></i> <!-- Phone icon -->
+                        <input class="inputs" type="tel" id="phone-number" name="phone-number" value="<?php echo isset($user_data) ? htmlspecialchars($user_data['phoneno']) : ''; ?>" readonly disabled>
+                        <span class="pencil-icon" onclick="enableEditing('phone-number')">
+                            <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
+                        </span>
+                    </div>
 
-                <label for="address">Address</label>
-                <div class="input-icon">
-                    <i class="fas fa-map-marker-alt" id="ic"></i> <!-- Address icon -->
-                    <input type="text" id="address" name="address" placeholder="<?php echo isset($user_data) ? htmlspecialchars($user_data['address']) : ''; ?>" disabled>
-                                        <span class="pencil-icon">
-                        <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
-                    </span>
+                    <label for="address">Address</label>
+                    <div class="input-icon">
+                        <i class="fas fa-map-marker-alt" id="ic"></i> <!-- Address icon -->
+                        <input class="inputs" type="text" id="address" name="address" value="<?php echo isset($user_data) ? htmlspecialchars($user_data['address']) : ''; ?>" readonly disabled>
+                        <span class="pencil-icon" onclick="enableEditing('address')">
+                            <i class="fa fa-pencil" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
+                        </span>
+                    </div>
                 </div>
 
                 <!-- Container for current and new password fields to be aligned horizontally -->
@@ -111,18 +112,18 @@ $conn->close();
                         <label for="password">Current Password</label>
                         <div class="input-icon">
                             <i class="fas fa-key" id="ic"></i> <!-- Lock icon -->
-                            <input type="password" id="password" name="password" placeholder="*********" disabled>
+                            <input type="password" id="password" name="password" value="<?php echo isset($user_data) ? htmlspecialchars($user_data['password']) : ''; ?>" readonly>
                             <span class="pencil-icon">
                                 <i class="fa fa-eye" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
                             </span>
                         </div>
                     </div>
-
+                
                     <div class="input-field">
                         <label for="new-password">New Password</label>
                         <div class="input-icon">
                             <i class="fas fa-key" id="ic"></i> <!-- Lock icon -->
-                            <input type="password" id="new-password" name="new-password" placeholder="*****************" disabled>
+                            <input type="password" id="new-password" name="new-password">
                             <span class="pencil-icon">
                                 <i class="fa fa-eye" aria-hidden="true" id="pass-ic"></i> <!-- Pencil Icon -->
                             </span>
@@ -133,28 +134,19 @@ $conn->close();
                 <label for="confirm-password">Confirm Password</label>
                 <div class="input-icon">
                     <i class="fas fa-key" id="ic"></i> <!-- Lock icon -->
-                    <input type="password" id="confirm-password" name="confirm-password" placeholder="*****************" disabled>
+                    <input type="password" id="confirm-password" name="confirm-password">
                     <span class="pencil-icon">
                         <i class="fa fa-eye" aria-hidden="true" id="pen-ic"></i> <!-- Pencil Icon -->
                     </span>
                 </div>
-            </div>
 
-            <div class="SaveCancel-btn">
-                <button class="usersave-btn">
-                    Save
-                </button>
-                <button class="userupdate-btn" id="cancelsetbtn">
-                    Cancel
-                </button>
-            </div>  
+                <div class="SaveCancel-btn">
+                    <button class="usersave-btn" type="submit">Save</button>
+                    <button onclick="disableEdit()" type="reset" id="cancelsetbtn">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
- <script>
-
-
- </script>
-
 </body>
 </html>
