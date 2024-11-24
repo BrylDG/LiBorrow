@@ -11,7 +11,7 @@ if (!isset($_SESSION['fullname'])) { // Replace 'user_id' with your session vari
 $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // Default to 'User ' if not set
 
 // Fetch data from `history` table
-$sql = "SELECT bookid, title, idno AS userid, username, borrowdate, duedate, status FROM history";
+$sql = "SELECT bookid, booktitle, idno, fullname, borrowdate, duedate, status FROM history";
 $result = $conn->query($sql);
 ?>
 <div class="content-box" id="content2">
@@ -55,9 +55,9 @@ $result = $conn->query($sql);
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>
                                     <td>{$row['bookid']}</td>
-                                    <td>{$row['title']}</td>
-                                    <td>{$row['userid']}</td>
-                                    <td>{$row['username']}</td>
+                                    <td>{$row['booktitle']}</td>
+                                    <td>{$row['idno']}</td>
+                                    <td>{$row['fullname']}</td>
                                     <td>{$row['borrowdate']}</td>
                                     <td>{$row['duedate']}</td>
                                     <td class='act'>{$row['status']}</td>

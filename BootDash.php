@@ -571,56 +571,78 @@ function initializeViewMoreButtons() {
                 alert('Failed to load books. Please try again.');
             });
     }
-	
-		
-document.addEventListener("DOMContentLoaded", () => {
-    const borrowedBtn = document.getElementById("BorrowedBtn");
-    const bodyContent = document.getElementById("body-content");
-    const pageTitle = document.getElementById("page-title");
+		//BORROWED			
+		document.addEventListener("DOMContentLoaded", function () {
+			const borrowedBtn = document.getElementById("BorrowedBtn");
+			const bodyContent = document.getElementById("body-content");
+			const pageTitle = document.getElementById("page-title");
 
-    borrowedBtn.addEventListener("click", async (event) => {
-        event.preventDefault();
-        try {
-            const response = await fetch('./TransactionsBorrowed.php');
-            const data = await response.text();
-            bodyContent.innerHTML = data;
-            document.title = "Borrowed Books";
-            pageTitle.innerText = "Borrowed Books";
+			if (borrowedBtn) {
+				borrowedBtn.addEventListener("click", function (event) {
+					event.preventDefault();
+					fetch('./TransactionsBorrowed.php')
+						.then(response => response.text())
+						.then(data => {
+							bodyContent.innerHTML = data;
+							document.title = "Borrowed Books";
+							pageTitle.innerText = "Borrowed Books";
 
-            // Add event listeners to the newly created elements
-            const viewBorrowerButtons = document.querySelectorAll('.view-borrowers');
+							// Attach listeners after loading the content
+							setupViewBorrowerButtons();
+						})
+						.catch(error => console.error('Error fetching TransactionsBorrowed.php:', error));
+				});
+			}
+		});
 
-            viewBorrowerButtons.forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const dropdown = event.target.closest('.Borrbox').querySelector('.borrowers-dropdown');
+		function setupViewBorrowerButtons() {
+			const viewBorrowerButtons = document.querySelectorAll('.view-borrowers');
 
-                    // Toggle the visibility of the dropdown
-                    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+			viewBorrowerButtons.forEach(button => {
+				button.addEventListener('click', function (event) {
+					const dropdown = event.target.closest('.Borrbox').querySelector('.borrowers-dropdown');
 
-                    // Fetch and populate borrower data if displaying the dropdown
-                    if (dropdown.style.display === "block") {
-                        const booktitle = event.target.getAttribute('data-booktitle');
-                        fetchBorrowers(booktitle, dropdown);
-                    }
-                });
-            });
-        } catch (error) {
-            console.error('Error fetching content:', error);
-        }
-    });
+					// Toggle the visibility of the dropdown
+					dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
 
-    async function fetchBorrowers(booktitle, dropdown) {
-        try {
-            const response = await fetch(`TransactionsBorrowed.php?booktitle=${encodeURIComponent(booktitle)}`);
-            if (!response.ok) throw new Error('Network response was not ok');
-            const data = await response.text();
-            dropdown.querySelector('tbody').innerHTML = data; // Populate the table body with fetched data
-        } catch (error) {
-            dropdown.querySelector('tbody').innerHTML = "<tr><td colspan='3'>Error fetching borrowers.</td></tr>";
-            console.error('Error fetching borrowers:', error);
-        }
-    }
-});	
+					// Fetch and populate borrower data if displaying the dropdown
+					if (dropdown.style.display === "block") {
+						const booktitle = event.target.getAttribute('data-booktitle');
+						fetchBorrowers(booktitle, dropdown);
+					}
+				});
+			});
+		}
+
+		function fetchBorrowers(booktitle, dropdown) {
+			fetch(`TransactionsBorrowed.php?booktitle=${encodeURIComponent(booktitle)}`)
+				.then(response => response.text())
+				.then(data => {
+					dropdown.querySelector('tbody').innerHTML = data; // Populate the table body with fetched data
+
+					// Attach listeners for the Return buttons
+					setupReturnButtons();
+				})
+				.catch(error => {
+					dropdown.querySelector('tbody').innerHTML = "<tr><td colspan='4'>Error fetching borrowers.</td></tr>";
+					console.error('Error fetching borrowers:', error);
+				});
+		}
+
+		function setupReturnButtons() {
+			const returnButtons = document.querySelectorAll('.return-button');
+
+			returnButtons.forEach(button => {
+				button.addEventListener('click', function (event) {
+					const idno = event.target.getAttribute('data-idno');
+					const booktitle = event.target.getAttribute('data-booktitle');
+
+					// Redirect to the return page with query parameters
+					const returnUrl = `returnBook.php?idno=${encodeURIComponent(idno)}&booktitle=${encodeURIComponent(booktitle)}`;
+					window.location.href = returnUrl;
+				});
+			});
+		}
 		
 		//RETURNED
         document.getElementById("ReturnedBtn").addEventListener("click", function(event) {

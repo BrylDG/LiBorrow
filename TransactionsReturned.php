@@ -10,14 +10,14 @@ if (!isset($_SESSION['fullname'])) {
 }
 
 // Fetch data for the current page
-$sql = "SELECT bookname, author, status, username, datereturned, image FROM returns";
+$sql = "SELECT booktitle, author, status, fullname, datereturned, bookimg FROM returns";
 $result = $conn->query($sql);
 
 
 // Add search filter if provided
 if (!empty($_GET['search'])) {
     $search = $conn->real_escape_string($_GET['search']);
-    $sql .= " AND (bookname LIKE '%$search%' OR author LIKE '%$search%')";
+    $sql .= " AND (booktitle LIKE '%$search%' OR author LIKE '%$search%')";
 }
 
 // Add status filter if provided
@@ -31,8 +31,8 @@ if (!empty($_GET['sort'])) {
     $sort = $conn->real_escape_string($_GET['sort']);
     $sql .= " ORDER BY $sort";
 } else {
-    // Default sorting by bookname
-    $sql .= " ORDER BY bookname";
+    // Default sorting by booktitle
+    $sql .= " ORDER BY booktitle";
 }
 ?>
     <div class="content-box" id="content2">
@@ -74,17 +74,17 @@ if (!empty($_GET['sort'])) {
 							while ($row = $result->fetch_assoc()) {
 								echo "<tr>";
 								echo "<td>";
-								// Display the image next to the book name
-								if (!empty($row["image"])) {
-									echo "<img src='" . htmlspecialchars($row["image"]) . "' alt='Book Image' width='50' height='70' style='margin-right:10px;'>";
+								// Display the bookimg next to the book name
+								if (!empty($row["bookimg"])) {
+									echo "<img src='" . htmlspecialchars($row["bookimg"]) . "' alt='Book Image' width='50' height='70' style='margin-right:10px;'>";
 								} else {
-									// Default image if none provided
+									// Default bookimg if none provided
 									echo "<img src='./Images/default-book.png' alt='Default Book Image' width='50' height='70' style='margin-right:10px;'>";
 								}
-								echo htmlspecialchars($row["bookname"]) . "</td>";
+								echo htmlspecialchars($row["booktitle"]) . "</td>";
 								echo "<td>" . htmlspecialchars($row["author"]) . "</td>";
 								echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
-								echo "<td>" . htmlspecialchars($row["username"]) . "</td>";
+								echo "<td>" . htmlspecialchars($row["fullname"]) . "</td>";
 								echo "<td>" . htmlspecialchars($row["datereturned"]) . "</td>";
 								echo "</tr>";
 							}

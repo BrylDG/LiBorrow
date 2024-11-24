@@ -17,6 +17,7 @@ if (isset($_GET['booktitle'])) {
                     <td>' . htmlspecialchars($borrower['idno']) . '</td>
                     <td>' . htmlspecialchars($borrower['fullname']) . '</td>
                     <td>' . htmlspecialchars($borrower['duedate']) . '</td>
+					<td><button class="return-button" data-idno="' . htmlspecialchars($borrower['idno']) . '" data-booktitle="' . htmlspecialchars($booktitle) . '">Return</button></td>
                   </tr>';
         }
     } else {
@@ -65,12 +66,13 @@ $result = $conn->query($query);
                     <div class="borrowers-dropdown" style="display:none;">
                         <table>
                             <thead>
-                                <tr>
-                                    <th>ID No</th>
-                                    <th>Full Name</th>
-                                    <th>Due Date</th>
-                                </tr>
-                            </thead>
+								<tr>
+									<th>ID No</th>
+									<th>Full Name</th>
+									<th>Due Date</th>
+									<th>Action</th>
+								</tr>
+							</thead>
                             <tbody>
                                 <!-- Borrower data will be populated here via JavaScript -->
                             </tbody>
