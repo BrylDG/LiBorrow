@@ -133,70 +133,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
             </div>
         </div>
     </div>
-	<?php
-	// Database connection (adjust the connection parameters as needed)
-	include ("connection.php");
 	
-	// Query to get the counts from each table
-	$borrowedQuery = "SELECT COUNT(*) AS count FROM borrows";
-	$returnedQuery = "SELECT COUNT(*) AS count FROM returns";
-	$pendingQuery = "SELECT COUNT(*) AS count FROM pendings";
-	$overdueQuery = "SELECT COUNT(*) AS count FROM borrows WHERE duedate < CURDATE()";
-
-	// Execute queries
-	$borrowedResult = $conn->query($borrowedQuery);
-	$returnedResult = $conn->query($returnedQuery);
-	$pendingResult = $conn->query($pendingQuery);
-	$overdueResult = $conn->query($overdueQuery);
-
-	// Fetch counts
-	$counts = [
-		'Borrowed' => $borrowedResult->fetch_assoc()['count'],
-		'Returned' => $returnedResult->fetch_assoc()['count'],
-		'Pending' => $pendingResult->fetch_assoc()['count'],
-		'Overdue' => $overdueResult->fetch_assoc()['count']
-	];
-
-	// Calculate total books
-	$totalBooks = array_sum($counts);
-
-	// Calculate percentages
-	$percentages = [];
-	foreach ($counts as $status => $count) {
-		$percentages[$status] = ($totalBooks > 0) ? ($count / $totalBooks) * 100 : 0;
-	}
-	
-	
-	// BARCHART
-	// Fetch genre names from the genres table
-	$genreQuery = "SELECT name FROM genres";
-	$genreResult = $conn->query($genreQuery);
-
-	// Store genre names in an array
-	$genreNames = [];
-	while ($row = $genreResult->fetch_assoc()) {
-		$genreNames[] = $row['name'];
-	}
-
-	// Query to count borrows by genre
-	$genreCountQuery = "SELECT genre, COUNT(*) AS borrow_count FROM borrowhistory GROUP BY genre";
-
-	// Execute the query
-	$genreCountResult = $conn->query($genreCountQuery);
-
-	// Prepare arrays for genres and their corresponding borrow counts
-	$genreNames = [];
-	$borrowCounts = [];
-
-	// Fetch the results
-	while ($row = $genreCountResult->fetch_assoc()) {
-		$genreNames[] = $row['genre'];
-		$borrowCounts[] = $row['borrow_count'];
-	}
-
-	// Close the database connection
-	$conn->close();
-	?>
     <script>
        
         function toggleSubmenu() {
@@ -224,116 +161,182 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                 .catch(error => console.error('Error fetching content:', error));
         }
 		
-        document.getElementById("button0").addEventListener("click", function(event) {
-            event.preventDefault();
-            fetch('./Dashboard.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("body-content").innerHTML = data;
-                    document.title = "Dashboard"; // Change the page title
-                    document.getElementById("page-title").innerText = "Dashboard"; // Change the displayed title
-                    renderCharts();
-                })
-                .catch(error => console.error('Error fetching content:', error));
-        });
+		
+		//Dashboard
+		<?php
+		// Database connection (adjust the connection parameters as needed)
+		include("connection.php");
 
+		// Query to get the counts from each table
+		$borrowedQuery = "SELECT COUNT(*) AS count FROM borrows";
+		$returnedQuery = "SELECT COUNT(*) AS count FROM returns";
+		$pendingQuery = "SELECT COUNT(*) AS count FROM pendings";
+		$overdueQuery = "SELECT COUNT(*) AS count FROM borrows WHERE duedate < CURDATE()";
+
+		// Execute queries
+		$borrowedResult = $conn->query($borrowedQuery);
+		$returnedResult = $conn->query($returnedQuery);
+		$pendingResult = $conn->query($pendingQuery);
+		$overdueResult = $conn->query($overdueQuery);
+
+		// Fetch counts
+		$counts = [
+			'Borrowed' => $borrowedResult->fetch_assoc()['count'],
+			'Returned' => $returnedResult->fetch_assoc()['count'],
+			'Pending' => $pendingResult->fetch_assoc()['count'],
+			'Overdue' => $overdueResult->fetch_assoc()['count']
+		];
+
+		// Calculate total books
+		$totalBooks = array_sum($counts);
+
+		// Calculate percentages
+		$percentages = [];
+		foreach ($counts as $status => $count) {
+			$percentages[$status] = ($totalBooks > 0) ? ($count / $totalBooks) * 100 : 0;
+		}
+
+		// BARCHART
+		// Query to count borrows by genre
+		$genreCountQuery = "
+			SELECT 
+				g.name AS genre, 
+				COUNT(bh.bookid) AS borrow_count 
+			FROM 
+				borrowhistory bh 
+			JOIN 
+				bookgenres bg ON bh.bookid = bg.bookid 
+			JOIN 
+				genres g ON bg.genreid = g.genreid 
+			GROUP BY 
+				g.name
+		";
+
+		// Execute the query
+		$genreCountResult = $conn->query($genreCountQuery);
+
+		// Prepare arrays for genres and their corresponding borrow counts
+		$genreNames = [];
+		$borrowCounts = [];
+
+		// Fetch the results
+		while ($row = $genreCountResult->fetch_assoc()) {
+			$genreNames[] = $row['genre'];
+			$borrowCounts[] = (int)$row['borrow_count']; // Ensure it's an integer
+		}
+
+		// Close the database connection
+		$conn->close();
+		?>
+		document.getElementById("button0").addEventListener("click", function(event) {
+        event.preventDefault();
+        fetch('./Dashboard.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("body-content").innerHTML = data;
+                document.title = "Dashboard"; // Change the page title
+                document.getElementById("page-title").innerText = "Dashboard"; // Change the displayed title
+                renderCharts();
+            })
+            .catch(error => console.error('Error fetching content:', error));
+    });
         function renderCharts() {
-                // Pie Chart Data
+		// Pie Chart Data
 		const pieCtx = document.getElementById('myPieChart').getContext('2d');
 		const pieData = {
 			labels: ['Borrowed', 'Returned', 'Pending', 'Overdue'],
 			datasets: [{
-				 data: [<?php echo implode(',', array_values($percentages)); ?>],
+				data: [<?php echo implode(',', array_values($percentages)); ?>],
 				backgroundColor: ['orange', '#5f76e8', '#ff8c61', 'red'],
 				hoverBackgroundColor: ['orange', '#5f76e8', '#ff8c61', 'red']
 			}]
 		};
 
-// Create Pie Chart
-new Chart(pieCtx, {
-    type: 'doughnut',
-    data: pieData,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: false,
-                position: 'bottom'
-            }
-        }
-    }
-});
+		// Create Pie Chart
+		new Chart(pieCtx, {
+			type: 'doughnut',
+			data: pieData,
+			options: {
+				responsive: true,
+				plugins: {
+					legend: {
+						display: false,
+						position: 'bottom'
+					}
+				}
+			}
+		});
 
-// Bar Chart Data
-const ctx = document.getElementById('myBarChart').getContext('2d');
-const myBarChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: <?php echo json_encode($genreNames); ?>,
-        datasets: [
-            {
-                backgroundColor: '#5f76e8',
-                hoverBackgroundColor: '#3949ab',
-                data: <?php echo json_encode($borrowCounts); ?>,
-                borderRadius: 8,  // Rounded corners
-                borderSkipped: false,  // Disable sharp corners
-                label: '2024',
-                maxBarThickness: 10  // Adjust this value to control bar thickness
-            },
-        ]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: true,
-                labels: {
-                    color: '#333',
-                    font: {
-                        size: 14
-                    }
-                },
-            },
-            tooltip: {
-                backgroundColor: '#5f76e8',
-                titleFont: { size: 16 },
-                bodyFont: { size: 14 },
-                callbacks: {
-                    label: function(context) {
-                        return `${context.dataset.label}: ${context.raw}`;
-                    }
-                }
-            }
-        },
-        scales: {
-            x: {
-                grid: {
-                    display: false,
-                },
-                ticks: {
-                    font: {
-                        size: 14,
-                    }
-                }
-            },
-            y: {
-                beginAtZero: true,
-                grid: {
-                    color: '#ddd',
-                    borderDash: [5, 5],
-                },
-                ticks: {
-                    font: {
-                        size: 14,
-                    }
-                }
-            }
-        }
-    }
-});
-        }
-
+		// Bar Chart Data
+		const ctx = document.getElementById('myBarChart').getContext('2d');
+		const myBarChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: <?php echo json_encode($genreNames); ?>, // Genre names
+				datasets: [
+					{
+						backgroundColor: '#5f76e8',
+						hoverBackgroundColor: '#3949ab',
+						data: <?php echo json_encode($borrowCounts); ?>, // Borrow counts
+						borderRadius: 8,  // Rounded corners
+						borderSkipped: false,  // Disable sharp corners
+						label: '2024',
+						maxBarThickness: 10  // Adjust this value to control bar thickness
+					},
+				]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						display: true,
+						labels: {
+							color: '#333',
+							font: {
+								size: 14
+							}
+						},
+					},
+					tooltip: {
+						backgroundColor: '#5f76e8',
+						titleFont: { size: 16 },
+						bodyFont: { size: 14 },
+						callbacks: {
+							label: function(context) {
+								return `${context.dataset.label}: ${context.raw}`;
+							}
+						}
+					}
+				},
+				scales: {
+					x: {
+						grid: {
+							display: false,
+						},
+						ticks: {
+							font: {
+								size: 14,
+							}
+						}
+					},
+					y: {
+						beginAtZero: true,
+						grid: {
+							color: '#ddd',
+							borderDash: [5, 5],
+						},
+						ticks: {
+							font: {
+								size: 14,
+							}
+						}
+					}
+				}
+			}
+		});
+	}
+			
         document.getElementById("button1").addEventListener("click", function(event) {
     event.preventDefault();
     fetch('./ReaderDash.php')
@@ -568,20 +571,58 @@ function initializeViewMoreButtons() {
                 alert('Failed to load books. Please try again.');
             });
     }
+	
+		
+document.addEventListener("DOMContentLoaded", () => {
+    const borrowedBtn = document.getElementById("BorrowedBtn");
+    const bodyContent = document.getElementById("body-content");
+    const pageTitle = document.getElementById("page-title");
 
+    borrowedBtn.addEventListener("click", async (event) => {
+        event.preventDefault();
+        try {
+            const response = await fetch('./TransactionsBorrowed.php');
+            const data = await response.text();
+            bodyContent.innerHTML = data;
+            document.title = "Borrowed Books";
+            pageTitle.innerText = "Borrowed Books";
 
-		//BORROWED
-        document.getElementById("BorrowedBtn").addEventListener("click", function(event) {
-            event.preventDefault();
-            fetch('./TransactionsBorrowed.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("body-content").innerHTML = data;
-                    document.title = "Borrowed Books"; // Change the page title
-                    document.getElementById("page-title").innerText = "Borrowed Books"; // Change the displayed title
-                })
-                .catch(error => console.error('Error fetching content:', error));
-        });
+            // Add event listeners to the newly created elements
+            const viewBorrowerButtons = document.querySelectorAll('.view-borrowers');
+
+            viewBorrowerButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const dropdown = event.target.closest('.Borrbox').querySelector('.borrowers-dropdown');
+
+                    // Toggle the visibility of the dropdown
+                    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+
+                    // Fetch and populate borrower data if displaying the dropdown
+                    if (dropdown.style.display === "block") {
+                        const booktitle = event.target.getAttribute('data-booktitle');
+                        fetchBorrowers(booktitle, dropdown);
+                    }
+                });
+            });
+        } catch (error) {
+            console.error('Error fetching content:', error);
+        }
+    });
+
+    async function fetchBorrowers(booktitle, dropdown) {
+        try {
+            const response = await fetch(`TransactionsBorrowed.php?booktitle=${encodeURIComponent(booktitle)}`);
+            if (!response.ok) throw new Error('Network response was not ok');
+            const data = await response.text();
+            dropdown.querySelector('tbody').innerHTML = data; // Populate the table body with fetched data
+        } catch (error) {
+            dropdown.querySelector('tbody').innerHTML = "<tr><td colspan='3'>Error fetching borrowers.</td></tr>";
+            console.error('Error fetching borrowers:', error);
+        }
+    }
+});	
+		
+		//RETURNED
         document.getElementById("ReturnedBtn").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./TransactionsReturned.php')
@@ -594,79 +635,88 @@ function initializeViewMoreButtons() {
                 .catch(error => console.error('Error fetching content:', error));
         });
 		
+		//PENDINGS
 		document.addEventListener("DOMContentLoaded", function() {
-			const pendBtn = document.getElementById("pendBtn");
-			if (pendBtn) {
-				pendBtn.addEventListener("click", function(event) {
-					event.preventDefault();
-					fetch('./TransactionsDash.php')
-						.then(response => response.text())
-						.then(data => {
-							document.getElementById("body-content").innerHTML = data;
-							document.title = "Pending"; 
-							document.getElementById("page-title").innerText = "Pending"; 
-							setupButtons();
-						})
-						.catch(error => console.error('Error fetching TransactionsDash.php:', error));
-				});
-			}
+    const pendBtn = document.getElementById("pendBtn");
+    if (pendBtn) {
+        pendBtn.addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./TransactionsDash.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "Pending"; 
+                    document.getElementById("page-title").innerText = "Pending"; 
+                    setupButtons();
+                })
+                .catch(error => console.error('Error fetching TransactionsDash.php:', error));
+        });
+    }
 
-			setupButtons();
-		});
+    setupButtons();
+});
 
-		function setupButtons() {
-			document.querySelectorAll('.approve-btn').forEach(button => {
-				button.addEventListener('click', function(event) {
-					event.preventDefault();
-					const booktitle = this.parentElement.querySelector('.booktitle').value;
-					const fullname = this.parentElement.querySelector('.fullname').value;
+function setupButtons() {
+    document.querySelectorAll('.approve-btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const booktitle = this.parentElement.querySelector('.booktitle').value;
+            const fullname = this.parentElement.querySelector('.fullname').value;
 
-					fetch('TransactionsDash.php', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded'
-						},
-						body: new URLSearchParams({
-							booktitle: booktitle,
-							fullname: fullname,
-							approve: true
-						})
-					})
-					.then(response => response.text())
-					.then(data => {
-						alert(data);
-						document.getElementById("pendBtn").click();
-					})
-					.catch(error => console.error('Error:', error));
-				});
-			});
+            fetch('TransactionsDash.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    booktitle: booktitle,
+                    fullname: fullname,
+                    approve: true
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                Swal.fire ({
+                    title: data.status === 'success' ? 'Success' : 'Error',
+                    text: data.message,
+                    icon: data.status === 'success' ? 'success' : 'error'
+                });
+                document.getElementById("pendBtn").click();
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
 
-			document.querySelectorAll('.decline-btn').forEach(button => {
-				button.addEventListener('click', function(event) {
-					event.preventDefault();
-					const booktitle = this.parentElement.querySelector('.booktitle').value;
-					const fullname = this.parentElement.querySelector('.fullname').value;
+    document.querySelectorAll('.decline-btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const booktitle = this.parentElement.querySelector('.booktitle').value;
+            const fullname = this.parentElement.querySelector('.fullname').value;
 
-					fetch('TransactionsDash.php', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded'
-						},
-						body: new URLSearchParams({
-							booktitle: booktitle,
-							fullname: fullname,
-							cancel: true
-						})
-					})
-					.then(response => response.text())
-					.then(data => {
-						alert(data);
-						document.getElementById("pendBtn").click();
-					})
-					.catch(error => console.error('Error:', error));
-				});
-			});
-		}
+            fetch('TransactionsDash.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    booktitle: booktitle,
+                    fullname: fullname,
+                    cancel: true
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                Swal.fire({
+                    title: data.status === 'success' ? 'Success' : 'Error',
+                    text: data.message,
+                    icon: data.status === 'success' ? 'success' : 'error'
+                });
+                document.getElementById("pendBtn").click();
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+}
 
 		//OVERDUE
         document.getElementById("OverdueBtn").addEventListener("click", function(event) {
@@ -682,33 +732,21 @@ function initializeViewMoreButtons() {
         });
         
 		
-        document.querySelector("#button3").addEventListener("click", function(event) {
-            event.preventDefault();
+		document.querySelector("#button3").addEventListener("click", function(event) {
+			event.preventDefault();
 
-            // Toggle the submenu
-            const submenu = document.getElementById('submenu');
-            const icon = document.getElementById('submenu-toggle-icon');
+			// Toggle the submenu
+			const submenu = document.getElementById('submenu');
+			const icon = document.getElementById('submenu-toggle-icon');
 
-            if (submenu.style.maxHeight === "0px" || submenu.style.maxHeight === "") {
-                submenu.style.maxHeight = submenu.scrollHeight + "px";
-                icon.classList.add('rotate');
-            } else {
-                submenu.style.maxHeight = "0px";
-                icon.classList.remove('rotate');
-            }
-
-            // Fetch and load Transactions content
-            fetch('./TransactionsDash.php') 
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("body-content").innerHTML = data; // Update the content div
-                    document.title = "Transactions"; // Change the page title
-                    document.getElementById("page-title").innerText = "Pending"; // Change the displayed title
-                })
-                .catch(error => {
-                    console.error('Error fetching content:', error);
-                });
-        });
+			if (submenu.style.maxHeight === "0px" || submenu.style.maxHeight === "") {
+				submenu.style.maxHeight = submenu.scrollHeight + "px";
+				icon.classList.add('rotate');
+			} else {
+				submenu.style.maxHeight = "0px";
+				icon.classList.remove('rotate');
+			}
+		});
         
 			
         document.getElementById("button4").addEventListener("click", function(event) {

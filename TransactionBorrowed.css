@@ -64,11 +64,12 @@
 .viewbtn a{
     color: #ff6600;
 }
-.viewbtn{
-    position: relative;
-    right: 3em;
-    bottom: 0.5em;
+.viewbtn {
+    position: relative; /* This allows the dropdown to be positioned relative to this element */
+    margin: 0; /* Reset any margin that may push it away */
+    padding: 0; /* Reset any padding that may push it away */
 }
+
 
 .approve-btn, .decline-btn {
     height: 31px;
@@ -236,4 +237,16 @@
 
 .dropdown-content td a:hover {
     text-decoration: underline;
+}
+
+.borrowers-dropdown {
+    display: none; /* Initially hidden */
+    position: absolute; /* Position it relative to the .viewbtn */
+    left: 0; /* Align it to the left */
+    top: 100%; /* Position it directly below the link */
+    background-color: white; /* Background color */
+    border: 1px solid #ccc; /* Optional border */
+    z-index: 1000; /* Ensure it appears above other elements */
+    width: 200px; /* Set a width if necessary */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow */
 }

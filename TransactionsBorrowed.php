@@ -1,75 +1,87 @@
 <?php
-// Database configuration
-include ('connection.php');
+// Include your database connection file
+include('connection.php');
 
-// Fetch data from borrows table
-$sql = "SELECT bookimg, booktitle, author, COUNT(*) AS count FROM borrows GROUP BY bookimg, booktitle, author";
-$result = $conn->query($sql);
+// Check if a book title has been provided
+if (isset($_GET['booktitle'])) {
+    $booktitle = $conn->real_escape_string($_GET['booktitle']);
+
+    // Query to fetch borrowers for the selected book
+    $query = "SELECT idno, fullname, duedate FROM borrows WHERE booktitle = '$booktitle'";
+    $result = $conn->query($query);
+
+    // Generate HTML for the borrower table
+    if ($result->num_rows > 0) {
+        while ($borrower = $result->fetch_assoc()) {
+            echo '<tr>
+                    <td>' . htmlspecialchars($borrower['idno']) . '</td>
+                    <td>' . htmlspecialchars($borrower['fullname']) . '</td>
+                    <td>' . htmlspecialchars($borrower['duedate']) . '</td>
+                  </tr>';
+        }
+    } else {
+        echo '<tr><td colspan="3">No borrowers found for this book.</td></tr>';
+    }
+    exit; // Exit after returning borrower data
+}
+
+// If no specific book title is provided, fetch all books
+$query = "SELECT b.booktitle, b.author, COUNT(br.idno) AS count, b.bookimg 
+          FROM books b 
+          LEFT JOIN borrows br ON b.booktitle = br.booktitle 
+          GROUP BY b.booktitle, b.author, b.bookimg";
+$result = $conn->query($query);
+
+// Start generating the main HTML for the books
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library Borrowed Books</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Borrowed Books</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <script src="script.js" defer></script> <!-- Link to your JavaScript file -->
 </head>
 <body>
-    <div class="content-box" id="content2">
-        <div class="container">
-            <div class="input">
-                <div class="search-bar">
-                    <input type="text" placeholder="Search...">
-                    <span class="search-icon">
-                        <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
-                    </span>
-                </div>
-                <button class="sort-btn">
-                    <img src="./Images/Sort.svg" alt="Icon Before" width="20" height="20"> Sort By
-                    <img src="./Images/vec.svg" alt="Icon After" width="18" height="18">
-                </button>
-                <button class="filter-btn">
-                    <img src="./Images/Filter_alt_fill.svg" alt="Icon Before" width="20" height="20"> Filter By
-                    <img src="./Images/Expand_down.svg" alt="Icon After" width="18" height="18">
-                </button>
-            </div>
-            <div id="borrowContainer" class="Borrowbox">
-                <?php
-                if ($result->num_rows > 0) {
-                    // Output data for each row
-                    while ($book = $result->fetch_assoc()) {
-                        echo '
-                        <div class="Borrbox Bglobal">
-                            <img src="' . htmlspecialchars($book['bookimg']) . '" alt="' . htmlspecialchars($book['booktitle']) . '" width="100" height="150">
-                            <div class="book-details">
-                                <p class="book-title">' . htmlspecialchars($book['booktitle']) . '</p>
-                                <p class="author">' . htmlspecialchars($book['author']) . '</p>
-                            </div>
-                            <div class="Borrowed-total">
-                                <p>Total Borrowed: ' . htmlspecialchars($book['count']) . '</p>
-                            </div>
-                            <div class="viewbtn">
-                                <a href="javascript:void(0);" onclick="toggleDropdown(event)">View Borrowers</a>
-                            </div>
-                        </div>';
-                    }
-                } else {
-                    echo "<p>No records found</p>";
-                }
-                // Close connection
-                $conn->close();
-                ?>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function toggleDropdown(event) {
-            // Functionality for view borrowers
-            // Placeholder function for dropdown interaction
-            alert('View Borrowers clicked');
+    <h1>Borrowed Books</h1>
+    <div id="borrowContainer" class="Borrowbox">
+        <?php
+        if ($result->num_rows > 0) {
+            while ($book = $result->fetch_assoc()) {
+                echo '
+                <div class="Borrbox Bglobal">
+                    <img src="' . htmlspecialchars($book['bookimg']) . '" alt="' . htmlspecialchars($book['booktitle']) . '" width="100" height="150">
+                    <div class="book-details">
+                        <p class="book-title">' . htmlspecialchars($book['booktitle']) . '</p>
+                        <p class="author">' . htmlspecialchars($book['author']) . '</p>
+                    </div>
+                    <div class="Borrowed-total">
+                        <p>Total Borrowed: ' . htmlspecialchars($book['count']) . '</p>
+                    </div>
+                    <div class="viewbtn">
+                        <button class="view-borrowers" data-booktitle="' . htmlspecialchars($book['booktitle']) . '">View Borrowers</button>
+                    </div>
+                    <div class="borrowers-dropdown" style="display:none;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID No</th>
+                                    <th>Full Name</th>
+                                    <th>Due Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Borrower data will be populated here via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>';
+            }
+        } else {
+            echo "<p>No records found</p>";
         }
-    </script>
+        ?>
+    </div>
 </body>
 </html>

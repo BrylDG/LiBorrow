@@ -1,13 +1,15 @@
 <?php
 include("connection.php");
 
+$response = []; // Initialize response array
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $booktitle = $conn->real_escape_string($_POST['booktitle']);
     $fullname = $conn->real_escape_string($_POST['fullname']);
 
     if (isset($_POST['approve'])) {
         // Approval logic
-        $sql = "SELECT idno, bookimg, author FROM pendings WHERE TRIM(booktitle) = TRIM('$booktitle') AND TRIM(fullname) = TRIM('$fullname')";
+        $sql = "SELECT bookid,idno, bookimg, author FROM pendings WHERE TRIM(booktitle) = TRIM('$booktitle') AND TRIM(fullname) = TRIM('$fullname')";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
@@ -15,30 +17,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $borrowDate = date('Y-m-d H:i:s');
             $dueDate = date('Y-m-d H:i:s', strtotime('+30 days'));
 
-            $insertSql = "INSERT INTO borrows (idno, fullname, bookimg, booktitle, author, borrowdate, duedate) 
-                          VALUES ('{$row['idno']}', '$fullname', '{$row['bookimg']}', '$booktitle', '{$row['author']}', '$borrowDate', '$dueDate')";
+            $insertSql = "INSERT INTO borrows (bookid,idno, fullname, bookimg, booktitle, author, borrowdate, duedate) 
+                          VALUES ('{$row['bookid']}','{$row['idno']}', '$fullname', '{$row['bookimg']}', '$booktitle', '{$row['author']}', '$borrowDate', '$dueDate')";
             
             if ($conn->query($insertSql) === TRUE) {
                 $conn->query("DELETE FROM pendings WHERE TRIM(booktitle) = TRIM('$booktitle') AND TRIM(fullname) = TRIM('$fullname')");
-                echo "Request approved successfully.";
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Request approved successfully.'
+                ];
             } else {
-                echo "Error: " . $conn->error;
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Error: ' . $conn->error
+                ];
             }
         } else {
-            echo "No matching record found.";
+            $response = [
+                'status' => 'error',
+                'message' => 'No matching record found.'
+            ];
         }
     } elseif (isset($_POST['cancel'])) {
         // Cancellation logic
         $deleteSql = "DELETE FROM pendings WHERE TRIM(booktitle) = TRIM('$booktitle') AND TRIM(fullname) = TRIM('$fullname')";
-        echo $conn->query($deleteSql) === TRUE ? "Request canceled successfully." : "Error: " . $conn->error;
+        if ($conn->query($deleteSql) === TRUE) {
+            $response = [
+                'status' => 'success',
+                'message' => 'Request canceled successfully.'
+            ];
+        } else {
+            $response = [
+                'status' => 'error',
+                'message' => 'Error: ' . $conn->error
+            ];
+        }
     }
+
+    // Return JSON response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit; // Stop further execution
 }
 
 // Query to display pending requests
 $sql = "SELECT fullname, requestdate, booktitle, author, bookimg FROM pendings";
 $result = $conn->query($sql);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
