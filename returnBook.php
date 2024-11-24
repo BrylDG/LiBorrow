@@ -11,7 +11,7 @@ if (isset($_GET['idno']) && isset($_GET['booktitle'])) {
     $idno = $conn->real_escape_string($_GET['idno']);
     $booktitle = $conn->real_escape_string($_GET['booktitle']);
 
-    // Fetch borrower and book details, including borrowdate
+    // Fetch borrower and book details, including borrowdate and duedate
     $query = "SELECT br.idno, br.fullname, br.booktitle, br.duedate, br.borrowdate, b.bookid, b.author, b.bookimg 
               FROM borrows br
               INNER JOIN books b ON br.booktitle = b.booktitle
@@ -20,8 +20,8 @@ if (isset($_GET['idno']) && isset($_GET['booktitle'])) {
 
     if ($result->num_rows > 0) {
         $borrowedBook = $result->fetch_assoc();
-        // Debugging: check the fetched result for borrowdate
-        var_dump($borrowedBook); // This will show the entire result
+        // Debugging: check the fetched result
+        //var_dump($borrowedBook); // This will show the entire result
     } else {
         $message = "No matching record found for this book and borrower.";
     }
@@ -33,12 +33,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idno = $conn->real_escape_string($_POST['idno']);
     $booktitle = $conn->real_escape_string($_POST['booktitle']);
     $borrowdate = $conn->real_escape_string($_POST['borrowdate']); // Get borrowdate from POST
+    $duedate = $conn->real_escape_string($_POST['duedate']); // Get duedate from POST
 
     // Check if borrowdate is set and not empty
     if (!empty($borrowdate)) {
-        // Insert into the returns table, including borrowdate
-        $insertQuery = "INSERT INTO returns (bookid, booktitle, author, status, fullname, datereturned, borrowdate, bookimg)
-                        VALUES ('{$_POST['bookid']}', '$booktitle', '{$_POST['author']}','$status', '{$_POST['fullname']}', NOW(), '$borrowdate', '{$_POST['bookimg']}')";
+        // Insert into the returns table, including borrowdate and duedate
+        $insertQuery = "INSERT INTO returns (bookid, booktitle, author, status, fullname, datereturned, borrowdate, duedate, bookimg, idno)
+                        VALUES ('{$_POST['bookid']}', '$booktitle', '{$_POST['author']}', '$status', '{$_POST['fullname']}', NOW(), '$borrowdate', '$duedate', '{$_POST['bookimg']}', '$idno')";
         if ($conn->query($insertQuery)) {
             // Remove the book from the borrows table
             $deleteQuery = "DELETE FROM borrows WHERE idno = '$idno' AND booktitle = '$booktitle'";
@@ -121,11 +122,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="hidden" name="fullname" value="<?php echo htmlspecialchars($borrowedBook['fullname']); ?>">
                 <input type="hidden" name="bookimg" value="<?php echo htmlspecialchars($borrowedBook['bookimg']); ?>">
                 <input type="hidden" name="borrowdate" value="<?php echo htmlspecialchars($borrowedBook['borrowdate']); ?>">
+                <input type="hidden" name="duedate" value="<?php echo htmlspecialchars($borrowedBook['duedate']); ?>">
 
                 <p>Book Title: <strong><?php echo htmlspecialchars($borrowedBook['booktitle']); ?></strong></p>
                 <p>Author: <strong><?php echo htmlspecialchars($borrowedBook['author']); ?></strong></p>
                 <p>Borrower: <strong><?php echo htmlspecialchars($borrowedBook['fullname']); ?></strong></p>
                 <p>Borrow Date: <strong><?php echo htmlspecialchars($borrowedBook['borrowdate']); ?></strong></p>
+                <p>Due Date: <strong><?php echo htmlspecialchars($borrowedBook['duedate']); ?></strong></p>
 
                 <label for="status">Select Condition of Returned Book:</label>
                 <select name="status" id="status" required>
