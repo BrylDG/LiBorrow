@@ -107,9 +107,30 @@ $role = $_SESSION['isAdmin'];
                         </div>
                         <div id="notification-dropdown" class="notification-dropdown">
                             <div class="notification-options">
-                                <a href="#" class="notification-item">New Message</a>
-                                <a href="#" class="notification-item">New Comment</a>
-                                <a href="#" class="notification-item">System Alert</a>
+                                <?php
+                                    if(!isset($_SESSION['idno'])) {
+                                        echo "<p class='no-notification'>No new notifications!<p>";
+                                    } else {
+                                        $idno = $_SESSION['idno'];
+                                        $query = "SELECT details, time FROM notification WHERE idno = ? ORDER BY time DESC LIMIT 3";
+                                        $stmt = $conn->prepare($query);
+                                        $stmt->bind_param("i", $idno);
+                                        $stmt->execute();
+                                        $result = $stmt->get_result();
+                                        if ($result->num_rows > 0) {
+                                            while ($notification = $result->fetch_assoc()) {
+                                                $formatted_time = date("g:i A", strtotime($notification['time']));
+
+                                                echo "<div class='notification-item'>";
+                                                echo "<p class='notification-message'>" . htmlspecialchars($notification['details']) . "</p>";
+                                                echo "<p class='notification-time'>" . htmlspecialchars($formatted_time) . "</p>";
+                                                echo "</div>";  
+                                            }
+                                        } else {
+                                            echo "<p>No new notifications!</p>";
+                                        }
+                                    }
+                                ?>
                             </div>
                         </div>
                         <div class="separator"></div>

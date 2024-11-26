@@ -36,10 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Insert data into the borrowrequest table
         $query = "INSERT INTO pendings (fullname, idno, requestdate, bookid, booktitle, author, bookimg) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sendNotif = "INSERT INTO req_notif (idno, message, time) VALUES ('$idno', '{$fullname} just requested a book.', CURRENT_TIMESTAMP())";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("sisisss", $fullname, $idno, $request_date, $bookid, $booktitle, $author, $bookimg);
 
         if ($stmt->execute()) {
+            $conn->query($sendNotif);
             $stmt->close();
             $conn->close();
             header("Location: UserNavTemplate.php?message=added_to_pendings");

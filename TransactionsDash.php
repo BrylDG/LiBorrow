@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             if ($conn->query($insertSql) === TRUE) {
                 $conn->query("DELETE FROM pendings WHERE TRIM(booktitle) = TRIM('$booktitle') AND TRIM(fullname) = TRIM('$fullname')");
+                $conn->query("INSERT INTO notification (idno, details, booktitle, time) VALUES ('{$row['idno']}', 'Your book request {$booktitle} approved successfully.', '$booktitle', CURRENT_TIMESTAMP())");
                 $response = [
                     'status' => 'success',
                     'message' => 'Request approved successfully.'

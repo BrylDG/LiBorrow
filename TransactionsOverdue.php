@@ -1,7 +1,5 @@
 <?php
-// Assume you have a database connection established
-// Replace with your actual database credentials
-include ('connection.php');
+include('connection.php');
 
 // Fetch overdue books from the database
 $sql = "SELECT bookid, booktitle, fullname, duedate, DATEDIFF(duedate, CURDATE()) AS days FROM borrows WHERE duedate < CURDATE()";
@@ -40,26 +38,30 @@ $result = $conn->query($sql);
 						</tr>
 					</thead>
 					<tbody>
-						<?php
-						if ($result->num_rows > 0) {
-							// Output data of each row
-							while($row = $result->fetch_assoc()) {
-								echo "<tr>
-										<td>{$row['bookid']}</td>
-										<td>{$row['booktitle']}</td>
-										<td>{$row['fullname']}</td>
-										<td>{$row['duedate']}</td>
-										<td>{$row['days']} Days</td>
-										<td class='act'><a href='#'>Send Reminder</a></td>
-									  </tr>";
-							}
-						} else {
-							echo "<tr><td colspan='6'>No overdue books found.</td></tr>";
-						}
-						?>
+						<?php if ($result->num_rows > 0): ?>
+							<?php while ($row = $result->fetch_assoc()): ?>
+								<tr>
+									<td><?= htmlspecialchars($row['bookid']) ?></td>
+									<td><?= htmlspecialchars($row['booktitle']) ?></td>
+									<td><?= htmlspecialchars($row['fullname']) ?></td>
+									<td><?= htmlspecialchars($row['duedate']) ?></td>
+									<td><?= htmlspecialchars($row['days']) ?> Days</td>
+									<td class="act">
+										<!-- Form for sending reminder -->
+										<form method="POST" action="SendReminder.php">
+											<input type="hidden" name="send" value="1">
+											<input type="hidden" name="booktitle" value="<?= htmlspecialchars($row['booktitle']) ?>">
+											<input type="hidden" name="fullname" value="<?= htmlspecialchars($row['fullname']) ?>">
+											<button type="submit">Send Reminder</button>
+										</form>
+									</td>
+								</tr>
+							<?php endwhile; ?>
+						<?php else: ?>
+							<tr><td colspan="6">No overdue books found.</td></tr>";
+						<?php endif; ?>
 					</tbody>
 				</table>   
         </div>
     </div>
-
 </div>

@@ -3,12 +3,13 @@ session_start(); // Start the session
 include('connection.php'); // Include your connection file
 
 // Check if the user is logged in
-if (!isset($_SESSION['fullname'])) { // Replace 'user_id' with your session variable for logged-in users
+if (!isset($_SESSION['fullname']) && !isset($_SESSION['isAdmin'])) { // Replace 'user_id' with your session variable for logged-in users
     header("Location: login.php"); // Redirect to the login page
     exit(); // Make sure to exit after the redirect
 }
 // Retrieve the full name from the session
 $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // Default to 'User ' if not set
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -100,9 +101,28 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                         </div>
                         <div id="notification-dropdown" class="notification-dropdown">
                             <div class="notification-options">
-                                <a href="#" class="notification-item">New Message</a>
-                                <a href="#" class="notification-item">New Comment</a>
-                                <a href="#" class="notification-item">System Alert</a>
+                                <?php
+                                    if(!isset($_SESSION['idno'])) {
+                                        echo "<p>No new notifications!<p>";
+                                    } else {
+                                        $query = "SELECT message, time FROM req_notif ORDER BY time DESC LIMIT 3";
+                                        $stmt = $conn->prepare($query);
+                                        $stmt->execute();
+                                        $result = $stmt->get_result();
+                                        if ($result->num_rows > 0) {
+                                            while ($notification = $result->fetch_assoc()) {
+                                                $formatted_time = date("g:i A", strtotime($notification['time']));
+
+                                                echo "<div class='notification-item'>";
+                                                echo "<p class='notification-message'>" . htmlspecialchars($notification['message']) . "</p>";
+                                                echo "<p class='notification-time'>" . htmlspecialchars($formatted_time) . "</p>";
+                                                echo "</div>";  
+                                            }
+                                        } else {
+                                            echo "<p>No new notifications!</p>";
+                                        }
+                                    }
+                                ?>
                             </div>
                         </div>
                         <div class="separator"></div>
