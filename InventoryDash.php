@@ -2,45 +2,103 @@
 session_start(); // Start the session
 include('connection.php'); // Include your connection file
 
+// Enable error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Check if the user is logged in
 if (!isset($_SESSION['fullname'])) {
-    header("Location: login.php"); // Redirect to the login page
-    exit(); // Make sure to exit after the redirect
+    header("Location: login.php");
+    exit(); // Stop further script execution after redirect
 }
 
 // Retrieve the full name from the session
-$fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User  '; // Default to 'User  ' if not set
+$fullname = $_SESSION['fullname'] ?? 'User  ';
 
 // Initialize variables for search, sort, and genre filter
-$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
-$sortBy = isset($_GET['sort']) ? $_GET['sort'] : '';
-$genreFilter = isset($_GET['genre']) ? $_GET['genre'] : '';
+$searchTerm = $_GET['search'] ?? '';
+$sortBy = $_GET['sort'] ?? '';
+$genreFilter = $_GET['genre'] ?? '';
 $currentPage = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $limit = 10; // Number of records per page
 $offset = ($currentPage - 1) * $limit;
 
-// Fetch data for the current page with search, sort, and filter
-$sql = "SELECT b.bookid, b.booktitle, b.author, GROUP_CONCAT(g.name SEPARATOR ', ') AS genres, b.pubdate, b.quantity, b.descrpt 
+// Base SQL query
+// Base SQL query
+$sql = "SELECT b.bookid, b.booktitle, b.author, GROUP_CONCAT(g.name SEPARATOR ', ') AS genres, b.pubdate
         FROM books b
         LEFT JOIN bookgenres bg ON b.bookid = bg.bookid
         LEFT JOIN genres g ON bg.genreid = g.genreid
         WHERE 1=1";
 
-if ($searchTerm) {
-    $sql .= " AND (b.booktitle LIKE '%" . $conn->real_escape_string($searchTerm) . "%' OR b.author LIKE '%" . $conn->real_escape_string($searchTerm) . "%')";
+// Add search filter
+if (!empty($searchTerm)) {
+    $sql .= " AND (b.booktitle LIKE ? OR b.author LIKE ?)";
 }
 
-if ($genreFilter) {
-    $sql .= " AND g.name = '" . $conn->real_escape_string($genreFilter) . "'";
+// Add genre filter
+if (!empty($genreFilter)) {
+    $sql .= " AND g.name = ?";
 }
 
-if ($sortBy) {
-    $sql .= " ORDER BY " . $conn->real_escape_string($sortBy);
+// Group by bookid, booktitle, author, pubdate
+$sql .= " GROUP BY b.bookid, b.booktitle, b.author, b.pubdate";
+
+// Add sorting
+$allowedSortColumns = ['booktitle', 'author', 'pubdate'];
+if (in_array($sortBy, $allowedSortColumns)) {
+    $sql .= " ORDER BY $sortBy";
 }
 
-$sql .= " GROUP BY b.bookid LIMIT $limit OFFSET $offset"; // Add pagination and group by bookid
+// Now, directly append LIMIT and OFFSET with variables
+$sql .= " LIMIT ? OFFSET ?"; // Use placeholders for limit and offset
 
-$result = $conn->query($sql);
+// Prepare the statement
+$stmt = $conn->prepare($sql);
+
+// Bind parameters for search and genre filter
+$bindParams = [];
+if (!empty($searchTerm)) {
+    $searchLike = "%$searchTerm%";
+    $bindParams[] = &$searchLike; // For booktitle
+    $bindParams[] = &$searchLike; // For author
+}
+if (!empty($genreFilter)) {
+    $bindParams[] = &$genreFilter; // For genre
+}
+
+// Bind limit and offset
+$bindParams[] = &$limit; // For limit
+$bindParams[] = &$offset; // For offset
+
+// Bind the parameters
+if (!empty($bindParams)) {
+    $bindTypes = str_repeat('s', count($bindParams) - 2) . 'ii'; // 's' for string params, 'i' for integer params
+    call_user_func_array([$stmt, 'bind_param'], array_merge([$bindTypes], $bindParams));
+}
+
+// Execute the statement
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Handle AJAX requests
+if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
+    $response = ['table_body' => []];
+
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $response['table_body'][] = [
+                'bookid' => $row['bookid'],
+                'booktitle' => $row['booktitle'],
+                'author' => $row['author'],
+                'genres' => $row['genres']
+            ];
+        }
+    }
+    header('Content-Type: application/json'); // Set the content type to JSON
+    echo json_encode($response);
+    exit();
+}
 ?>
 
 <div class="content-box" id="content2">
@@ -53,30 +111,27 @@ $result = $conn->query($sql);
                         <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
                     </span>
                 </div>
-                <select id="sort-dropdown" onchange="loadBooks()" style="    font-size: 12px;
-    padding: 8px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;     background-color: #ff6600;
-    color: white;">
+                <select id="sort-dropdown" onchange="loadBooks()" style="font-size: 12px; padding: 8px 20px; border-radius: 30px; cursor: pointer; background-color: #ff6600; color: white;">
                     <option value="">Sort By</option>
                     <option value="booktitle">Title</option>
                     <option value="author">Author</option>
                     <option value="pubdate">Publication Date</option>
                 </select>
-                <select id="genre-filter" onchange="loadBooks()" style="    font-size: 12px;
-    padding: 8px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;    border: 1px solid #ff6600;
-    background-color: white;
-    color: #ff6600;
-    ">
+                <select id="genre-filter" onchange="loadBooks()" style="font-size: 12px; padding: 8px 20px; border-radius: 30px; cursor: pointer; border: 1px solid #ff6600; background-color: white; color: #ff6600;">
                     <option value="">Filter by Genre</option>
-                    <option value="Fiction">Fiction</option>
-                    <option value="Non-Fiction">Non-Fiction</option>
-                    <option value="Science">Science</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Thriller">Thriller</option>
+                    <option value="Mystery">Mystery</option>
+                    <option value="Science Fiction">Science Fiction</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Self-Help">Self-Help</option>
+                    <option value="Drama">Drama</option>
+                    <option value="Biography">Biography</option>
                     <option value="History">History</option>
+                    <option value="Adventure">Adventure</option>
+                    <option value="Poetry">Poetry</option>
+                    <option value="Cooking">Cooking</option>
+                    <option value="Graphic Novel">Graphic Novel</option>
                 </select>
             </div>
             <a href="#" class="addbtn" id="addBookButton" style="cursor: pointer; text-decoration: none;">
