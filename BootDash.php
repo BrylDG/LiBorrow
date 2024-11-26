@@ -572,25 +572,52 @@ function initializeViewMoreButtons() {
     }
 
 
-    // Function to load books (AJAX)
-    function loadBooks() {
-        const searchTerm = document.getElementById('search-input').value;
-        const sortBy = document.getElementById('sort-dropdown').value;
-        const genreFilter = document.getElementById('genre-filter').value;
+ function loadBooks() {
+    const searchTerm = document.getElementById('search-input').value;
+    const sortBy = document.getElementById('sort-dropdown').value;
+    const genreFilter = document.getElementById('genre-filter').value;
 
-        fetch(`InventoryDash.php?page=1&search=${encodeURIComponent(searchTerm)}&sort=${encodeURIComponent(sortBy)}&genre=${encodeURIComponent(genreFilter)}`)
-            .then(response => response.text())
-            .then(data => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data, 'text/html');
-                const newRows = doc.getElementById('inventory-table-body').innerHTML;
-                document.getElementById('inventory-table-body').innerHTML = newRows;
-            })
-            .catch(error => {
-                console.error('Error loading books:', error);
-                alert('Failed to load books. Please try again.');
-            });
-    }
+    // Show loading indicator
+    document.getElementById('loading').style.display = 'block';
+
+    fetch(`inventorydash.php?ajax=1&search=${encodeURIComponent(searchTerm)}&sort=${sortBy}&genre=${encodeURIComponent(genreFilter)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const tableBody = document.getElementById("inventory-table-body");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            if (data.table_body && data.table_body.length > 0) {
+                let rows = "";
+                data.table_body.forEach(book => {
+                    rows += `<tr>
+                                <td>${book.bookid}</td>
+                                <td>${book.booktitle}</td>
+                                <td>${book.author}</td>
+                                <td>${book.genres}</td>
+                                <td><a href='#' class='view-more'>View more</a></td>
+                             </tr>`;
+                });
+                tableBody.innerHTML = rows; // Update all rows at once
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='5'>No results found</td></tr>";
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching books:', error);
+            document.getElementById("inventory-table-body").innerHTML = 
+                "<tr><td colspan='5'>An error occurred while loading data. Please try again later.</td></tr>";
+        })
+        .finally(() => {
+            // Hide loading indicator
+            document.getElementById('loading').style.display = 'none';
+        });
+}
+
 		//BORROWED			
 		document.addEventListener("DOMContentLoaded", function () {
 			const borrowedBtn = document.getElementById("BorrowedBtn");

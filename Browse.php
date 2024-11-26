@@ -149,8 +149,8 @@
             </div>
             
             <h3 id="All-Books">All Books</h3>
-            <div class="pendbox global" id="User-books">
-                <div class="userbooks-container">
+            <div class="pendbox global" id="User-books" style="height: 500px;">
+                <div class="userbooks-container" style="display: flex; flex-wrap: wrap; gap: 20px;">
                     <?php foreach ($books as $book): ?>
                         <?php
                             $bookid = $book['bookid'];

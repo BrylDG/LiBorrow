@@ -54,13 +54,7 @@ $role = $_SESSION['isAdmin'];
     </script>
     <div class="container-fluid" style="padding: 0;">
         <div class="row">
-            <div id="burger-icon" onclick="toggleSidebar()">
-                <img src="./Images/burgerIcon.svg" alt="Menu" width="24" height="24">
-            </div>
             <div id="sidebar" class="col-2">
-                <div id="burger-icon" onclick="toggleSidebar()">
-                    <img src="./Images/burgerIcon.svg" alt="Menu" width="24" height="24">
-                </div>
                 <h3 id="brand-name">LiBorrow.</h3>
                 <ul id="nav-list">
                     <li>
