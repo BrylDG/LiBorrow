@@ -402,7 +402,11 @@ function initializeViewMoreButtons() {
 }
 
 		
-
+        // Function to handle errors and display a user-friendly message
+        function handleError(message, error) {
+            console.error(message, error);
+            // You can add code here to display an error message to the user, e.g., using a modal or alert.
+        }
 		
 		document.addEventListener("DOMContentLoaded", function() {
 			 const genreSelect = document.getElementById('genre-select');
@@ -423,6 +427,7 @@ function initializeViewMoreButtons() {
 
 							// Now that the Inventory page is loaded, attach the Add Book button listener
 							setupAddBookButton(); // Set up the Add Book button click event
+							loadBooks(); // Load books after the Inventory page content is loaded
 						})
 						.catch(error => console.error('Error fetching InventoryDash.php:', error));
 				});
@@ -547,7 +552,7 @@ function initializeViewMoreButtons() {
     }
 
 
-   function loadBooks() {
+ function loadBooks() {
     const searchTerm = document.getElementById('search-input').value;
     const sortBy = document.getElementById('sort-dropdown').value;
     const genreFilter = document.getElementById('genre-filter').value;
@@ -592,6 +597,30 @@ function initializeViewMoreButtons() {
             document.getElementById('loading').style.display = 'none';
         });
 }
+
+		//BORROWED			
+		document.addEventListener("DOMContentLoaded", function () {
+			const borrowedBtn = document.getElementById("BorrowedBtn");
+			const bodyContent = document.getElementById("body-content");
+			const pageTitle = document.getElementById("page-title");
+
+			if (borrowedBtn) {
+				borrowedBtn.addEventListener("click", function (event) {
+					event.preventDefault();
+					fetch('./TransactionsBorrowed.php')
+						.then(response => response.text())
+						.then(data => {
+							bodyContent.innerHTML = data;
+							document.title = "Borrowed Books";
+							pageTitle.innerText = "Borrowed Books";
+
+							// Attach listeners after loading the content
+							setupViewBorrowerButtons();
+						})
+						.catch(error => console.error('Error fetching TransactionsBorrowed.php:', error));
+				});
+			}
+		});
 
 		function setupViewBorrowerButtons() {
 			const viewBorrowerButtons = document.querySelectorAll('.view-borrowers');
