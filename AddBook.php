@@ -78,54 +78,113 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <!-- HTML Form -->
-<div class="content-box">
-    <div class="container">
-        <form id="addBookForm" method="POST" enctype="multipart/form-data">
-            <div class="input-container">
-                <input type="text" name="bookid" placeholder="Book ID" required>
-                <label>Book ID</label>
-            </div>
-            <div class="input-container">
-                <input type="text" name="author" placeholder="Author" required>
-                <label>Author</label>
-            </div>
-            <div class="input-container">
-                <input type="text" name="booktitle" placeholder="Book Title" required>
-                <label>Title</label>
- </div>
-            <div class="input-container">
-                <input type="date" name="pubdate" required>
-                <label>Publication Date</label>
-            </div>
-            <div class="input-container">
-                <select id="genre-select" name="genre[]" multiple required>
-                    <option value="">Select Genre</option>
-                    <?php
-                    // Fetch genres from the database
-                    $genreQuery = "SELECT genreid, name FROM genres";
-                    $genreResult = mysqli_query($conn, $genreQuery);
-                    while ($row = mysqli_fetch_assoc($genreResult)) {
-                        echo '<option value="' . $row['genreid'] . '">' . htmlspecialchars($row['name']) . '</option>';
-                    }
-                    ?>
-                </select>
-                <label>Genre</label>
-            </div>
-            <div class="input-container">
-                <input type="number" name="quantity" placeholder="Quantity" required>
-                <label>Quantity</label>
-            </div>
-            <textarea name="descrpt" placeholder="Description..."></textarea>
-            <div class="input-container">
-                <input type="file" name="book_image" accept="image/*" required>
-                <label>Upload Book Image</label>
-            </div>
-            <button type="submit">Add Book</button>
-            <!-- Cancel Button -->
-            <button type="button">Cancel</button>
-        </form>
-        <div class="checkbox-container" id="checkbox-container">
-            <!-- Checkboxes will be dynamically added here -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book</title>
+</head>
+<body>
+    <div class="content-box" style="padding: 20px; border-radius: 10px;">
+        <div class="container">
+            <form id="addBookForm" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 20px; width: 100%;">
+                <!-- Book ID -->
+                <div class="input-container" style="position: relative; width: 100%;">
+                    <input 
+                        type="text" 
+                        name="bookid" 
+                        placeholder="Book ID" 
+                        required 
+                        style="width: 90%; padding: 15px; border: 2px solid #746767; color: #333; border-radius: 20px; font-size: 10px; outline: none; transition: border-color 0.3s ease-in-out;">
+                </div>
+
+                <!-- Author -->
+                <div class="input-container" style="position: relative; width: 100%;">
+                    <input 
+                        type="text" 
+                        name="author" 
+                        placeholder="Author" 
+                        required 
+                        style="width: 90%; padding: 15px; border: 2px solid #746767; color: #333; border-radius: 20px; font-size: 10px; outline: none; transition: border-color 0.3s ease-in-out;">
+                </div>
+
+                <!-- Book Title -->
+                <div class="input-container" style="position: relative; width: 100%;">
+                    <input 
+                        type="text" 
+                        name="booktitle" 
+                        placeholder="Book Title" 
+                        required 
+                        style="width: 90%; padding: 15px; border: 2px solid #746767; color: #333; border-radius: 20px; font-size: 10px; outline: none; transition: border-color 0.3s ease-in-out;">
+                </div>
+
+                <!-- Publication Date -->
+                <div class="input-container" style="position: relative; width: 100%;">
+                    <input 
+                        type="date" 
+                        name="pubdate" 
+                        required 
+                        style="width: 90%; padding: 15px; border: 2px solid #746767; color: #333; border-radius: 20px; font-size: 10px; outline: none; transition: border-color 0.3s ease-in-out;">
+                </div>
+
+                <!-- Genre -->
+                <div class="input-container" style="position: relative; width: 100%;">
+                    <select 
+                        id="genre-select" 
+                        name="genre[]" 
+                        multiple 
+                        required 
+                        style="width: 90%; padding: 15px; border: 2px solid #746767; color: #333; border-radius: 20px; font-size: 18px; outline: none; background-color: white; transition: border-color 0.3s ease-in-out; height: 100px;">
+                        <option value="">Select Genre</option>
+                        <?php
+                        // Fetch genres from the database
+                        $genreQuery = "SELECT genreid, name FROM genres";
+                        $genreResult = mysqli_query($conn, $genreQuery);
+                        while ($row = mysqli_fetch_assoc($genreResult)) {
+                            echo '<option value="' . $row['genreid'] . '">' . htmlspecialchars($row['name']) . '</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <!-- Quantity -->
+                <div class="input-container" style="position: relative; width: 100%;">
+                    <input 
+                        type="number" 
+                        name="quantity" 
+                        placeholder="Quantity" 
+                        required 
+                        style="width: 90%; padding: 15px; border: 2px solid #746767; color: #333; border-radius: 20px; font-size: 10px; outline: none; transition: border-color 0.3s ease-in-out;">
+                </div>
+
+                <!-- Description -->
+                <textarea 
+                    name="descrpt" 
+                    placeholder="Description..." 
+                    style="width: 90%; height: 100px; padding: 15px; border: 2px solid #746767; color: #333; border-radius: 20px; font-size: 10px; outline: none; transition: border-color 0.3s ease-in-out;"></textarea>
+
+                <!-- Upload Book Image -->
+                <div class="input-container" style="position: relative; width: 100%;">
+                    <input 
+                        type="file" 
+                        name="book_image" 
+                        accept="image/*" 
+                        required 
+                        style="width: 90%; padding: 15px; border: 2px solid #746767; color: #333; border-radius: 20px; font-size: 10px; outline: none; transition: border-color 0.3s ease-in-out;">
+                </div>
+                <div class="buttons" style="display: flex; gap: 10px;">
+                <button 
+                    type="submit" 
+                    style="width: 200px; padding: 15px; background-color: #ff6600; color: white; border: none; border-radius: 20px; font-size: 10px; cursor: pointer; transition: background-color 0.3s ease-in-out;">Add Book</button>
+
+                <!-- Cancel Button -->
+                <button 
+                    type="button" 
+                    style="width: 200px; padding: 15px; background-color: #ccc; color: white; border: none; border-radius: 20px; font-size: 10px; cursor: pointer; transition: background-color 0.3s ease-in-out;">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
-</div>
+</body>
+</html>

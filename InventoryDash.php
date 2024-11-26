@@ -46,20 +46,32 @@ $result = $conn->query($sql);
 <div class="content-box" id="content2">
     <div class="container">
         <div id="d1" class="Inventory-box">
-            <div class="input">
+            <div class="input" style="padding-left: 50px; padding-top: 20px;">
                 <div class="search-bar">
                     <input type="text" id="search-input" placeholder="Search..." oninput="loadBooks()">
                     <span class="search-icon">
                         <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
                     </span>
                 </div>
-                <select id="sort-dropdown" onchange="loadBooks()">
+                <select id="sort-dropdown" onchange="loadBooks()" style="    font-size: 12px;
+    padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;     background-color: #ff6600;
+    color: white;">
                     <option value="">Sort By</option>
                     <option value="booktitle">Title</option>
                     <option value="author">Author</option>
                     <option value="pubdate">Publication Date</option>
                 </select>
-                <select id="genre-filter" onchange="loadBooks()">
+                <select id="genre-filter" onchange="loadBooks()" style="    font-size: 12px;
+    padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;    border: 1px solid #ff6600;
+    background-color: white;
+    color: #ff6600;
+    ">
                     <option value="">Filter by Genre</option>
                     <option value="Fiction">Fiction</option>
                     <option value="Non-Fiction">Non-Fiction</option>

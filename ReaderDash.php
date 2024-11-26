@@ -68,7 +68,11 @@ if (isset($_GET['ajax'])) {
                         <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
                     </span>
                 </div>
-                <select id="sort-dropdown" onchange="loadUsers()">
+                <select id="sort-dropdown" onchange="loadUsers()" style="background-color: #ff6600; color: white;     font-size: 16px;
+    padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;">
                     <option value="">Sort By</option>
                     <option value="fullname">Name</option>
                     <option value="email">Email</option>
