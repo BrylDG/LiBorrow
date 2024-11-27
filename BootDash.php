@@ -705,94 +705,221 @@ function loadTransactions() {
         };
         xhr.send();
     }
-function loadBooks() {
-            const searchTerm = document.getElementById('search-input').value;
-            const sortBy = document.getElementById('sort-dropdown').value;
 
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', `transactionsborrowed.php?search=${encodeURIComponent(searchTerm)}&sort=${encodeURIComponent(sortBy)}`, true);
-            xhr.onload = function() {
-                if (this.status === 200) {
-                    const response = this.responseText;
-                    const borrowContainer = document.getElementById('borrowContainer');
-                    borrowContainer.innerHTML = response; // Replace the container's HTML with the new data
-                }
-            };
-            xhr.send();
-        }
+function loadBooksR() {
+    const searchTerm = document.getElementById('search-input').value;
+    const sortBy = document.getElementById('sort-dropdown').value;
+
+    // Show loading indicator
+    document.getElementById('loading').style.display = 'block';
+
+    fetch(`transactionsreturned.php?ajax=1&search=${encodeURIComponent(searchTerm)}&sort=${encodeURIComponent(sortBy)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const tableBody = document.getElementById("returned-table-body");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            if (data.table_body && data.table_body.length > 0) {
+                let rows = "";
+                data.table_body.forEach(book => {
+                    rows += `<tr>
+                                <td>${book.bookimg ? `<img src='${book.bookimg}' alt='Book Image' width='50' height='70' style='margin-right:10px;'>` : `<img src='./Images/default-book.png' alt='Default Book Image' width='50' height='70' style='margin-right:10px;'>`}${book.booktitle}</td>
+                                <td>${book.author}</td>
+                                <td>${book.status}</td>
+                                <td>${book.fullname}</td>
+                                <td>${book.datereturned}</td>
+                             </tr>`;
+                });
+                tableBody.innerHTML = rows; // Update all rows at once
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='5'>No results found</td></tr>";
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching books:', error);
+            document.getElementById("returned-table-body").innerHTML = 
+                "<tr><td colspan='5'>An error occurred while loading data. Please try again later.</td></tr>";
+        })
+        .finally(() => {
+            // Hide loading indicator
+            document.getElementById('loading').style.display = 'none';
+        });
+}
+
+function loadBooksO() {
+    const searchTerm = document.getElementById('search-input').value;
+    const sortBy = document.getElementById('sort-dropdown').value;
+
+    // Show loading indicator
+    document.getElementById('loading').style.display = 'block';
+
+    fetch(`transactionsoverdue.php?ajax=1&search=${encodeURIComponent(searchTerm)}&sort=${encodeURIComponent(sortBy)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const tableBody = document.getElementById("overdue-table-body");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            if (data.table_body && data.table_body.length > 0) {
+                let rows = "";
+                data.table_body.forEach(book => {
+                    rows += `<tr>
+                                <td>${book.bookid}</td>
+                                <td>${book.booktitle}</td>
+                                <td>${book.fullname}</td>
+                                <td>${book.duedate}</td>
+                                <td>${book.days} Days</td>
+                                <td class="act">
+                                    <form method="POST" action="SendReminder.php">
+                                        <input type="hidden" name="send" value="1">
+                                        <input type="hidden" name="booktitle" value="${book.booktitle}">
+                                        <input type="hidden" name="fullname" value="${book.fullname}">
+                                        <button type="submit">Send Reminder</button>
+                                    </form>
+                                </td>
+                            </tr>`;
+                });
+                tableBody.innerHTML = rows;
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='6'>No overdue books found.</td></tr>";
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            document.getElementById("overdue-table-body").innerHTML = "<tr><td colspan='6'>Error loading data.</td></tr>";
+        })
+        .finally(() => {
+            // Hide loading indicator
+            document.getElementById('loading').style.display = 'none';
+        });
+}
 
 		//BORROWED			
-		document.addEventListener("DOMContentLoaded", function () {
-			const borrowedBtn = document.getElementById("BorrowedBtn");
-			const bodyContent = document.getElementById("body-content");
-			const pageTitle = document.getElementById("page-title");
+document.addEventListener("DOMContentLoaded", function () {
+    const borrowedBtn = document.getElementById("BorrowedBtn");
+    const bodyContent = document.getElementById("body-content");
+    const pageTitle = document.getElementById("page-title");
 
-			if (borrowedBtn) {
-				borrowedBtn.addEventListener("click", function (event) {
-					event.preventDefault();
-					fetch('./TransactionsBorrowed.php')
-						.then(response => response.text())
-						.then(data => {
-							bodyContent.innerHTML = data;
-							document.title = "Borrowed Books";
-							pageTitle.innerText = "Borrowed Books";
+    if (borrowedBtn) {
+        borrowedBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            fetch('./TransactionsBorrowed.php')
+                .then(response => response.text())
+                .then(data => {
+                    bodyContent.innerHTML = data;
+                    document.title = "Borrowed Books";
+                    pageTitle.innerText = "Borrowed Books";
 
-							// Attach listeners after loading the content
-							setupViewBorrowerButtons();
-						})
-						.catch(error => console.error('Error fetching TransactionsBorrowed.php:', error));
-				});
-			}
-		});
+                    // Attach listeners after loading the content
+                    setupViewBorrowerButtons();
+                    setupSearchAndSort(); // Set up search and sort listeners
+                })
+                .catch(error => console.error('Error fetching TransactionsBorrowed.php:', error));
+        });
+    }
+});
 
-		function setupViewBorrowerButtons() {
-			const viewBorrowerButtons = document.querySelectorAll('.view-borrowers');
+function setupViewBorrowerButtons() {
+    const viewBorrowerButtons = document.querySelectorAll('.view-borrowers');
 
-			viewBorrowerButtons.forEach(button => {
-				button.addEventListener('click', function (event) {
-					const dropdown = event.target.closest('.Borrbox').querySelector('.borrowers-dropdown');
+    viewBorrowerButtons.forEach(button => {
+        button.addEventListener('click', function (event) {
+            const dropdown = event.target.closest('.Borrbox').querySelector('.borrowers-dropdown');
 
-					// Toggle the visibility of the dropdown
-					dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+            // Toggle the visibility of the dropdown
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
 
-					// Fetch and populate borrower data if displaying the dropdown
-					if (dropdown.style.display === "block") {
-						const booktitle = event.target.getAttribute('data-booktitle');
-						fetchBorrowers(booktitle, dropdown);
-					}
-				});
-			});
-		}
+            // Fetch and populate borrower data if displaying the dropdown
+            if (dropdown.style.display === "block") {
+                const booktitle = event.target.getAttribute('data-booktitle');
+                fetchBorrowers(booktitle, dropdown);
+            }
+        });
+    });
+}
 
-		function fetchBorrowers(booktitle, dropdown) {
-			fetch(`TransactionsBorrowed.php?booktitle=${encodeURIComponent(booktitle)}`)
-				.then(response => response.text())
-				.then(data => {
-					dropdown.querySelector('tbody').innerHTML = data; // Populate the table body with fetched data
+function fetchBorrowers(booktitle, dropdown) {
+    fetch(`TransactionsBorrowed.php?booktitle=${encodeURIComponent(booktitle)}`)
+        .then(response => response.text())
+        .then(data => {
+            dropdown.querySelector('tbody').innerHTML = data; // Populate the table body with fetched data
 
-					// Attach listeners for the Return buttons
-					setupReturnButtons();
-				})
-				.catch(error => {
-					dropdown.querySelector('tbody').innerHTML = "<tr><td colspan='4'>Error fetching borrowers.</td></tr>";
-					console.error('Error fetching borrowers:', error);
-				});
-		}
+            // Attach listeners for the Return buttons
+            setupReturnButtons();
+        })
+        .catch(error => {
+            dropdown.querySelector('tbody').innerHTML = "<tr><td colspan='4'>Error fetching borrowers.</td></tr>";
+            console.error('Error fetching borrowers:', error);
+        });
+}
 
-		function setupReturnButtons() {
-			const returnButtons = document.querySelectorAll('.return-button');
+function setupReturnButtons() {
+    const returnButtons = document.querySelectorAll('.return-button');
 
-			returnButtons.forEach(button => {
-				button.addEventListener('click', function (event) {
-					const idno = event.target.getAttribute('data-idno');
-					const booktitle = event.target.getAttribute('data-booktitle');
+    returnButtons.forEach(button => {
+        button.addEventListener('click', function (event) {
+            const idno = event.target.getAttribute('data-idno');
+            const booktitle = event.target.getAttribute('data-booktitle');
 
-					// Redirect to the return page with query parameters
-					const returnUrl = `returnBook.php?idno=${encodeURIComponent(idno)}&booktitle=${encodeURIComponent(booktitle)}`;
-					window.location.href = returnUrl;
-				});
-			});
-		}
+            // Redirect to the return page with query parameters
+            const returnUrl = `returnBook.php?idno=${encodeURIComponent(idno)}&booktitle=${encodeURIComponent(booktitle)}`;
+            window.location.href = returnUrl;
+        });
+    });
+}
+
+function setupSearchAndSort() {
+    const searchInput = document.getElementById('search-input');
+    const sortDropdown = document.getElementById('sort-dropdown');
+
+    // Ensure event listeners are only added once
+    if (searchInput && !searchInput.dataset.listenerAdded) {
+        searchInput.addEventListener('input', function () {
+            loadBooksB();
+        });
+        searchInput.dataset.listenerAdded = true; // Mark that the listener has been added
+    }
+
+    if (sortDropdown && !sortDropdown.dataset.listenerAdded) {
+        sortDropdown.addEventListener('change', function () {
+            loadBooksB();
+        });
+        sortDropdown.dataset.listenerAdded = true; // Mark that the listener has been added
+    }
+}
+
+function loadBooksB() {
+    const searchInput = document.getElementById('search-input').value;
+    const sortDropdown = document.getElementById('sort-dropdown').value;
+
+    fetch(`TransactionsBorrowed.php?search=${encodeURIComponent(searchInput)}&sort=${encodeURIComponent(sortDropdown)}`)
+        .then(response => response.text())
+        .then(data => {
+            // Instead of replacing the entire body-content, replace just the books-list
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data, 'text/html');
+
+            // Replace the existing books-list with the new one
+            const newBooksList = doc.getElementById('books-list');
+            const existingBooksList = document.getElementById('books-list');
+
+            if (existingBooksList) {
+                existingBooksList.innerHTML = newBooksList.innerHTML; // Update the inner HTML
+            }
+
+            setupViewBorrowerButtons(); // Re-setup the view borrower buttons after loading new content
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
 		
 		//RETURNED
         document.getElementById("ReturnedBtn").addEventListener("click", function(event) {
@@ -899,6 +1026,7 @@ function setupButtons() {
                     document.getElementById("body-content").innerHTML = data;
                     document.title = "Overdue Books"; // Change the page title
                     document.getElementById("page-title").innerText = "Overdue Books"; // Change the displayed title
+					loadBooksO();
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });

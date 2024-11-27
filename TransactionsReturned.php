@@ -9,10 +9,8 @@ if (!isset($_SESSION['fullname'])) {
     exit();
 }
 
-// Fetch data for the current page
-$sql = "SELECT booktitle, author, status, fullname, datereturned, bookimg FROM returns";
-$result = $conn->query($sql);
-
+// Initialize SQL query
+$sql = "SELECT booktitle, author, status, fullname, datereturned, bookimg FROM returns WHERE 1=1";
 
 // Add search filter if provided
 if (!empty($_GET['search'])) {
@@ -34,69 +32,81 @@ if (!empty($_GET['sort'])) {
     // Default sorting by booktitle
     $sql .= " ORDER BY booktitle";
 }
-?>
-    <div class="content-box" id="content2">
-        <div class="container">
-            <div id="Returend-d1" class="Returned-box" overflow-x:auto; overflow-y: auto;>
-                <div class="input">
-                    <!-- Search, Sort, and Filter Section -->
-                    <div class="search-bar">
-                        <input type="text" placeholder=" Search...">
-                        <span class="search-icon">
-                            <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
-                        </span>
-                    </div>
-                    <button class="sort-btn">
-                        <img src="./Images/Sort.svg" alt="Sort Icon" width="20" height="20"> Sort By
-                        <img src="./Images/vec.svg" alt="Icon After" width="18" height="18">
-                    </button>
-                    <button class="filter-btn">
-                        <img src="./Images/Filter_alt_fill.svg" alt="Filter Icon" width="20" height="20"> Filter By
-                        <img src="./Images/Expand_down.svg" alt="Icon After" width="18" height="18">
-                    </button>
-                </div>
-                
-                <!-- Table Section -->
-                <table class="Returned-table">
-                    <thead>
-                        <tr>
-                            <th>Book</th>
-                            <th>Author</th>
-                            <th>Status</th>
-                            <th>Returned By</th>
-                            <th>Date Returned</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-						if ($result && $result->num_rows > 0) {
-							// Output data of each row
-							while ($row = $result->fetch_assoc()) {
-								echo "<tr>";
-								echo "<td>";
-								// Display the bookimg next to the book name
-								if (!empty($row["bookimg"])) {
-									echo "<img src='" . htmlspecialchars($row["bookimg"]) . "' alt='Book Image' width='50' height='70' style='margin-right:10px;'>";
-								} else {
-									// Default bookimg if none provided
-									echo "<img src='./Images/default-book.png' alt='Default Book Image' width='50' height='70' style='margin-right:10px;'>";
-								}
-								echo htmlspecialchars($row["booktitle"]) . "</td>";
-								echo "<td>" . htmlspecialchars($row["author"]) . "</td>";
-								echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
-								echo "<td>" . htmlspecialchars($row["fullname"]) . "</td>";
-								echo "<td>" . htmlspecialchars($row["datereturned"]) . "</td>";
-								echo "</tr>";
-							}
-						} else {
-							echo "<tr><td colspan='5'>No records found</td></tr>";
-						}
-						?>
-                    </tbody>
-                </table>
-                
-                
-            </div>
-        </div>
 
- 
+// Fetch data for the current page
+$result = $conn->query($sql);
+
+// Prepare data for JSON response
+$data = [];
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+}
+
+// If the request is an AJAX request, return JSON
+if (isset($_GET['ajax'])) {
+    header('Content-Type: application/json');
+    echo json_encode(['table_body' => $data]);
+    exit();
+}
+?>
+
+<div class="content-box" id="content2">
+    <div class="container">
+        <div id="Returend-d1" class="Returned-box" style="overflow-x:auto; overflow-y: auto;">
+            <div class="input" style="padding-left: 400px; padding-top: 20px; padding-bottom:50px;">
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search..." oninput="loadBooksR()">
+                    <span class="search-icon">
+                        <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
+                    </span>
+                </div>
+                <select id="sort-dropdown" onchange="loadBooksR()" style="font-size: 12px; padding: 8px 20px; border-radius: 30px; cursor: pointer; background-color: #ff6600; color: white;">
+                    <option value="">Sort By</option>
+                    <option value="booktitle">Title</option>
+                    <option value="author">Author</option>
+                </select>
+            </div>
+            
+            <!-- Loading Indicator -->
+            <div id="loading" style="display: none;">Loading...</div>
+
+            <!-- Table Section -->
+            <table class="Returned-table">
+                <thead>
+                    <tr>
+                        <th>Book</th>
+                        <th>Author</th>
+                        <th>Status</th>
+                        <th>Returned By</th>
+                        <th>Date Returned</th>
+                    </tr>
+                </thead>
+                <tbody id="returned-table-body">
+                    <?php
+                    if (!empty($data)) {
+                        foreach ($data as $row) {
+                            echo "<tr>";
+                            echo "<td>";
+                            if (!empty($row["bookimg"])) {
+                                echo "<img src='" . htmlspecialchars($row["bookimg"]) . "' alt='Book Image' width='50' height='70' style='margin-right:10px;'>";
+                            } else {
+                                echo "<img src='./Images/default-book.png' alt='Default Book Image' width='50' height='70' style='margin-right:10px;'>";
+                            }
+                            echo htmlspecialchars($row["booktitle"]) . "</td>";
+                            echo "<td>" . htmlspecialchars($row["author"]) . "</td>";
+                            echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
+                            echo "<td>" . htmlspecialchars($row["fullname"]) . "</td>";
+                            echo "<td>" . htmlspecialchars($row["datereturned"]) . "</td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='5'>No records found</td></tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
