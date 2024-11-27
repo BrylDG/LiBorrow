@@ -164,7 +164,7 @@ $role = $_SESSION['isAdmin'];
         //DASHBOARD CONTENT
         document.getElementById("button0").addEventListener("click", function(event) {
             event.preventDefault();
-            fetch('./UserDash.html')
+            fetch('./UserDash.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;
