@@ -668,6 +668,59 @@ function loadBooksHistory() {
         });
 }
 
+function loadTransactions() {
+        const searchTerm = document.getElementById('search-input').value;
+        const sortBy = document.getElementById('sort-dropdown').value;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `transactionsdash.php?action=filter&search=${encodeURIComponent(searchTerm)}&sort=${encodeURIComponent(sortBy)}`, true);
+        xhr.onload = function() {
+            if (this.status === 200) {
+                const books = JSON.parse(this.responseText);
+                const resultsContainer = document.getElementById('td1');
+                resultsContainer.innerHTML = '';
+
+                if (books.length > 0) {
+                    books.forEach(book => {
+                        resultsContainer.innerHTML += `
+                            <div class="pendbox-one">
+                                <p class="name">${book.fullname}</p>
+                                <p class="date">Request Date: ${book.requestdate}</p>
+                                <div class="pendbox global">
+                                    <img src="${book.bookimg}" alt="Book Image" width="100" height="150">
+                                    <p class="book-title">${book.booktitle}</p>
+                                    <p class="author">${book.author}</p>
+                                    <input type="hidden" class="booktitle" value="${book.booktitle}">
+                                    <input type="hidden" class="fullname" value="${book.fullname}">
+                                    <button class="approve-btn">Approve</button>
+                                    <button class="decline-btn">Cancel</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    resultsContainer.innerHTML = '<p>No pending requests found.</p>';
+                }
+            }
+        };
+        xhr.send();
+    }
+function loadBooks() {
+            const searchTerm = document.getElementById('search-input').value;
+            const sortBy = document.getElementById('sort-dropdown').value;
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `transactionsborrowed.php?search=${encodeURIComponent(searchTerm)}&sort=${encodeURIComponent(sortBy)}`, true);
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    const response = this.responseText;
+                    const borrowContainer = document.getElementById('borrowContainer');
+                    borrowContainer.innerHTML = response; // Replace the container's HTML with the new data
+                }
+            };
+            xhr.send();
+        }
+
 		//BORROWED			
 		document.addEventListener("DOMContentLoaded", function () {
 			const borrowedBtn = document.getElementById("BorrowedBtn");

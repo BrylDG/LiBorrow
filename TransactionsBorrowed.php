@@ -17,20 +17,31 @@ if (isset($_GET['booktitle'])) {
                     <td>' . htmlspecialchars($borrower['idno']) . '</td>
                     <td>' . htmlspecialchars($borrower['fullname']) . '</td>
                     <td>' . htmlspecialchars($borrower['duedate']) . '</td>
-					<td><button class="return-button" data-idno="' . htmlspecialchars($borrower['idno']) . '" data-booktitle="' . htmlspecialchars($booktitle) . '">Return</button></td>
+                    <td><button class="return-button" data-idno="' . htmlspecialchars($borrower['idno']) . '" data-booktitle="' . htmlspecialchars($booktitle) . '">Return</button></td>
                   </tr>';
         }
     } else {
-        echo '<tr><td colspan="3">No borrowers found for this book.</td></tr>';
+        echo '<tr><td colspan="4">No borrowers found for this book.</td></tr>';
     }
     exit; // Exit after returning borrower data
 }
 
-// If no specific book title is provided, fetch all books
+// Check if search or sort parameters have been provided
+$searchTerm = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
+$sortBy = isset($_GET['sort']) ? $conn->real_escape_string($_GET['sort']) : '';
+
+// Base query to fetch books with optional filtering and sorting
 $query = "SELECT b.booktitle, b.author, COUNT(br.idno) AS count, b.bookimg 
           FROM books b 
           LEFT JOIN borrows br ON b.booktitle = br.booktitle 
+          WHERE b.booktitle LIKE '%$searchTerm%' OR b.author LIKE '%$searchTerm%'
           GROUP BY b.booktitle, b.author, b.bookimg";
+
+// Add sorting if specified
+if ($sortBy) {
+    $query .= " ORDER BY " . $sortBy;
+}
+
 $result = $conn->query($query);
 
 // Start generating the main HTML for the books
@@ -45,8 +56,21 @@ $result = $conn->query($query);
     <script src="script.js" defer></script> <!-- Link to your JavaScript file -->
 </head>
 <body>
-    <h1>Borrowed Books</h1>
     <div id="borrowContainer" class="Borrowbox">
+        <div class="input" style="padding-left: 400px; padding-top: 20px; padding-bottom:50px;">
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search..." oninput="loadBooks()">
+                <span class="search-icon">
+                    <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
+                </span>
+            </div>
+            <select id="sort-dropdown" onchange="loadBooks()" style="font-size: 12px; padding: 8px 20px; border-radius: 30px; cursor: pointer; background-color: #ff6600; color: white;">
+                <option value="">Sort By</option>
+                <option value="booktitle">Title</option>
+                <option value="author">Author</option>
+                <option value="pubdate">Publication Date</option>
+            </select>
+        </div>
         <?php
         if ($result->num_rows > 0) {
             while ($book = $result->fetch_assoc()) {
@@ -66,13 +90,13 @@ $result = $conn->query($query);
                     <div class="borrowers-dropdown" style="display:none;">
                         <table>
                             <thead>
-								<tr>
-									<th>ID No</th>
-									<th>Full Name</th>
-									<th>Due Date</th>
-									<th>Action</th>
-								</tr>
-							</thead>
+                                <tr>
+                                    <th>ID No</th>
+                                    <th>Full Name</th>
+                                    <th>Due Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 <!-- Borrower data will be populated here via JavaScript -->
                             </tbody>
@@ -86,4 +110,3 @@ $result = $conn->query($query);
         ?>
     </div>
 </body>
-</html>
