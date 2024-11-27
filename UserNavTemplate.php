@@ -178,19 +178,101 @@ $role = $_SESSION['isAdmin'];
         });
 
         //BROWSE CONTENT
-        document.getElementById("buttonbrowse").addEventListener("click", function(event) {
-            event.preventDefault();
-            fetch('./Browse.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("body-content").innerHTML = data;
-                    document.title = "Browse"; // Change the page title
-                    document.getElementById("page-title").innerText = "Browse"; // Change the displayed title
-                    renderCharts();
-                })
-                .catch(error => console.error('Error fetching content:', error));
-        });
+		document.getElementById("buttonbrowse").addEventListener("click", function(event) {
+			event.preventDefault();
+			fetch('./Browse.php')
+				.then(response => response.text())
+				.then(data => {
+					document.getElementById("body-content").innerHTML = data;
+					document.title = "Browse"; // Change the page title
+					document.getElementById("page-title").innerText = "Browse"; // Change the displayed title
+					
+					// Initialize the carousel after content is loaded
+					initializeCarousel();
+				})
+				.catch(error => console.error('Error fetching content:', error));
+		});
 
+		function moveCarousel(direction) {
+		const carousel = document.querySelector('.carousel');
+		const items = document.querySelectorAll('.carousel-item');
+		const totalItems = items.length;
+
+		let currentIndex = 0; // Define currentIndex here
+
+		currentIndex += direction;
+
+		// Loop back if we go out of bounds
+		if (currentIndex < 0) {
+			currentIndex = totalItems - 1;
+		} else if (currentIndex >= totalItems) {
+			currentIndex = 0;
+		}
+
+		// Move the carousel
+		const offset = -currentIndex * 100; // Adjust this value based on your item width
+		carousel.style.transform = `translateX(${offset}%)`;
+	}
+
+		function initializeCarousel() {
+			// Add event listeners to carousel buttons
+			document.querySelector('.prev').addEventListener('click', function() {
+				moveCarousel(-1);
+			});
+
+			document.querySelector('.next').addEventListener('click', function() {
+				moveCarousel(1);
+			});
+		}
+		
+		function loadBooks() {
+		const searchInput = document.getElementById('search-input').value;
+		const sortOption = document.getElementById('sort-dropdown').value;
+
+		const xhr = new XMLHttpRequest();
+		xhr.open('GET', `Browse.php?search=${encodeURIComponent(searchInput)}&sort=${sortOption}&ajax=1`, true);
+		xhr.onload = function() {
+			if (xhr.status === 200) {
+				const response = JSON.parse(xhr.responseText);
+				const booksContainer = document.querySelector('.userbooks-container');
+				booksContainer.innerHTML = ''; // Clear existing books
+
+				response.books.forEach(book => {
+					const bookElement = document.createElement('div');
+					bookElement.classList.add('book-container');
+					bookElement.innerHTML = `
+						<div class="button-container">
+							<button id="${book.borrowed ? 'stats-btn2' : 'stats-btn'}">
+								<img src="${book.borrowed ? './Images/Check.svg' : './Images/Unavalable.svg'}" alt="Book status" class="book-status" width="30" height="30">
+								Borrowed
+							</button>
+							<form action="AddToFav.php" method="POST">
+								<input type="hidden" name="bookid" value="${book.bookid}">
+								<input type="hidden" name="idno" value="${book.idno}">
+								<input type="hidden" name="booktitle" value="${book.booktitle}">
+								<input type="hidden" name="author" value="${book.author}">
+								<input type="hidden" name="bookimg" value="${book.bookimg}">
+								<button type="submit" id="addtofav-btn">
+									<img src="${book.favorite ? './Images/AddedtoFav.svg' : './Images/fav.svg'}" alt="Book fav" class="book-fav">
+								</button>
+							</form>
+						</div>
+						<img src="${book.bookimg}" alt="Book Thumbnail" width="100" height="150">
+						<p id="B-title">${book.booktitle}</p>
+						<p id="Book-Author">${book.author}</p>
+						<form action="BorrowBook.php" method="POST">
+							<input type="hidden" name="bookid" value="${book.bookid}">
+							<button id="${book.borrowed ? 'borbtn2' : 'borbtn'}">Borrow</button>
+						</form>
+					`;
+					booksContainer.appendChild(bookElement);
+				});
+			}
+		};
+		xhr.send();
+	}
+	
+	
 
         //FAVORITES CONTENT
         document.getElementById("button1").addEventListener("click", function(event) {
@@ -307,7 +389,7 @@ $role = $_SESSION['isAdmin'];
         });
 
         function loadUserDashboard() {
-            fetch('./UserDash.html')
+            fetch('./UserDash.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("body-content").innerHTML = data;

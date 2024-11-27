@@ -6,19 +6,22 @@
 <?php
 include('connection.php'); // Include your database connection
 
-// Fetch the count of books by main category
-$query = "SELECT 
-    CASE 
-        WHEN genre IN ('Romance', 'Mystery', 'Fantasy', 'SciFi') THEN 'Fiction'
-        WHEN genre IN ('Biography', 'History', 'Self-Help') THEN 'Non-Fiction'
-        WHEN genre IN ('Adventure', 'Thriller') THEN 'Action'
-        WHEN genre IN ('Poetry', 'Cooking', 'Graphic Novel') THEN 'Others'
-        ELSE 'Unknown'
-    END AS main_category,
-    COUNT(*) AS count
-FROM books
-WHERE genre IN ('Romance', 'Mystery', 'Fantasy', 'SciFi', 'Biography', 'History', 'Self-Help', 'Adventure', 'Thriller', 'Poetry', 'Cooking', 'Graphic Novel')
-GROUP BY main_category;";
+// Fetch the count of books by main category using the bookgenres table
+$query = "
+    SELECT 
+        CASE 
+            WHEN g.name IN ('Romance', 'Mystery', 'Fantasy', 'SciFi') THEN 'Fiction'
+            WHEN g.name IN ('Biography', 'History', 'Self-Help') THEN 'Non-Fiction'
+            WHEN g.name IN ('Adventure', 'Thriller') THEN 'Action'
+            WHEN g.name IN ('Poetry', 'Cooking', 'Graphic Novel') THEN 'Others'
+            ELSE 'Unknown'
+        END AS main_category,
+        COUNT(b.bookid) AS count
+    FROM books b
+    JOIN bookgenres bg ON b.bookid = bg.bookid
+    JOIN genres g ON bg.genreid = g.genreid
+    GROUP BY main_category;
+";
 
 $result = mysqli_query($conn, $query);
 

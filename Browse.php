@@ -1,43 +1,30 @@
 <?php
-	session_start(); // Start the session
-	include('connection.php'); // Include your connection file
+    session_start();
+    include('connection.php');
 
-	// Check if the user is logged in
-	if (!isset($_SESSION['idno'])) { // Replace 'user_id' with your session variable for logged-in users
-		header("Location: login.php"); // Redirect to the login page
-		exit(); // Make sure to exit after the redirect
-	}
+    // Get the search and sort parameters from the GET request
+    $search = isset($_GET['search']) ? "%" . $_GET['search'] . "%" : '%';
+    $sort = isset($_GET['sort']) && $_GET['sort'] == 'desc' ? 'DESC' : 'ASC';
 
-	// Retrieve the full name from the session
-	$fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User  '; // Default to 'User  ' if not set
-	$role = $_SESSION['isAdmin'];
+    // Prepare the query
+    $query = "SELECT b.bookid, b.booktitle, b.author, b.bookimg, GROUP_CONCAT(g.name SEPARATOR ', ') AS genres
+              FROM books b
+              JOIN bookgenres bg ON b.bookid = bg.bookid
+              JOIN genres g ON bg.genreid = g.genreid
+              WHERE b.booktitle LIKE ?
+              GROUP BY b.bookid
+              ORDER BY b.booktitle $sort";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $search);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $books = $result->fetch_all(MYSQLI_ASSOC);
 
-	// Get the selected genre from the GET parameters
-	$selected_genre = isset($_GET['genre']) ? $_GET['genre'] : null;
-
-	// Prepare the base query
-	$query = "SELECT b.bookid, b.booktitle, b.author, b.bookimg, 
-					 GROUP_CONCAT(g.name SEPARATOR ', ') AS genres 
-			  FROM books b 
-			  JOIN bookgenres bg ON b.bookid = bg.bookid 
-			  JOIN genres g ON bg.genreid = g.genreid";
-
-	if ($selected_genre) {
-		// Use a prepared statement to prevent SQL injection
-		$query .= " WHERE g.name = ?";
-	}
-
-	// Group by bookid to avoid duplicates
-	$query .= " GROUP BY b.bookid";
-
-	$stmt = $conn->prepare($query);
-	if ($selected_genre) {
-		$stmt->bind_param("s", $selected_genre);
-	}
-	$stmt->execute();
-	$result = $stmt->get_result();
-	$books = $result->fetch_all(MYSQLI_ASSOC);
-	$stmt->close();
+    // Return data as JSON
+    if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
+        echo json_encode(['books' => $books]);
+        exit();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,102 +38,75 @@
 
 <div class="browse-box" >
     <div class="container">
-        <div class="Userinput" id="search-boks">
+       <div class="Userinput" id="search-books">
             <div class="search-bar">
-                <input type="text" placeholder=" Search...">
+                <!-- Search input with ID 'search-input' -->
+                <input type="text" id="search-input" placeholder="Search..." oninput="loadBooks()">
                 <span class="forsearch-icon">
                     <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
                 </span>
             </div>
-            <button class="sort-btn">
-
-                <img src="./Images/Sort.svg" alt="Icon Before" width="20" height="20"> <!-- Icon before text -->
-                Sort By
-                <img src="./Images/vec.svg" alt="Icon After" width="18" height="18"> <!-- Icon after text -->
-            </button>
+            <!-- Sort dropdown with ID 'sort-dropdown' -->
+            <select id="sort-dropdown" onchange="loadBooks()">
+                <option value="asc">Sort by Title (Ascending)</option>
+                <option value="desc">Sort by Title (Descending)</option>
+            </select>
         </div>
 
         <!-- Stacking 5 divs inside the Trbox class -->
         <div id="td1" class="Trbox Browbox">
         
-            <div class="UserBrowsebox">
-                <div class="browse-genre " id="browse-books">
-                    <h3 id="genre-heading">Genre</h3>
-                    
-                    <img src="./images/Expand_left.svg" alt="Vector " class="expand-icon">
-                    <!-- Icon 1 -->
-                    <a href="Browse.php?genre=Romance Fiction" id="function">
-                        <div class="icon-container">
-                            <img src="./images/Genre-Romance.svg" alt="Romance Genre" class="genre-icon">
-                            <p class="icon-label">Romance</p>
-                        </div>
-                    </a>
-                    <!-- Icon 2 -->
-                    <a href="Browse.php?genre=Horror Fiction" id="function">
-                        <div class="icon-container">
-                            <img src="./images/Horror.svg" alt="Horror Genre" class="genre-icon">
-                            <p class="icon-label">Horror</p>
-                        </div>
-                    </a>
-                    <!-- Icon 3 -->
-                    <a href="Browse.php?genre=Science Fiction" id="function">
-                        <div class="icon-container">
-                            <img src="./images/Sci-fi.svg" alt="Scifi Genre" class="genre-icon">
-                            <p class="icon-label">Scifi</p>
-                        </div>
-                    </a>
-                    <!-- Icon 4 -->
-                    <a href="Browse.php?genre=Cooking Fiction" id="function">
-                        <div class="icon-container">
-                            <img src="./images/Cooking.svg" alt="Cooking Genre" class="genre-icon">
-                            <p class="icon-label">Cooking</p>
-                        </div>
-                    </a>
-                    <!-- Icon 5 -->
-                    <a href="Browse.php?genre=Historical Fiction" id="function">
-                        <div class="icon-container">
-                            <img src="./images/Historical.svg" alt="Historical Genre" class="genre-icon">
-                            <p class="icon-label">Historical</p>
-                        </div>
-                    </a>
-                    <!-- Icon 6 -->
-                    <a href="Browse.php?genre=Fantasy Fiction" id="function">
-                        <div class="icon-container">
-                            <img src="./images/Fantasy.svg" alt="Fantasy Genre" class="genre-icon">
-                            <p class="icon-label">Fantasy</p>
-                        </div>
-                    </a>
-                    <!-- Icon 7 -->
-                    <a href="Browse.php?genre=Mystery Fiction" id="function">
-                        <div class="icon-container">
-                            <img src="./images/Msytery.svg" alt="Mystery Genre" class="genre-icon">
-                            <p class="icon-label">Mystery</p>
-                        </div>
-                    </a>
-                    <!-- Icon 8 -->
-                    <a href="Browse.php?genre=Philosophical Fiction" id="function">
-                        <div class="icon-container">
-                            <img src="./images/Philosophy.svg" alt="Philosophy Genre" class="genre-icon">
-                            <p class="icon-label">Philosophy</p>
-                        </div>
-                    </a>
-                    <!-- Icon 9 -->
-                    <a href="Browse.php?genre=Business Fiction" id="function">
-                        <div class="icon-container">
-                            <img src="./images/Business.svg" alt="Business Genre" class="genre-icon">
-                            <p class="icon-label">Business</p>
-                        </div>
-                    </a>
-                    <!-- Icon 10 -->
-                    <a href="Browse.php?genre=Comedy Fiction" id="function">
-                        <div class="icon-container">
-                            <img src="./images/Comedy.svg" alt="Comedy Genre" class="genre-icon">
-                            <p class="icon-label">Comedy</p>
-                        </div>
-                    </a>
-                    <img src="./images/Expand_right.svg" alt="Vector " class="expand-icon">
-                </div> 
-            </div>
+			<div class="User Browsebox">
+				<div class="browse-genre" id="browse-books">
+					<h3 id="genre-heading">Genre</h3>
+					<div class="carousel-container">
+						<div class="carousel">
+							<div class="carousel-item">
+								<a href="Browse.php?genre=Romance Fiction" id="function">
+									<div class="icon-container">
+										<img src="./images/Genre-Romance.svg" alt="Romance Genre" class="genre-icon">
+										<p class="icon-label">Romance</p>
+									</div>
+								</a>
+								<a href="Browse.php?genre=Horror Fiction" id="function">
+									<div class="icon-container">
+										<img src="./images/Horror.svg" alt="Horror Genre" class="genre-icon">
+										<p class="icon-label">Horror</p>
+									</div>
+								</a>
+								<a href="Browse.php?genre=History Fiction" id="function">
+									<div class="icon-container">
+										<img src="./images/Genre-Romance.svg" alt="Romance Genre" class="genre-icon">
+										<p class="icon-label">Romance</p>
+									</div>
+								</a>
+								<a href="Browse.php?genre=Cat Fiction" id="function">
+									<div class="icon-container">
+										<img src="./images/Horror.svg" alt="Horror Genre" class="genre-icon">
+										<p class="icon-label">Horror</p>
+									</div>
+								</a>
+							</div>
+							<div class="carousel-item">
+								<a href="Browse.php?genre=Romance Fiction" id="function">
+									<div class="icon-container">
+										<img src="./images/Genre-Romance.svg" alt="Romance Genre" class="genre-icon">
+										<p class="icon-label">Romance</p>
+									</div>
+								</a>
+								<a href="Browse.php?genre=Horror Fiction" id="function">
+									<div class="icon-container">
+										<img src="./images/Horror.svg" alt="Horror Genre" class="genre-icon">
+										<p class="icon-label">Horror</p>
+									</div>
+								</a>
+							</div>						
+						</div>
+						<button class="carousel-button prev" onclick="moveCarousel(-1)">&#10094;</button>
+						<button class="carousel-button next" onclick="moveCarousel(1)">&#10095;</button>
+					</div>
+				</div>
+			</div>
             
             <h3 id="All-Books">All Books</h3>
             <div class="pendbox global" id="User-books" style="height: 500px;">
@@ -218,24 +178,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        //wala ni gamit hehe
-        const titleElement = document.getElementById('Book-tittle2');
-
-        titleElement.addEventListener('click', () => {
-            if (titleElement.style.whiteSpace === 'normal') {
-                titleElement.style.whiteSpace = 'nowrap';
-                titleElement.style.overflow = 'hidden';
-                titleElement.style.maxWidth = '25px'; // Collapse to show only the first two letters
-            } else {
-                titleElement.style.whiteSpace = 'normal';
-                titleElement.style.overflow = 'visible';
-                titleElement.style.maxWidth = '200px'; // Expand to show the full title
-            }
-        });
-
-    </script>    
 </div>
 
 </body>
