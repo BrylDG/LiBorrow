@@ -3,19 +3,27 @@ session_start(); // Start the session
 include('connection.php'); // Include your connection file
 
 // Check if the user is logged in
-if (!isset($_SESSION['fullname'])) { // Replace 'user_id' with your session variable for logged-in users
+if (!isset($_SESSION['fullname'])) {
     header("Location: login.php"); // Redirect to the login page
     exit(); // Make sure to exit after the redirect
 }
-// Retrieve the full name from the session
-$fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // Default to 'User ' if not set
 
-// Function to get all users with optional search and sorting
-function getAllUsers($conn, $searchTerm = '', $sortBy = '') {
-    $sql = "SELECT idno, fullname, email FROM users WHERE fullname LIKE ?";
-    
+// Retrieve the full name from the session
+$fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User   '; // Default to 'User   ' if not set
+
+// Function to get all users with optional search, sorting, and filtering
+function getAllUsers($conn, $searchTerm = '', $sortBy = '', $filterBy = '') {
+    $sql = "SELECT idno, fullname, email, isAdmin FROM users WHERE fullname LIKE ?";
+
     // Prepare the search term
     $searchTerm = '%' . $conn->real_escape_string($searchTerm) . '%';
+
+    // Add filtering condition
+    if ($filterBy === 'librarian') {
+        $sql .= " AND isAdmin = 1";
+    } elseif ($filterBy === 'reader') {
+        $sql .= " AND isAdmin = 0";
+    }
 
     // Add sorting
     if ($sortBy) {
@@ -25,17 +33,18 @@ function getAllUsers($conn, $searchTerm = '', $sortBy = '') {
     // Prepare the statement
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('s', $searchTerm);
-    
+
     $stmt->execute();
     return $stmt->get_result();
 }
 
-// Initialize variables for search and sort
+// Initialize variables for search, sort, and filter
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
 $sortBy = isset($_GET['sort']) ? $_GET['sort'] : '';
+$filterBy = isset($_GET['filter']) ? $_GET['filter'] : '';
 
-// Get users based on search and sort
-$result = getAllUsers($conn, $searchTerm, $sortBy);
+// Get users based on search, sort, and filter
+$result = getAllUsers($conn, $searchTerm, $sortBy, $filterBy);
 
 // Check if it's an AJAX request
 if (isset($_GET['ajax'])) {
@@ -68,14 +77,15 @@ if (isset($_GET['ajax'])) {
                         <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
                     </span>
                 </div>
-                <select id="sort-dropdown" onchange="loadUsers()" style="background-color: #ff6600; color: white;     font-size: 16px;
-    padding: 8px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;">
+                <select id="sort-dropdown" onchange="loadUsers()" style="background-color: #ff6600; color: white; font-size: 16px; padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: background-color 0.3s ease;">
                     <option value="">Sort By</option>
                     <option value="fullname">Name</option>
                     <option value="email">Email</option>
+                </select>
+                <select id="filter-dropdown" onchange="loadUsers()" style="background-color: white; color: #ff6600; font-size: 16px; padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: background-color 0.3s ease;">
+                    <option value="">Filter By</option>
+                    <option value="librarian">Librarians</option>
+                    <option value="reader">Readers</option>
                 </select>
             </div>
 
@@ -114,4 +124,3 @@ if (isset($_GET['ajax'])) {
         </div>
     </div>
 </div>
-

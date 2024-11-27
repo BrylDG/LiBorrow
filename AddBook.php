@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input 
                         type="text" 
                         name="bookid" 
-                        placeholder="Book ID" 
+                        placeholder="ISBN" 
                         required 
                         style="width: 90%; padding: 15px; border: 2px solid #746767; color: #333; border-radius: 20px; font-size: 10px; outline: none; transition: border-color 0.3s ease-in-out;">
                 </div>
@@ -184,6 +184,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     style="width: 200px; padding: 15px; background-color: #ccc; color: white; border: none; border-radius: 20px; font-size: 10px; cursor: pointer; transition: background-color 0.3s ease-in-out;">Cancel</button>
                 </div>
             </form>
+        </div>
+		<div class="checkbox-container" id="checkbox-container">
+            <!-- Checkboxes will be dynamically added here -->
         </div>
     </div>
 </body>

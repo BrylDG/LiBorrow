@@ -370,39 +370,40 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
 });
 
 // Function to load users
-function loadUsers() {
-    const searchTerm = document.getElementById('search-input').value;
-    const sortBy = document.getElementById('sort-dropdown').value;
+        function loadUsers() {
+        const searchTerm = document.getElementById('search-input').value;
+        const sortBy = document.getElementById('sort-dropdown').value;
+        const filterBy = document.getElementById('filter-dropdown').value;
 
-    // Show loading indicator
-    document.getElementById('loading').style.display = 'block';
+        // Show loading indicator
+        document.getElementById('loading').style.display = 'block';
 
-    fetch(`ReaderDash.php?ajax=1&search=${encodeURIComponent(searchTerm)}&sort=${sortBy}`)
-        .then(response => response.json())
-        .then(data => {
-            const tableBody = document.getElementById("reader-table-body");
-            tableBody.innerHTML = ""; // Clear existing rows
+        fetch(`ReaderDash.php?ajax=1&search=${encodeURIComponent(searchTerm)}&sort=${sortBy}&filter=${filterBy}`)
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById("reader-table-body");
+                tableBody.innerHTML = ""; // Clear existing rows
 
-            if (data.table_body && data.table_body.length > 0) {
-                data.table_body.forEach(user => {
-                    const row = `<tr>
-                                    <td>${user.idno}</td>
-                                    <td>${user.fullname}</td>
-                                    <td>${user.email}</td>
-                                    <td><a href='#' class='view-more'>View more</a></td>
-                                 </tr>`;
-                    tableBody.innerHTML += row; // Append new rows
-                });
-            } else {
-                tableBody.innerHTML = "<tr><td colspan='4'>No results found</td></tr>";
-            }
-        })
-        .catch(error => console.error('Error fetching users:', error))
-        .finally(() => {
-            // Hide loading indicator
-            document.getElementById('loading').style.display = 'none';
-        });
-}
+                if (data.table_body && data.table_body.length > 0) {
+                    data.table_body.forEach(user => {
+                        const row = `<tr>
+                                        <td>${user.idno}</td>
+                                        <td>${user.fullname}</td>
+                                        <td>${user.email}</td>
+                                        <td><a href='#' class='view-more'>View more</a></td>
+                                     </tr>`;
+                        tableBody.innerHTML += row; // Append new rows
+                    });
+                } else {
+                    tableBody.innerHTML = "<tr><td colspan='4'>No results found</td></tr>";
+                }
+            })
+            .catch(error => console.error('Error fetching users:', error))
+            .finally(() => {
+                // Hide loading indicator
+                document.getElementById('loading').style.display = 'none';
+            });
+    }
 
 // Function to initialize View More buttons
 function initializeViewMoreButtons() {
@@ -611,6 +612,55 @@ function initializeViewMoreButtons() {
             console.error('Error fetching books:', error);
             document.getElementById("inventory-table-body").innerHTML = 
                 "<tr><td colspan='5'>An error occurred while loading data. Please try again later.</td></tr>";
+        })
+        .finally(() => {
+            // Hide loading indicator
+            document.getElementById('loading').style.display = 'none';
+        });
+}
+
+function loadBooksHistory() {
+    const searchTerm = document.getElementById('search-input').value;
+    const sortBy = document.getElementById('sort-dropdown').value;
+    const statusFilter = document.getElementById('status-filter').value;
+
+    // Show loading indicator
+    document.getElementById('loading').style.display = 'block';
+
+    // Use historydash.php for the fetch request
+    fetch(`historydash.php?ajax=1&search=${encodeURIComponent(searchTerm)}&sort=${sortBy}&status=${encodeURIComponent(statusFilter)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const tableBody = document.querySelector(".History-table tbody");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            if (data.table_body && data.table_body.length > 0) {
+                let rows = "";
+                data.table_body.forEach(book => {
+                    rows += `<tr>
+                                <td>${book.bookid}</td>
+                                <td>${book.booktitle}</td>
+                                <td>${book.idno}</td>
+                                <td>${book.fullname}</td>
+                                <td>${book.borrowdate}</td>
+                                <td>${book.duedate}</td>
+                                <td class='act'>${book.status}</td>
+                             </tr>`;
+                });
+                tableBody.innerHTML = rows; // Update all rows at once
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='7'>No results found</td></tr>";
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching books:', error);
+            document.querySelector(".History-table tbody").innerHTML = 
+                "<tr><td colspan='7'>An error occurred while loading data. Please try again later.</td></tr>";
         })
         .finally(() => {
             // Hide loading indicator
