@@ -30,13 +30,6 @@ hr {
     margin: 0 auto;
 }
 
-#d1 {
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .Overdue-table {
     width: 95%;
     margin: 20px auto;

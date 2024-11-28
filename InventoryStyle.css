@@ -14,13 +14,15 @@
 
 .Inventory-box {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7); /* Subtle shadow effect */
-    display: flex;
-    flex-direction: column;
     width: 100%;
     height: 65vh;
     margin-top: 3.6em;
+    padding: 0 3%;
 }
 
+#reader-input {
+margin-left: 0;
+}
 
 hr {
     height: 2px;
@@ -28,13 +30,6 @@ hr {
     border: none;
     width: 100%;
     margin: 0 auto;
-}
-
-#d1 {
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 #search-input{
@@ -60,40 +55,20 @@ hr {
 }
 
 .addbtn {
-    position: relative;
-    left: 34em;
+    display: flex;
+    flex-wrap: wrap;
     font-size: 16px;
     margin: 20px  20px 5px 20px;
     padding: 10px 20px;
     border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
-.addbtn {
     background-color: #ff6600;
     color: white;
     border: none;
+    align-content: center;
 }
 
-/* .sort-btn img:hover{
-    filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(1150%) hue-rotate(10deg) brightness(96%) contrast(93%);
-} */
-
-/* .sort-btn:hover{
-    background-color: white;
-    color: #ff6600;
-    border: 1px solid #ff6600;
-} */
-
-/* .filter-btn:hover {
-    border: 1px solid #ff6600;
-    background-color: #ff6600;
-    color: white;
-} */
-
-/* .filter-btn img:hover {
-    filter: brightness(0) invert(1); 
-} */
 /* User Table */
 .Inventory-table {
     width: 95%;
@@ -108,8 +83,10 @@ hr {
 }
 
 .Inventory-table th {
-    background-color: #f0f0f0;
+    background-color: #ff8533;
     font-weight: bold;
+    position: sticky;
+    top: 0;
 }
 
 .Inventory-table tr {
@@ -136,10 +113,6 @@ hr {
     border-radius: 5px;
     transition: background-color 0.3s;
 }
-
-/* .Inventory-pagination a:hover {
-    background-color: #f0f0f0;
-} */
 
 .Inventory-pagination .active {
     background-color: #e55a00;

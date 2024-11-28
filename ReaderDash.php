@@ -83,7 +83,7 @@ if (isset($_GET['ajax'])) {
                     <option value="fullname">Name</option>
                     <option value="email">Email</option>
                 </select>
-                <select id="filter-dropdown" onchange="loadUsers()" style="background-color: white; color: #ff6600; font-size: 16px; padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: background-color 0.3s ease;">
+                <select id="filter-dropdown" onchange="loadUsers()" style="background-color: white; color: #ff6600; font-size: 16px; padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: background-color 0.3s ease; width: 130px;">
                     <option value="">Filter By</option>
                     <option value="librarian">Librarians</option>
                     <option value="reader">Readers</option>
@@ -91,7 +91,7 @@ if (isset($_GET['ajax'])) {
             </div>
 
             <!-- Scrollable Table Section -->
-            <div style="max-height: 400px; overflow-y: auto; width: 95%;">
+            <div style="max-height: 600px; overflow-y: auto; width: 95%; align-self: center;">
                 <table class="reader-table" style="width: 95%; border-collapse: collapse;">
                     <thead>
                         <tr>

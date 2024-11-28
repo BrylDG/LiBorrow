@@ -104,20 +104,20 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
 <div class="content-box" id="content2">
     <div class="container">
         <div id="d1" class="Inventory-box">
-            <div class="input" style="padding-left: 50px; padding-top: 20px;">
+            <div class="input-area" id="reader-input">
                 <div class="search-bar">
                     <input type="text" id="search-input" placeholder="Search..." oninput="loadBooks()">
                     <span class="search-icon">
                         <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
                     </span>
                 </div>
-                <select id="sort-dropdown" onchange="loadBooks()" style="font-size: 12px; padding: 8px 20px; border-radius: 30px; cursor: pointer; background-color: #ff6600; color: white;">
+                <select id="sort-dropdown" onchange="loadBooks()" style="font-size: 16px; padding: 8px 20px; border-radius: 30px; cursor: pointer; background-color: #ff6600; color: white; width: 120px">
                     <option value="">Sort By</option>
                     <option value="booktitle">Title</option>
                     <option value="author">Author</option>
                     <option value="pubdate">Publication Date</option>
                 </select>
-                <select id="genre-filter" onchange="loadBooks()" style="font-size: 12px; padding: 8px 20px; border-radius: 30px; cursor: pointer; border: 1px solid #ff6600; background-color: white; color: #ff6600;">
+                <select id="genre-filter" onchange="loadBooks()" style="font-size: 16px; padding: 8px 20px; border-radius: 30px; cursor: pointer; border: 1px solid #ff6600; background-color: white; color: #ff6600;">
                     <option value="">Filter by Genre</option>
                     <option value="Romance">Romance</option>
                     <option value="Thriller">Thriller</option>
@@ -133,20 +133,20 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     <option value="Cooking">Cooking</option>
                     <option value="Graphic Novel">Graphic Novel</option>
                 </select>
-            </div>
-            <a href="#" class="addbtn" id="addBookButton" style="cursor: pointer; text-decoration: none;">
+                <a href="#" class="addbtn" id="addBookButton" style="cursor: pointer; text-decoration: none;">
                 <img src="./Images/Add_square_fill.svg" alt="Add Icon">
                 Add Book
             </a>
+            </div>
             <!-- Scrollable Table Section -->
-            <div style="max-height: 400px; overflow-y: auto; width: 100%;">
+            <div style="max-height: 600px; overflow-y: auto; width: 100%;">
                 <table class="Inventory-table" style="width: 100%; border-collapse: collapse;">
                     <thead>
                         <tr>
                             <th>ISBN</th>
                             <th>Title</th>
                             <th>Author</th>
-                            <th>Genre</th>
+                            <th style="width: 400px;">Genre</th>
                             <th>Details</th>
                         </tr>
                     </thead>

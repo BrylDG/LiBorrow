@@ -36,22 +36,6 @@ hr {
     align-items: center;
 }
 
-.addbtn {
-    position: relative;
-    left: 34em;
-    font-size: 16px;
-    margin: 20px  20px 5px 20px;
-    padding: 10px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-.addbtn {
-    background-color: #ff6600;
-    color: white;
-    border: none;
-}
-
 .Returned-table {
     width: 100%;
     margin: 20px auto;
