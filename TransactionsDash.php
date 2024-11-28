@@ -128,7 +128,7 @@ $result = $conn->query($sql);
                         </div>
                         <div class="pendbox global">
                             <div style="width: 50%; margin-right: 10%;">
-                                <img src="<?= htmlspecialchars('./Images/Books/' . $row["bookimg"]) ?>" alt="Book Image" width="100" height="150">
+                                <img src="<?= htmlspecialchars('./Images/' . $row["bookimg"]) ?>" alt="Book Image" width="100" height="150">
                             </div>
                             <div style="width: 150%">
                                 <p class="book-title"><?= htmlspecialchars($row["booktitle"]) ?></p>
@@ -142,10 +142,8 @@ $result = $conn->query($sql);
                             <div style="width: 20%">
                                 <input type="hidden" class="fullname" value="<?= htmlspecialchars($row["fullname"]) ?>">
                             </div>
-                            <div id="button-div" style="width: 20%; display: flex; gap: 20%;">
-                                <button class="approve-btn" onclick="approveRequest('<?= htmlspecialchars($row["booktitle"]) ?>', '<?= htmlspecialchars($row["fullname"]) ?>')">Approve</button>
-                                <button class="decline-btn" onclick="cancelRequest('<?= htmlspecialchars($row["booktitle"]) ?>', '<?= htmlspecialchars($row["fullname"]) ?>')">Cancel</button>
-                            </div>  
+                                <button class="approve-btn">Approve</button>
+                                <button class="decline-btn">Cancel</button>                   
                         </div>                  
                     </div>
                 <?php endwhile; ?>
