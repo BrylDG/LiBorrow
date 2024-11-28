@@ -204,102 +204,187 @@ $role = $_SESSION['isAdmin'];
         });
 
         //BROWSE CONTENT
-		document.getElementById("buttonbrowse").addEventListener("click", function(event) {
-			event.preventDefault();
-			fetch('./Browse.php')
-				.then(response => response.text())
-				.then(data => {
-					document.getElementById("body-content").innerHTML = data;
-					document.title = "Browse"; // Change the page title
-					document.getElementById("page-title").innerText = "Browse"; // Change the displayed title
-					
-					// Initialize the carousel after content is loaded
-					initializeCarousel();
-				})
-				.catch(error => console.error('Error fetching content:', error));
-		});
+    document.getElementById("buttonbrowse").addEventListener("click", function(event) {
+        event.preventDefault();
+        fetch('./Browse.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("body-content").innerHTML = data;
+                document.title = "Browse"; // Change the page title
+                document.getElementById("page-title").innerText = "Browse"; // Change the displayed title
+                
+                // Initialize the carousel after content is loaded
+                initializeCarousel();
+            })
+            .catch(error => console.error('Error fetching content:', error));
+    });
 
-		function moveCarousel(direction) {
-		const carousel = document.querySelector('.carousel');
-		const items = document.querySelectorAll('.carousel-item');
-		const totalItems = items.length;
+    // Function to move the carousel
+    function moveCarousel(direction) {
+        const carousel = document.querySelector('.carousel');
+        const items = document.querySelectorAll('.carousel-item');
+        const totalItems = items.length;
 
-		let currentIndex = 0; // Define currentIndex here
+        let currentIndex = 0; // Define currentIndex here
 
-		currentIndex += direction;
+        currentIndex += direction;
 
-		// Loop back if we go out of bounds
-		if (currentIndex < 0) {
-			currentIndex = totalItems - 1;
-		} else if (currentIndex >= totalItems) {
-			currentIndex = 0;
-		}
+        // Loop back if we go out of bounds
+        if (currentIndex < 0) {
+            currentIndex = totalItems - 1;
+        } else if (currentIndex >= totalItems) {
+            currentIndex = 0;
+        }
 
-		// Move the carousel
-		const offset = -currentIndex * 100; // Adjust this value based on your item width
-		carousel.style.transform = `translateX(${offset}%)`;
-	}
+        // Move the carousel
+        const offset = -currentIndex * 100; // Adjust this value based on your item width
+        carousel.style.transform = `translateX(${offset}%)`;
+    }
 
-		function initializeCarousel() {
-			// Add event listeners to carousel buttons
-			document.querySelector('.prev').addEventListener('click', function() {
-				moveCarousel(-1);
-			});
+    // Function to initialize the carousel
+    function initializeCarousel() {
+        // Add event listeners to carousel buttons
+        document.querySelector('.prev').addEventListener('click', function() {
+            moveCarousel(-1);
+        });
 
-			document.querySelector('.next').addEventListener('click', function() {
-				moveCarousel(1);
-			});
-		}
-		
-		function loadBooks() {
-		const searchInput = document.getElementById('search-input').value;
-		const sortOption = document.getElementById('sort-dropdown').value;
+        document.querySelector('.next').addEventListener('click', function() {
+            moveCarousel(1);
+        });
+    }
 
-		const xhr = new XMLHttpRequest();
-		xhr.open('GET', `Browse.php?search=${encodeURIComponent(searchInput)}&sort=${sortOption}&ajax=1`, true);
-		xhr.onload = function() {
-			if (xhr.status === 200) {
-				const response = JSON.parse(xhr.responseText);
-				const booksContainer = document.querySelector('.userbooks-container');
-				booksContainer.innerHTML = ''; // Clear existing books
+    // Function to load books
+    function loadBooks() {
+        const searchInput = document.getElementById('search-input').value;
+        const sortOption = document.getElementById('sort-dropdown').value;
 
-				response.books.forEach(book => {
-					const bookElement = document.createElement('div');
-					bookElement.classList.add('book-container');
-					bookElement.innerHTML = `
-						<div class="button-container">
-							<button id="${book.borrowed ? 'stats-btn2' : 'stats-btn'}">
-								<img src="${book.borrowed ? './Images/Check.svg' : './Images/Unavalable.svg'}" alt="Book status" class="book-status" width="30" height="30">
-								Borrowed
-							</button>
-							<form action="AddToFav.php" method="POST">
-								<input type="hidden" name="bookid" value="${book.bookid}">
-								<input type="hidden" name="idno" value="${book.idno}">
-								<input type="hidden" name="booktitle" value="${book.booktitle}">
-								<input type="hidden" name="author" value="${book.author}">
-								<input type="hidden" name="bookimg" value="${book.bookimg}">
-								<button type="submit" id="addtofav-btn">
-									<img src="${book.favorite ? './Images/AddedtoFav.svg' : './Images/fav.svg'}" alt="Book fav" class="book-fav">
-								</button>
-							</form>
-						</div>
-						<img src="${book.bookimg}" alt="Book Thumbnail" width="100" height="150">
-						<p id="B-title">${book.booktitle}</p>
-						<p id="Book-Author">${book.author}</p>
-						<form action="BorrowBook.php" method="POST">
-							<input type="hidden" name="bookid" value="${book.bookid}">
-							<button id="${book.borrowed ? 'borbtn2' : 'borbtn'}">Borrow</button>
-						</form>
-					`;
-					booksContainer.appendChild(bookElement);
-				});
-			}
-		};
-		xhr.send();
-	}
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `Browse.php?search=${encodeURIComponent(searchInput)}&sort=${sortOption}&ajax=1`, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                const booksContainer = document.querySelector('.userbooks-container');
+                booksContainer.innerHTML = ''; // Clear existing books
+
+                response.books.forEach(book => {
+                    const bookElement = document.createElement('div');
+                    bookElement.classList.add('book-container');
+
+                    // Create the clickable book image
+                    const bookImageLink = `<img src="${book.bookimg}" alt="Book Thumbnail" width="100" height="150" class="book-thumbnail" data-bookid="${book.bookid}" />`;
+
+                    bookElement.innerHTML = `
+                        <div class="button-container">
+                            <button id="${book.borrowed ? 'stats-btn2' : 'stats-btn'}">
+                                <img src="${book.borrowed ? './Images/Check.svg' : './Images/Unavalable.svg'}" alt="Book status" class="book-status" width="30" height="30">
+                                Borrowed
+                            </button>
+                            <form action="AddToFav.php" method="POST">
+                                <input type="hidden" name="bookid" value="${book.bookid}">
+                                <input type="hidden" name="idno" value="${book.idno}">
+                                <input type="hidden" name="booktitle" value="${book.booktitle}">
+                                <input type="hidden" name="author" value="${book.author}">
+                                <input type="hidden" name="bookimg" value="${book.bookimg}">
+                                <button type="submit" id="addtofav-btn">
+                                    <img src="${book.favorite ? './Images/AddedtoFav.svg' : './Images/fav.svg'}" alt="Book fav" class="book-fav">
+                                </button>
+                            </form>
+                        </div>
+                        ${bookImageLink}
+                        <p id="B-title">${book.booktitle}</p>
+                        <p id="Book-Author">${book.author}</p>
+                        <form action="BorrowBook.php" method="POST">
+                            <input type="hidden" name="bookid" value="${book.bookid}">
+                            <button id="${book.borrowed ? 'borbtn2' : 'borbtn'}">Borrow</button>
+                        </form>
+                    `;
+                    booksContainer.appendChild (bookElement);
+                });
+
+                // Add event listeners to each book image
+                const bookImages = document.querySelectorAll('.book-thumbnail');
+                bookImages.forEach(image => {
+                    image.addEventListener('click', function(event) {
+                        const bookid = this.getAttribute('data-bookid');
+                        viewDetails(bookid); // Dynamically load book details
+                    });
+                });
+            }
+        };
+        xhr.send();
+    }
+
+
+function submitComment(buttonElement) {
+    const commentInput = document.getElementById('comment-input');
+    const commentText = commentInput.value.trim();  // Get the input value
+
+    if (!commentText) {
+        alert("Please enter a review before submitting.");
+        return;  // Prevent submission if the input is empty
+    }
+
+    // Get the bookid from the clicked button's data-bookid attribute
+    const bookid = buttonElement.getAttribute('data-bookid');
+    
+    if (!bookid) {
+        alert("Book ID is missing.");
+        return;
+    }
+
+    // Create an XMLHttpRequest to send the comment to the server
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'PostComment.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    // Pass data (the comment) in the request body
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // If successful, reload the comments (you can choose to dynamically add it)
+            const response = JSON.parse(xhr.responseText);
+            if (response.success) {
+                // Append new comment to the comments section
+                const newCommentElement = document.createElement('div');
+                newCommentElement.classList.add('comment');
+                newCommentElement.innerHTML = `
+                    <div class="comment-header">
+                        <strong>${response.username}</strong> 
+                        <span class="comment-date">${response.comment_date}</span>
+                    </div>
+                    <p class="comment-text">${response.comment}</p>
+                `;
+                document.getElementById('reviews-container').appendChild(newCommentElement);
+                commentInput.value = '';  // Clear the input field
+            } else {
+                alert("Failed to post the comment.");
+            }
+        } else {
+            alert('Error posting comment');
+        }
+    };
+
+    // Send the request with the comment data (along with bookid)
+    xhr.send('comment=' + encodeURIComponent(commentText) + '&bookid=' + encodeURIComponent(bookid));
+}
 	
-	
-
+ function viewDetails(bookId) {
+        fetch(`viewDetails.php?bookid=${bookId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                // Insert the fetched HTML into the body-content area
+                document.getElementById("body-content").innerHTML = data;
+                document.title = "Book Details"; // Update the page title
+                document.getElementById("page-title").innerText = "Book Details"; // Update the page heading
+            })
+            .catch(error => {
+                console.error('Error fetching book details:', error);
+            });
+    }
         //FAVORITES CONTENT
         document.getElementById("button1").addEventListener("click", function(event) {
             event.preventDefault();

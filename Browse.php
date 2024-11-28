@@ -1,7 +1,13 @@
 <?php
     session_start();
     include('connection.php');
-
+	header('Content-Type: application/json');
+	
+	if (!isset($_SESSION['fullname'])) {
+    // Redirect to login page if not logged in
+    header("Location: login.php");
+    exit();
+}
     // Get the search and sort parameters from the GET request
     $search = isset($_GET['search']) ? "%" . $_GET['search'] . "%" : '%';
     $sort = isset($_GET['sort']) && $_GET['sort'] == 'desc' ? 'DESC' : 'ASC';
@@ -160,13 +166,15 @@
                                 </button>
                             </form>
                             </div>
-                            <img src="<?php echo htmlspecialchars($book['bookimg']); ?>" alt="Book Thumbnail" width="100" height="150">
+							<a href="javascript:void(0);" onclick="viewDetails(<?php echo $book['bookid']; ?>)">
+								<img src="<?php echo htmlspecialchars($book['bookimg']); ?>" alt="Book Thumbnail" width="100" height="150">
+							</a>
                             <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
                             <p id="B-title"><?php echo htmlspecialchars($book['booktitle']); ?></p>
                             <p id="Book-Author"><?php echo htmlspecialchars($book['author']); ?></p>
                             <form action="BorrowBook.php" method="POST">
                                 <input type="hidden" name="bookid" value="<?php echo htmlspecialchars($book['bookid']); ?>">
-                                <input type="hidden" name="fullname" value="<?php echo htmlspecialchars($fullname); ?>">
+                                <input type="hidden" name="fullname" value="<?php echo htmlspecialchars($_SESSION['fullname']); ?>">
                                 <input type="hidden" name="booktitle" value="<?php echo htmlspecialchars($book['booktitle']); ?>">
                                 <input type="hidden" name="author" value="<?php echo htmlspecialchars($book['author']); ?>">
                                 <input type="hidden" name="bookimg" value="<?php echo htmlspecialchars($book['bookimg']); ?>">
