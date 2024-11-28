@@ -24,7 +24,7 @@ if (isset($_GET['idno'])) {
 }
 
 // Fetch user data from the database based on the idno
-$sql = "SELECT idno, fullname, username, email, phoneno, address, account_status FROM users WHERE idno = ?";
+$sql = "SELECT idno, fullname, username, email, phoneno, address, account_status,profile_picture FROM users WHERE idno = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -66,7 +66,11 @@ function handleUserNotFound() {
         <div id="Readd1" class="Readerbox">
             <div class="Readbox Rglobal" id="PboxView">
                 <div id="profile-view" class="Pview">
-                    <img src="./Images/profilepic.png" alt="Profile Picture" id="profilepic">
+                    <?php
+                    // Check if the profile picture exists and is not empty
+                    $profile_picture = !empty($user_data['profile_picture']) ? htmlspecialchars($user_data['profile_picture']) : './Images/profilepic.png';
+                    ?>
+                    <img src="<?php echo $profile_picture; ?>" alt="Profile Picture" id="profilepic" style="border-radius:50%" height="250px" width="250px">
                     <h2><?php echo htmlspecialchars($user_data['username']); ?></h2>
                 </div>
                 <div id="profile-details" class="Pdets">

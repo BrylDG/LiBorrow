@@ -43,7 +43,7 @@ if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == 
             
             if ($stmt->execute()) {
                 // Redirect to the settings page after a successful update
-                echo "<script>alert('Profile Picture updated successfully.'); window.location.href='UserNavTemplate.php';</script>";
+                echo "<script>alert('Profile Picture updated successfully.'); window.location.href='BootDash.php';</script>";
             } else {
                 echo "Error updating profile picture.";
             }
