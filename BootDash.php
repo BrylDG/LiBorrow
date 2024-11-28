@@ -524,12 +524,6 @@ function fetchReaderInformation(idno) {
 document.addEventListener('DOMContentLoaded', setupViewMoreButton);
 
 		
-        // Function to handle errors and display a user-friendly message
-        function handleError(message, error) {
-            console.error(message, error);
-            // You can add code here to display an error message to the user, e.g., using a modal or alert.
-        }
-		
 		//INVENTORY
 		document.addEventListener("DOMContentLoaded", function() {
     const genreSelect = document.getElementById('genre-select');
@@ -676,64 +670,7 @@ function setupCancelButton() {
         });
     }
 }
-
-function setupViewMoreButtons() {
-document.getElementById("inventory-table-body").addEventListener("click", function(event) {
-    const target = event.target.closest("a.view-more"); // Ensure it's a link with the 'view-more' class
-    
-    if (target) {
-        event.preventDefault();
-        const url = target.getAttribute("href");
-        console.log("Full URL:", url); // Log the full URL for debugging
-
-        // Safely extract bookid from URL
-        try {
-            const params = new URLSearchParams(new URL(url, window.location.origin).search);
-            const bookId = parseInt(params.get('bookid'), 10);
-
-            if (!isNaN(bookId)) {
-                console.log("Valid Book ID:", bookId);
-                fetchBookDetails(bookId);
-            } else {
-                console.error("Invalid book ID:", bookId);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Invalid Book ID',
-                    text: 'Please try again or contact support.',
-                    confirmButtonText: 'OK'
-                });
-            }
-        } catch (error) {
-            console.error("Error parsing URL:", error);
-        }
-    }
-});
-}
-
-
-
-function fetchBookDetails(bookId) {
-    fetch(`BooksInformation.php?bookid=${bookId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                // Handle the successful response
-                console.log(data.data);
-            } else {
-                console.error(data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching book details:', error);
-        });
-}
-
- function loadBooks() {
+function loadBooks() {
     const searchTerm = document.getElementById('search-input').value;
     const sortBy = document.getElementById('sort-dropdown').value;
     const genreFilter = document.getElementById('genre-filter').value;
@@ -760,10 +697,11 @@ function fetchBookDetails(bookId) {
                                 <td>${book.booktitle}</td>
                                 <td>${book.author}</td>
                                 <td>${book.genres}</td>
-                                <td><a href='BooksInformation.php?bookid=${book.bookid}' class='view-more'>View more</a></td>
+                                <td><a href='#' class='view-more' data-bookid='${book.bookid}'>View more</a></td>
                              </tr>`;
                 });
                 tableBody.innerHTML = rows; // Update all rows at once
+                setupViewMoreButtons(); // Set up the View More buttons after loading books
             } else {
                 tableBody.innerHTML = "<tr><td colspan='5'>No results found</td></tr>";
             }
@@ -775,8 +713,38 @@ function fetchBookDetails(bookId) {
         })
         .finally(() => {
             // Hide loading indicator
-            document.getElementById('loading').style.display = 'none';
+            document.getElementById('loading').style .display = 'none';
         });
+}
+
+function fetchBookInformation(bookId) {
+    fetch(`BooksInformation.php?bookid=${bookId}`) // Fetch BooksInformation.php with the bookid as a query parameter
+        .then(response => response.text()) // Get the content of BooksInformation.php
+        .then(data => {
+            // Insert the content of BooksInformation.php into the main content area
+            document.getElementById("body-content").innerHTML = data;
+            document.title = "Book Information"; // Update the page title
+            document.getElementById("page-title").innerText = "Book Information"; // Update the page heading
+        })
+        .catch(error => {
+            console.error('Error fetching BooksInformation.php:', error);
+        });
+}
+function setupViewMoreButtons() {
+    document.querySelectorAll('.view-more').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default anchor action
+            
+            const bookId = this.getAttribute('data-bookid'); // Get the book ID from the data-bookid attribute
+            
+            if (bookId) {
+                fetchBookInformation(bookId); // Pass the bookId to the fetch function
+            } else {
+                console.error('Book ID not found.');
+                alert('Book ID is missing.');
+            }
+        });
+    });
 }
 
 function loadBooksHistory() {

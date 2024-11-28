@@ -154,14 +154,14 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                         <?php
                         if ($result && $result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
-                                echo "<tr>
-                                        <td>" . htmlspecialchars($row["bookid"]) . "</td>
-                                        <td>" . htmlspecialchars($row["booktitle"]) . "</td>
-                                        <td>" . htmlspecialchars($row["author"]) . "</td>
-                                        <td>" . htmlspecialchars($row["genres"]) . "</td>
-                                        <td><a href='#' class='view-more'>View more</a></td>
-                                      </tr>";
-                            }
+								echo "<tr>
+										<td>" . htmlspecialchars($row["bookid"] ?? '') . "</td>
+										<td>" . htmlspecialchars($row["booktitle"] ?? '') . "</td>
+										<td>" . htmlspecialchars($row["author"] ?? '') . "</td>
+										<td>" . htmlspecialchars($row["genres"] ?? '') . "</td>
+										<td><a href='#' class='view-more' data-idno='" . htmlspecialchars($row['bookid'] ?? '') . "'>View more</a></td>
+									  </tr>";
+							}
                         } else {
                             echo "<tr><td colspan='5'>No data found</td></tr>";
                         }
