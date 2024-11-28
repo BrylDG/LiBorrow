@@ -357,70 +357,154 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
 		});
 	}
 			
-        document.getElementById("button1").addEventListener("click", function(event) {
+       // Event listener for the "Readers List" button
+document.getElementById("button1").addEventListener("click", function(event) {
     event.preventDefault();
     fetch('./ReaderDash.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("body-content").innerHTML = data;
-            document.title = "Readers List";
-            document.getElementById("page-title").innerText = "Readers Lists";
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("body-content").innerHTML = data;
+        document.title = "Readers List";
+        document.getElementById("page-title").innerText = "Readers List";
+        setupViewMoreButton() // Initialize View More buttons
+    })
+    .catch(error => handleError('Error fetching ReaderDash:', error));
+})
+// Function to load user details based on idno
+function fetchUserDetails(idno) {
+	console.log("Fetching details for ID:", idno);
+    document.getElementById('loading').style.display = 'block';
+
+    fetch(`ReadersInformation.php?idno=${idno}&ajax=true`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
         })
-        .catch(error => handleError('Error fetching ReaderDash:', error));
-});
+        .then(data => {
+			console.log("Response Data:", data);
+            if (data.success) {
+                const profilePic = document.getElementById("profilepic");
+                const usernameElement = document.querySelector("#profile-view h2");
+                const profileDetailsTable = document.querySelector("#profile-details table");
 
-// Function to load users
-        function loadUsers() {
-        const searchTerm = document.getElementById('search-input').value;
-        const sortBy = document.getElementById('sort-dropdown').value;
-        const filterBy = document.getElementById('filter-dropdown').value;
-
-        // Show loading indicator
-        document.getElementById('loading').style.display = 'block';
-
-        fetch(`ReaderDash.php?ajax=1&search=${encodeURIComponent(searchTerm)}&sort=${sortBy}&filter=${filterBy}`)
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.getElementById("reader-table-body");
-                tableBody.innerHTML = ""; // Clear existing rows
-
-                if (data.table_body && data.table_body.length > 0) {
-                    data.table_body.forEach(user => {
-                        const row = `<tr>
-                                        <td>${user.idno}</td>
-                                        <td>${user.fullname}</td>
-                                        <td>${user.email}</td>
-                                        <td><a href='#' class='view-more'>View more</a></td>
-                                     </tr>`;
-                        tableBody.innerHTML += row; // Append new rows
-                    });
-                } else {
-                    tableBody.innerHTML = "<tr><td colspan='4'>No results found</td></tr>";
+                if (profilePic) {
+                    profilePic.src = "./Images/profilepic.png"; // Update profile picture if needed
                 }
-            })
-            .catch(error => console.error('Error fetching users:', error))
-            .finally(() => {
-                // Hide loading indicator
-                document.getElementById('loading').style.display = 'none';
-            });
-    }
 
-// Function to initialize View More buttons
-function initializeViewMoreButtons() {
-    document.querySelectorAll(".view-more a").forEach(button => {
-        button.addEventListener("click", function(event) {
-            event.preventDefault();
-            fetch('./ReadersInformation.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("body-content").innerHTML = data;
-                    document.title = "Reader's Information"; // Change the page title
-                    document.getElementById("page-title").innerText = "Reader's Information"; // Change the displayed title
-                })
-                .catch(error => handleError('Error fetching ReadersInformation:', error));
+                if (usernameElement) {
+                    usernameElement.innerText = data.data.username;
+                }
+
+                if (profileDetailsTable) {
+                    profileDetailsTable.innerHTML = `
+                        <tr>
+                            <td style="font-weight: bold;">ID Number</td>
+                            <td>${data.data.idno}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">User Name:</td>
+                            <td>${data.data.username}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Full Name:</td>
+                            <td>${data.data.fullname}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Email:</td>
+                            <td>${data.data.email}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Phone Number:</td>
+                            <td>${data.data.phoneno}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Address:</td>
+                            <td>${data.data.address}</td>
+                        </tr>
+                    `;
+                }
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching user details:', error);
+            alert('An error occurred while fetching user details.');
+        })
+        .finally(() => {
+            document.getElementById('loading').style.display = 'none';
+        });
+}
+
+// Function to load users with search, sort, and filter
+function loadUsers() {
+    const searchTerm = document.getElementById('search-input').value;
+    const sortBy = document.getElementById('sort-dropdown').value;
+    const filterBy = document.getElementById('filter-dropdown').value;
+
+    document.getElementById('loading').style.display = 'block';
+
+    fetch(`ReaderDash.php?ajax=1&search=${encodeURIComponent(searchTerm)}&sort=${sortBy}&filter=${filterBy}`)
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById("reader-table-body");
+            tableBody.innerHTML = "";
+
+            if (data.table_body && data.table_body.length > 0) {
+                data.table_body.forEach(user => {
+                    const row = `<tr>
+                                    <td>${user.idno}</td>
+                                    <td>${user.fullname}</td>
+                                    <td>${user.email}</td>
+                                    <td><a href='#' class='view-more' data-idno="${user.idno}">View more</a></td>
+                                 </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='4'>No results found</td></tr>";
+            }
+        })
+        .catch(error => console.error('Error fetching users:', error))
+        .finally(() => {
+            document.getElementById('loading').style.display = 'none';
+        });
+}
+
+function setupViewMoreButton() {
+    document.querySelectorAll('.view-more').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default anchor action
+            
+            const idno = this.getAttribute('data-idno'); // Get the user ID from the data-idno attribute
+            
+            if (idno) {
+                fetchReaderInformation(idno); // Pass the idno to the fetch function
+            } else {
+                console.error('ID not found.');
+                alert('User ID is missing.');
+            }
         });
     });
 }
+
+function fetchReaderInformation(idno) {
+    fetch(`readersinformation.php?idno=${idno}`) // Fetch readersinformation.php with the idno as a query parameter
+        .then(response => response.text()) // Get the content of readersinformation.php
+        .then(data => {
+            // Insert the content of readersinformation.php into the main content area
+            document.getElementById("body-content").innerHTML = data;
+            document.title = "Reader Information"; // Update the page title
+            document.getElementById("page-title").innerText = "Reader Information"; // Update the page heading
+        })
+        .catch(error => {
+            console.error('Error fetching readersinformation.php:', error);
+        });
+}
+
+// Call this function when the page loads to set up the event listeners
+document.addEventListener('DOMContentLoaded', setupViewMoreButton);
 
 		
         // Function to handle errors and display a user-friendly message
@@ -429,149 +513,208 @@ function initializeViewMoreButtons() {
             // You can add code here to display an error message to the user, e.g., using a modal or alert.
         }
 		
+		//INVENTORY
 		document.addEventListener("DOMContentLoaded", function() {
-			 const genreSelect = document.getElementById('genre-select');
-				if (genreSelect) {
-					genreSelect.blur(); // Remove focus from the dropdown
-				}
-			// Event listener for the Inventory button to load InventoryDash.php
-			const button2 = document.getElementById("button2");
-			if (button2) {
-				button2.addEventListener("click", function(event) {
-					event.preventDefault();
-					fetch('./InventoryDash.php')
-						.then(response => response.text())
-						.then(data => {
-							document.getElementById("body-content").innerHTML = data;
-							document.title = "Inventory"; 
-							document.getElementById("page-title").innerText = "Inventory"; 
-
-							// Now that the Inventory page is loaded, attach the Add Book button listener
-							setupAddBookButton(); // Set up the Add Book button click event
-							loadBooks(); // Load books after the Inventory page content is loaded
-						})
-						.catch(error => console.error('Error fetching InventoryDash.php:', error));
-				});
-			}
-		});
-
-		function setupAddBookButton() {
-			const addBookButton = document.getElementById("addBookButton");
-			if (addBookButton) {
-				addBookButton.addEventListener("click", function(event) {
-					event.preventDefault();
-					fetch('./addbook.php')
-						.then(response => response.text())
-						.then(data => {
-							document.getElementById("body-content").innerHTML = data;
-							document.title = "Add Book";
-							document.getElementById("page-title").innerText = "Add Book"; 
-							setupAddBookFormSubmission(); // Set up the form submission for adding a book
-							setupGenreSelection(); // Set up the genre selection
-							setupCancelButton();
-						})
-						.catch(error => {
-							console.error('Error fetching addbook.php:', error);
-						});
-				})
-			}
-		}
-
-		// Function to handle the form submission for adding a new book
-		function setupAddBookFormSubmission() {
-			const form = document.getElementById("addBookForm");
-			const checkboxContainer = document.getElementById('checkbox-container'); // Reference to checkbox container
-
-			if (form) {
-				form.addEventListener("submit", function(event) {
-					event.preventDefault(); // Prevent default form submission
-					const formData = new FormData(this);
-
-					// Send data to the server (addbook.php)
-					fetch('./addbook.php', {
-						method: 'POST',
-						body: formData
-					})
-					.then(() => {
-						// Show success message using SweetAlert
-						Swal.fire({
-							icon: 'success',
-							title: 'Success!',
-							text: 'Book added successfully.',
-							confirmButtonText: 'OK'
-						}).then(() => {
-							form.reset(); // Reset the form after successful submission
-							checkboxContainer.innerHTML = ''; // Clear all checkboxes
-							loadBooks(); // Reload books after adding
-						});
-					})
-					.catch(error => {
-						// Show error message using SweetAlert
-						console.error('Error:', error);
-						Swal.fire({
-							icon: 'error',
-							title: 'Error!',
-							text: 'An error occurred. Please try again.',
-							confirmButtonText: 'OK'
-						});
-					});
-				});
-			}
-		}
-
-		// Function to set up genre selection with dynamic checkboxes
-		function setupGenreSelection() {
-			const genreSelect = document.getElementById('genre-select');
-			const checkboxContainer = document.getElementById('checkbox-container');
-
-			genreSelect.addEventListener('change', function() {
-				// Clear existing checkboxes
-				checkboxContainer.innerHTML = '';
-
-				// Get selected options
-				const selectedOptions = Array.from(genreSelect.selectedOptions);
-
-				// Create checkboxes for selected options
-				selectedOptions.forEach(option => {
-					const checkboxId = option.value;
-
-					// Create a new checkbox
-					const checkbox = document.createElement('input');
-					checkbox.type = 'checkbox';
-					checkbox.id = checkboxId;
-					checkbox.value = option.value;
-					checkbox.checked = true; // Automatically check the checkbox
-
-					// Create a label for the checkbox
-					const label = document.createElement('label');
-					label.htmlFor = checkboxId;
-					label.textContent = option.text;
-
-					// Append checkbox and label to the container
-					checkboxContainer.appendChild(checkbox);
-					checkboxContainer.appendChild(label);
-				});
-			});
-		}
-	function setupCancelButton() {
-        const cancelButton = document.querySelector('button[type="button"]'); // Assuming "Cancel" button has `type="button"`
-        if (cancelButton) {
-            cancelButton.addEventListener("click", function () {
-                // Fetch and load the Inventory page dynamically
-                fetch('./InventoryDash.php')
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById("body-content").innerHTML = data;
-                        document.title = "Inventory";
-                        document.getElementById("page-title").innerText = "Inventory";
-                        loadBooks(); // Load books after returning to Inventory
-                        setupAddBookButton(); // Reattach listeners for Add Book button
-                    })
-                    .catch(error => console.error('Error fetching InventoryDash.php:', error));
-            });
-        }
+    const genreSelect = document.getElementById('genre-select');
+    if (genreSelect) {
+        genreSelect.blur(); // Remove focus from the dropdown
     }
 
+    // Event listener for the Inventory button to load InventoryDash.php
+    const button2 = document.getElementById("button2");
+    if (button2) {
+        button2.addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./InventoryDash.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "Inventory"; 
+                    document.getElementById("page-title").innerText = "Inventory"; 
+
+                    // Now that the Inventory page is loaded, attach the Add Book button listener
+                    setupAddBookButton(); // Set up the Add Book button click event
+                    loadBooks(); // Load books after the Inventory page content is loaded
+                    setupViewMoreButtons(); // Set up the View More buttons
+                })
+                .catch(error => console.error('Error fetching InventoryDash.php:', error));
+        });
+    }
+});
+
+function setupAddBookButton() {
+    const addBookButton = document.getElementById("addBookButton");
+    if (addBookButton) {
+        addBookButton.addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch('./addbook.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "Add Book";
+                    document.getElementById("page-title").innerText = "Add Book"; 
+                    setupAddBookFormSubmission(); // Set up the form submission for adding a book
+                    setupGenreSelection(); // Set up the genre selection
+                    setupCancelButton();
+                })
+                .catch(error => {
+                    console.error('Error fetching addbook.php:', error);
+                });
+        });
+    }
+}
+
+// Function to handle the form submission for adding a new book
+function setupAddBookFormSubmission() {
+    const form = document.getElementById("addBookForm");
+    const checkboxContainer = document.getElementById('checkbox-container'); // Reference to checkbox container
+
+    if (form) {
+        form.addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+            const formData = new FormData(this);
+
+            // Send data to the server (addbook.php)
+            fetch('./addbook.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(() => {
+                // Show success message using SweetAlert
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Book added successfully.',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    form.reset(); // Reset the form after successful submission
+                    checkboxContainer.innerHTML = ''; // Clear all checkboxes
+                    loadBooks(); // Reload books after adding
+                });
+            })
+            .catch(error => {
+                // Show error message using SweetAlert
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An error occurred. Please try again.',
+                    confirmButtonText: 'OK'
+                });
+            });
+        });
+    }
+}
+
+// Function to set up genre selection with dynamic checkboxes
+function setupGenreSelection() {
+    const genreSelect = document.getElementById('genre-select');
+    const checkboxContainer = document.getElementById('checkbox-container');
+
+    genreSelect.addEventListener('change', function() {
+        // Clear existing checkboxes
+        checkboxContainer.innerHTML = '';
+
+        // Get selected options
+        const selectedOptions = Array.from(genreSelect.selectedOptions);
+
+        // Create checkboxes for selected options
+        selectedOptions.forEach(option => {
+            const checkboxId = option.value;
+
+            // Create a new checkbox
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = checkboxId;
+            checkbox.value = option.value;
+            checkbox.checked = true; // Automatically check the checkbox
+
+            // Create a label for the checkbox
+            const label = document.createElement('label');
+            label.htmlFor = checkboxId;
+            label.textContent = option.text;
+
+            // Append checkbox and label to the container
+            checkboxContainer.appendChild(checkbox);
+            checkboxContainer.appendChild(label);
+        });
+    });
+}
+
+function setupCancelButton() {
+    const cancelButton = document.querySelector('button[type="button"]'); // Assuming "Cancel" button has `type="button"`
+    if (cancelButton) {
+        cancelButton.addEventListener("click", function () {
+            // Fetch and load the Inventory page dynamically
+            fetch('./InventoryDash.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("body-content").innerHTML = data;
+                    document.title = "Inventory";
+                    document.getElementById("page-title").innerText = "Inventory";
+                    loadBooks(); // Load books after returning to Inventory
+                    setupAddBookButton(); // Reattach listeners for Add Book button
+                })
+                .catch(error => console.error('Error fetching InventoryDash.php:', error));
+        });
+    }
+}
+
+function setupViewMoreButtons() {
+document.getElementById("inventory-table-body").addEventListener("click", function(event) {
+    const target = event.target.closest("a.view-more"); // Ensure it's a link with the 'view-more' class
+    
+    if (target) {
+        event.preventDefault();
+        const url = target.getAttribute("href");
+        console.log("Full URL:", url); // Log the full URL for debugging
+
+        // Safely extract bookid from URL
+        try {
+            const params = new URLSearchParams(new URL(url, window.location.origin).search);
+            const bookId = parseInt(params.get('bookid'), 10);
+
+            if (!isNaN(bookId)) {
+                console.log("Valid Book ID:", bookId);
+                fetchBookDetails(bookId);
+            } else {
+                console.error("Invalid book ID:", bookId);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Book ID',
+                    text: 'Please try again or contact support.',
+                    confirmButtonText: 'OK'
+                });
+            }
+        } catch (error) {
+            console.error("Error parsing URL:", error);
+        }
+    }
+});
+}
+
+
+
+function fetchBookDetails(bookId) {
+    fetch(`BooksInformation.php?bookid=${bookId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Handle the successful response
+                console.log(data.data);
+            } else {
+                console.error(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching book details:', error);
+        });
+}
 
  function loadBooks() {
     const searchTerm = document.getElementById('search-input').value;
@@ -600,7 +743,7 @@ function initializeViewMoreButtons() {
                                 <td>${book.booktitle}</td>
                                 <td>${book.author}</td>
                                 <td>${book.genres}</td>
-                                <td><a href='#' class='view-more'>View more</a></td>
+                                <td><a href='BooksInformation.php?bookid=${book.bookid}' class='view-more'>View more</a></td>
                              </tr>`;
                 });
                 tableBody.innerHTML = rows; // Update all rows at once

@@ -56,6 +56,7 @@ if (isset($_GET['ajax'])) {
                 'idno' => htmlspecialchars($row["idno"]),
                 'fullname' => htmlspecialchars($row["fullname"]),
                 'email' => htmlspecialchars($row["email"]),
+				
             ];
         }
     }
@@ -100,27 +101,28 @@ if (isset($_GET['ajax'])) {
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="reader-table-body">
-                        <?php
-                        if ($result && $result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>
-                                        <td>" . htmlspecialchars($row["idno"]) . "</td>
-                                        <td>" . htmlspecialchars($row["fullname"]) . "</td>
-                                        <td>" . htmlspecialchars($row["email"]) . "</td>
-                                        <td><a href='#' class='view-more'>View more</a></td>
-                                      </tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='4'>No data found</td></tr>";
-                        }
-                        ?>
-                    </tbody>
+						<tbody id="reader-table-body">
+							<?php
+							if ($result && $result->num_rows > 0) {
+								while ($row = $result->fetch_assoc()) {
+										echo "<tr>
+											<td>" . htmlspecialchars($row['idno']) . "</td>
+											<td>" . htmlspecialchars($row['fullname']) . "</td>
+											<td>" . htmlspecialchars($row['email']) . "</td>
+											<td><a href='#' class='view-more' data-idno='" . htmlspecialchars($row['idno']) . "'>View more</a></td>
+										</tr>";
+									}
+							} else {
+								echo "<tr><td colspan='4'>No data found</td></tr>";
+							}
+							?>
+						</tbody>
                 </table>
             </div>
-
+			
             <!-- Loading Indicator -->
             <div id="loading" style="display: none;">Loading more users...</div>
+			
         </div>
     </div>
 </div>
