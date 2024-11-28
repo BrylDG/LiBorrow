@@ -812,16 +812,30 @@ function loadTransactions() {
                     books.forEach(book => {
                         resultsContainer.innerHTML += `
                             <div class="pendbox-one">
-                                <p class="name">${book.fullname}</p>
-                                <p class="date">Request Date: ${book.requestdate}</p>
+                                <div class="pendbox-top" style="margin-top: 5%;">
+                                    <p class="name">${book.fullname}</p>
+                                    <p class="date">Request Date: ${book.requestdate}</p>
+                                </div>
                                 <div class="pendbox global">
-                                    <img src="${book.bookimg}" alt="Book Image" width="100" height="150">
-                                    <p class="book-title">${book.booktitle}</p>
-                                    <p class="author">${book.author}</p>
-                                    <input type="hidden" class="booktitle" value="${book.booktitle}">
-                                    <input type="hidden" class="fullname" value="${book.fullname}">
-                                    <button class="approve-btn">Approve</button>
-                                    <button class="decline-btn">Cancel</button>
+                                    <div style="width: 50%; margin-right: 10%;">
+                                        <img src="${book.bookimg}" alt="Book Image" width="100" height="150">
+                                    </div>
+                                    <div style="width: 150%">
+                                        <p class="book-title">${book.booktitle}</p>
+                                    </div>
+                                    <div style="width: 20%">
+                                        <p class="author">${book.author}</p>
+                                    </div>
+                                    <div style="width: 150%">
+                                        <input type="hidden" class="booktitle" value="${book.booktitle}">
+                                    </div>
+                                    <div style="width: 20%">
+                                        <input type="hidden" class="fullname" value="${book.fullname}">
+                                    </div>
+                                    <div id="button-div" style="width: 20%; display: flex; gap: 20%;">
+                                        <button class="approve-btn">Approve</button>
+                                        <button class="decline-btn">Cancel</button>
+                                    </div>
                                 </div>
                             </div>
                         `;
@@ -932,7 +946,7 @@ function loadBooksO() {
 }
 
 		//BORROWED			
-document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function () {
     const borrowedBtn = document.getElementById("BorrowedBtn");
     const bodyContent = document.getElementById("body-content");
     const pageTitle = document.getElementById("page-title");
@@ -949,12 +963,87 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // Attach listeners after loading the content
                     setupViewBorrowerButtons();
-                    setupSearchAndSort(); // Set up search and sort listeners
+                    setupSearchAndSort();
                 })
                 .catch(error => console.error('Error fetching TransactionsBorrowed.php:', error));
         });
     }
+
+    function setupViewBorrowerButtons() {
+        const viewBorrowerButtons = document.querySelectorAll(".view-borrowers");
+
+        viewBorrowerButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const bookTitle = this.getAttribute("data-booktitle"); // Get the book title
+                const dropdown = this.closest(".Borrbox").querySelector(".borrowers-dropdown"); // Find the associated dropdown
+                const tableBody = dropdown.querySelector("tbody"); // Borrower data container
+
+                // Toggle the visibility of the dropdown
+                if (dropdown.style.display === "none" || dropdown.style.display === "") {
+                    // Collapse all other dropdowns
+                    document.querySelectorAll(".borrowers-dropdown").forEach(dd => {
+                        if (dd !== dropdown) {
+                            dd.style.display = "none";
+                            dd.closest(".Borrbox").style.marginBottom = "0";
+                        }
+                    });
+
+                    // Expand the clicked dropdown
+                    dropdown.style.display = "block";
+                    this.closest(".Borrbox").style.marginBottom = "20px";
+
+                    // Load borrower data if not already loaded
+                    if (!dropdown.dataset.loaded) {
+                        fetch(`?booktitle=${encodeURIComponent(bookTitle)}`)
+                            .then(response => response.text())
+                            .then(data => {
+                                tableBody.innerHTML = data; // Populate the table with borrower rows
+                                dropdown.dataset.loaded = "true"; // Mark as loaded to prevent refetching
+                            })
+                            .catch(error => {
+                                console.error("Error fetching borrower data:", error);
+                                tableBody.innerHTML = "<tr><td colspan='4'>Error loading borrowers.</td></tr>";
+                            });
+                    }
+                } else {
+                    // Collapse the dropdown if it's already expanded
+                    dropdown.style.display = "none";
+                    this.closest(".Borrbox").style.marginBottom = "0";
+                }
+            });
+        });
+    }
+
+    function setupSearchAndSort() {
+        const searchInput = document.getElementById("search-input");
+        const sortDropdown = document.getElementById("sort-dropdown");
+
+        if (searchInput) {
+            searchInput.addEventListener("input", loadBorrowedBooks);
+        }
+
+        if (sortDropdown) {
+            sortDropdown.addEventListener("change", loadBorrowedBooks);
+        }
+    }
+
+    function loadBorrowedBooks() {
+        const search = document.getElementById("search-input").value.trim();
+        const sort = document.getElementById("sort-dropdown").value;
+
+        fetch(`?search=${encodeURIComponent(search)}&sort=${encodeURIComponent(sort)}`)
+            .then(response => response.text())
+            .then(data => {
+                const booksList = document.getElementById("books-list");
+                booksList.innerHTML = data;
+
+                // Reattach event listeners for dynamically loaded content
+                setupViewBorrowerButtons();
+            })
+            .catch(error => console.error("Error fetching borrowed books:", error));
+    }
 });
+
 
 function setupViewBorrowerButtons() {
     const viewBorrowerButtons = document.querySelectorAll('.view-borrowers');

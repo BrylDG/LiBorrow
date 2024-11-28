@@ -89,7 +89,12 @@ if (isset($_GET['ajax'])) {
                     <option value="borrowdate">Borrow Date</option>
                     <option value="duedate">Due Date</option>
                 </select>
-                <select id="status-filter" onchange="loadBooksHistory()">
+                <select id="status-filter" onchange="loadBooksHistory()" style="font-size: 16px; padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    border: 1px solid #ff6600;
+    background-color: white;
+    color: #ff6600;">
                     <option value="">Filter By Status</option>
                     <option value="Borrowed">Borrowed</option>
                     <option value="Returned">Returned</option>
@@ -98,7 +103,7 @@ if (isset($_GET['ajax'])) {
                 <div id="loading" style="display:none;">Loading...</div> <!-- Loading indicator -->
             </div>
             <div id="d1" class="History-box">
-                <div style="max-height: 400px; overflow-y: auto; width: 100%;">
+                <div style="max-height: 700px; overflow-y: auto; width: 100%;">
                     <table class="History-table">
                         <thead>
                             <tr>

@@ -40,7 +40,7 @@ if (isset($_GET['ajax'])) {
 
 <div class="content-box" id="content2">
     <div class="container">
-        <div class="input" style="padding-left: 400px; padding-top: 20px; padding-bottom:50px;">
+        <div class="input">
             <div class="search-bar">
                 <input type="text" id="search-input" placeholder="Search..." oninput="loadBooksO()">
                 <span class="search-icon">

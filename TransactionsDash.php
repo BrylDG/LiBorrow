@@ -102,8 +102,8 @@ $result = $conn->query($sql);
 <body>
 <div class="content-box" id="content2">
     <div class="container">
-        <div class="input">
-            <div class="search -bar">
+        <div class="input" id="pending-input">
+            <div class="search-bar">
                 <input type="text" id="search-input" placeholder="Search by book title..." onkeyup="loadTransactions()">
                 <span class="search-icon">
                     <img src="./Images/Search.svg" alt="Search Icon" width="20" height="20">
@@ -116,26 +116,43 @@ $result = $conn->query($sql);
             </select>
         </div>
 
+        <!-- PENDING BOX -->
         <div id="td1" class="Trbox">
+
             <?php if ($result->num_rows > 0): ?>
                 <?php while($row = $result->fetch_assoc()): ?>
                     <div class="pendbox-one">
-                        <p class="name"><?= htmlspecialchars($row["fullname"]) ?></p>
-                        <p class="date">Request Date: <?= htmlspecialchars($row["requestdate"]) ?></p>
-                        <div class="pendbox global">
-                            <img src="<?= htmlspecialchars($row["bookimg"]) ?>" alt="Book Image" width="100" height="150">
-                            <p class="book-title"><?= htmlspecialchars($row["booktitle"]) ?></p>
-                            <p class="author"><?= htmlspecialchars($row["author"]) ?></p>
-                            <input type="hidden" class="booktitle" value="<?= htmlspecialchars($row["booktitle"]) ?>">
-                            <input type="hidden" class="fullname" value="<?= htmlspecialchars($row["fullname"]) ?>">
-                            <button class="approve-btn" onclick="approveRequest('<?= htmlspecialchars($row["booktitle"]) ?>', '<?= htmlspecialchars($row["fullname"]) ?>')">Approve</button>
-                            <button class="decline-btn" onclick="cancelRequest('<?= htmlspecialchars($row["booktitle"]) ?>', '<?= htmlspecialchars($row["fullname"]) ?>')">Cancel</button>
+                        <div class="pendbox-top" style="margin-top: 5%;">
+                            <p class="name"><?= htmlspecialchars($row["fullname"]) ?></p>
+                            <p class="date">Request Date: <?= htmlspecialchars($row["requestdate"]) ?></p>
                         </div>
+                        <div class="pendbox global">
+                            <div style="width: 50%; margin-right: 10%;">
+                                <img src="<?= htmlspecialchars('./Images/Books/' . $row["bookimg"]) ?>" alt="Book Image" width="100" height="150">
+                            </div>
+                            <div style="width: 150%">
+                                <p class="book-title"><?= htmlspecialchars($row["booktitle"]) ?></p>
+                            </div>
+                            <div style="width: 20%">
+                                <p class="author"><?= htmlspecialchars($row["author"]) ?></p>
+                            </div>
+                            <div style="width: 150%">
+                                <input type="hidden" class="booktitle" value="<?= htmlspecialchars($row["booktitle"]) ?>">
+                            </div>
+                            <div style="width: 20%">
+                                <input type="hidden" class="fullname" value="<?= htmlspecialchars($row["fullname"]) ?>">
+                            </div>
+                            <div id="button-div" style="width: 20%; display: flex; gap: 20%;">
+                                <button class="approve-btn" onclick="approveRequest('<?= htmlspecialchars($row["booktitle"]) ?>', '<?= htmlspecialchars($row["fullname"]) ?>')">Approve</button>
+                                <button class="decline-btn" onclick="cancelRequest('<?= htmlspecialchars($row["booktitle"]) ?>', '<?= htmlspecialchars($row["fullname"]) ?>')">Cancel</button>
+                            </div>  
+                        </div>                  
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
                 <p>No pending requests found.</p>
             <?php endif; ?>
+
         </div>
     </div>
 </div>
