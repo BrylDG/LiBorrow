@@ -143,7 +143,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                 <table class="Inventory-table" style="width: 100%; border-collapse: collapse;">
                     <thead>
                         <tr>
-                            <th>Book Id</th>
+                            <th>ISBN</th>
                             <th>Title</th>
                             <th>Author</th>
                             <th>Genre</th>

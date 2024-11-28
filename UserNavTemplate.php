@@ -30,6 +30,7 @@ $role = $_SESSION['isAdmin'];
     <link rel="stylesheet" href="./ViewDetails.css">
     <link rel="stylesheet" href="./ViewDetailsPending.css">
     <link rel="stylesheet" href="./ViewDetailsAvailable.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>LiBorrow User's Dashboard</title>
 </head>
 <body>
@@ -436,10 +437,40 @@ function submitComment(buttonElement) {
                     document.getElementById("body-content").innerHTML = data;
                     document.title = "History"; // Change the page title
                     document.getElementById("page-title").innerText = "History"; // Change the displayed title
+					setupViewMoreButtons()
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+function setupViewMoreButtons() {
+    document.querySelectorAll('.view-more').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default anchor action
+            
+            const bookId = this.getAttribute('data-bookid'); // Get the book ID from the data-bookid attribute
+            
+            if (bookId) {
+                fetchBookInformation(bookId); // Pass the bookId to the fetch function
+            } else {
+                console.error('Book ID not found.');
+                alert('Book ID is missing.');
+            }
+        });
+    });
+}
 
+function fetchBookInformation(bookId) {
+    fetch(`ViewDetailsHistory.php?bookid=${bookId}`) // Fetch bookDetails.php with the bookid as a query parameter
+        .then(response => response.text()) // Get the content of bookDetails.php
+        .then(data => {
+            // Insert the content of bookDetails.php into the main content area
+            document.getElementById("body-content").innerHTML = data;
+            document.title = "Book Information"; // Update the page title
+            document.getElementById("page-title").innerText = "Book Information"; // Update the page heading
+        })
+        .catch(error => {
+            console.error('Error fetching bookDetails.php:', error);
+        });
+}
         document.getElementById("SettingsBtn").addEventListener("click", function(event) {
             event.preventDefault();
             fetch('./UserSettings.php')
@@ -451,7 +482,52 @@ function submitComment(buttonElement) {
                 })
                 .catch(error => console.error('Error fetching content:', error));
         });
+	
+function fetchSimilarBooks(bookId) {
+    $.ajax({
+        url: 'fetch_similar_books.php',
+        type: 'GET',
+        data: { bookid: bookId },
+        dataType: 'json',
+        success: function(similarBooks) {
+            const container = $('#similar-books-container');
+            container.empty(); // Clear previous content
 
+            if (similarBooks.length > 0) {
+                similarBooks.forEach(book => {
+                    container.append(`
+                        <div class="book-container">
+                            <a href="javascript:void(0);" onclick="viewDetails(${book.bookid})">
+                                <img src="${book.bookimg}" alt="${book.booktitle}" width="100" height="150">
+                                <p>${book.booktitle}</p>
+                                <p>${book.author}</p>
+                            </a>
+                        </div>
+                    `);
+                });
+                // Show the modal
+                $('#similarBooksModal').show();
+            } else {
+                container.append('<p>No similar books found.</p>');
+                $('#similarBooksModal').show();
+            }
+        },
+        error: function() {
+            alert('Error fetching similar books.');
+        }
+    });
+}
+
+function closeModal() {
+    $('#similarBooksModal').hide();
+}
+
+// Close modal when clicking outside of it
+$(window).click(function(event) {
+    if ($(event.target).is('#similarBooksModal')) {
+        closeModal();
+    }
+});
 
     //PROFILE DROP DOWN
             document.addEventListener("click", function(event) {

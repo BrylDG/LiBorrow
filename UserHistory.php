@@ -65,7 +65,7 @@ $result = $conn->query($sql);
                                     <p><img src='./Images/fw.svg' alt='book'> {$row['booktitle']}</p>
                                     <p>{$row['fullname']}</p>
                                     <p>{$row['status']}</p>
-                                    <p class='viewdetails'><a href='#'>View Details</a></p>
+                                    <p class='viewdetails'><a href='#' class='view-more' data-bookid='" . htmlspecialchars($row['bookid']) . "'>View more</a></p>
                                 </div>";
                             }
                         } else {
