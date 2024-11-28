@@ -10,6 +10,8 @@ if (!isset($_SESSION['idno'])) { // Replace 'user_id' with your session variable
 // Retrieve the full name from the session
 $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // Default to 'User ' if not set
 $role = $_SESSION['isAdmin'];
+
+
 ?>
 
 <!DOCTYPE html>
@@ -52,109 +54,133 @@ $role = $_SESSION['isAdmin'];
         <?php endif; ?>
     <?php endif; ?>
     </script>
-    <div class="container-fluid" style="padding: 0;">
-        <div class="row">
-            <div id="sidebar" class="col-2">
-                <h3 id="brand-name">LiBorrow.</h3>
-                <ul id="nav-list">
-                    <li>
-                        <a href="#" id="button0">
-                            <img src="./Images/DashIcon.svg" alt="Dashboard Icon" width="24" height="24"> Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" id="buttonbrowse">
-                            <img src="./Images/browse icon.svg" alt="Browse Icon" width="24" height="24"> Browse
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" id="button1">
-                            <img src="./Images/heart.svg" alt="Heart Icon" width="24" height="24"> Favorites
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" id="button2">
-                            <img src="./Images/borrowed books.svg" alt="Borrowed Books Icon" width="24" height="24"> My Books
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" id="button3">
-                            <img src="./Images/book request.svg" alt="Book Request Icon" width="24" height="24"> Book Request
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" id="button4">
-                            <img src="./Images/HistoryIcon.svg" alt="Browse Icon" width="25" height="25"> History
-                        </a>
-                    </li>
-                </ul>
+	 <div class="container-fluid" style="padding: 0;">
+		<div class="row">
+			<div id="sidebar" class="col-2">
+				<h3 id="brand-name">LiBorrow.</h3>
+				<ul id="nav-list">
+					<li>
+						<a href="#" id="button0">
+							<img src="./Images/DashIcon.svg" alt="Dashboard Icon" width="24" height="24"> Dashboard
+						</a>
+					</li>
+					<li>
+						<a href="#" id="buttonbrowse">
+							<img src="./Images/browse icon.svg" alt="Browse Icon" width="24" height="24"> Browse
+						</a>
+					</li>
+					<li>
+						<a href="#" id="button1">
+							<img src="./Images/heart.svg" alt="Heart Icon" width="24" height="24"> Favorites
+						</a>
+					</li>
+					<li>
+						<a href="#" id="button2">
+							<img src="./Images/borrowed books.svg" alt="Borrowed Books Icon" width="24" height="24"> My Books
+						</a>
+					</li>
+					<li>
+						<a href="#" id="button3">
+							<img src="./Images/book request.svg" alt="Book Request Icon" width="24" height="24"> Book Request
+						</a>
+					</li>
+					<li>
+						<a href="#" id="button4">
+							<img src="./Images/HistoryIcon.svg" alt="Browse Icon" width="25" height="25"> History
+						</a>
+					</li>
+				</ul>
+			</div>
+
+<div id="main-content" class="col-10">
+    <div id="topbar">
+        <h3 id="page-title">Dashboard</h3>
+        <div id="profile-section" class="col-3">
+            <!-- Notification Icon -->
+            <div id="notification">
+                <a href="#">
+                    <img src="./Images/Bell_pin.svg" alt="Notifications" height="30" width="30">
+                </a>
             </div>
 
-            <div id="main-content" class="col-10">
-                <div id="topbar">
-                    <h3 id="page-title">Dashboard</h3>
-                    <div id="profile-section" class="col-3">
-                        <div id="notification">
-                            <a href="#">
-                                <img src="./Images/Bell_pin.svg" alt="Notifications" height="30" width="30">
-                            </a>
-                        </div>
-                        <div id="notification-dropdown" class="notification-dropdown">
-                            <div class="notification-options">
-                                <?php
-                                    if(!isset($_SESSION['idno'])) {
-                                        echo "<p class='no-notification'>No new notifications!<p>";
-                                    } else {
-                                        $idno = $_SESSION['idno'];
-                                        $query = "SELECT details, time FROM notification WHERE idno = ? ORDER BY time DESC LIMIT 3";
-                                        $stmt = $conn->prepare($query);
-                                        $stmt->bind_param("i", $idno);
-                                        $stmt->execute();
-                                        $result = $stmt->get_result();
-                                        if ($result->num_rows > 0) {
-                                            while ($notification = $result->fetch_assoc()) {
-                                                $formatted_time = date("g:i A", strtotime($notification['time']));
-
-                                                echo "<div class='notification-item'>";
-                                                echo "<p class='notification-message'>" . htmlspecialchars($notification['details']) . "</p>";
-                                                echo "<p class='notification-time'>" . htmlspecialchars($formatted_time) . "</p>";
-                                                echo "</div>";  
-                                            }
-                                        } else {
-                                            echo "<p>No new notifications!</p>";
-                                        }
-                                    }
-                                ?>
-                            </div>
-                        </div>
-                        <div class="separator"></div>
-                        <div id="profile" class="col-4">
-                            <a href="#" class="info-column">
-                                <img src="./Images/Profile.svg" id="profile-image" alt="Profile" height="60" width="60">
-                                <div id="profile-info">
-                                    <span><?php echo $_SESSION['fullname'] ?></span>
-                                    <h5>Reader</h5>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div id="profile-dropdown" class="profile-dropdown">
-                        <div class="profile-options">
-                            <a href="#" class="Usersettings" id="SettingsBtn">
-                                <img src="./Images/settings.svg" alt="Settings Icon"> Settings
-                            </a>
-                            <a href="logout.php" class="logout">
-                                <img src="./Images/signin.svg" alt="Logout Icon"> Log Out
-                            </a>
-                        </div>
-                    </div>
+            <!-- Notification Dropdown -->
+            <div id="notification-dropdown" class="notification-dropdown">
+                <div class="notification-options">
+                    <?php
+                    if (!isset($_SESSION['idno'])) {
+                        echo "<p class='no-notification'>No new notifications!</p>";
+                    } else {
+                        $idno = $_SESSION['idno'];
+                        $query = "SELECT details, time FROM notification WHERE idno = ? ORDER BY time DESC LIMIT 3";
+                        $stmt = $conn->prepare($query);
+                        $stmt->bind_param("i", $idno);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        if ($result->num_rows > 0) {
+                            while ($notification = $result->fetch_assoc()) {
+                                $formatted_time = date("g:i A", strtotime($notification['time']));
+                                echo "<div class='notification-item'>";
+                                echo "<p class='notification-message'>" . htmlspecialchars($notification['details']) . "</p>";
+                                echo "<p class='notification-time'>" . htmlspecialchars($formatted_time) . "</p>";
+                                echo "</div>";
+                            }
+                        } else {
+                            echo "<p>No new notifications!</p>";
+                        }
+                    }
+                    ?>
                 </div>
-                <div id="body-content" class="col-10">
-                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="separator"></div>
+            <div id="profile" class="col-4">
+                <a href="#" class="info-column">
+                    <?php
+                    // Fetch user data from the database
+                    $user_id = $_SESSION['idno']; // Ensure user_id is available from session
+                    $query = "SELECT fullname, profile_picture FROM users WHERE idno = ?";
+                    $stmt = $conn->prepare($query);
+                    $stmt->bind_param("i", $user_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+                    // Check if the user data is found
+                    $user_data = $result->fetch_assoc();
+
+                    $stmt->close();
+
+                    // Determine the profile picture to use (from DB or default)
+                    $profile_picture = isset($user_data) && !empty($user_data['profile_picture']) ? htmlspecialchars($user_data['profile_picture']) : './Images/Profile.svg';
+                    ?>
+                    <img src="<?php echo $profile_picture; ?>" id="profile-image" alt="Profile" height="60" width="60" style="border-radius:50%;">
+                    <div id="profile-info">
+                        <span><?php echo htmlspecialchars($user_data['fullname']); ?></span>
+                        <h5>Reader</h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Profile Dropdown Options -->
+        <div id="profile-dropdown" class="profile-dropdown">
+            <div class="profile-options">
+                <a href="#" class="Usersettings" id="SettingsBtn">
+                    <img src="./Images/settings.svg" alt="Settings Icon"> Settings
+                </a>
+                <a href="logout.php" class="logout">
+                    <img src="./Images/signin.svg" alt="Logout Icon"> Log Out
+                </a>
             </div>
         </div>
     </div>
+
+    <!-- Body Content (can be populated later) -->
+    <div id="body-content" class="col-10">
+    </div>
+</div>
+		</div>
+	</div>
 
     <script>
         //FUNCTIONS

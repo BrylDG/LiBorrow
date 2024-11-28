@@ -126,15 +126,32 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                             </div>
                         </div>
                         <div class="separator"></div>
-                        <div id="profile" class="col-4">					
-                            <a href="#" class="info-column">
-                                <img src="./Images/Profile.svg" id="profile-image" alt="Profile" height="60" width="60">
-                                <div id="profile-info">
-                                    <span><?php echo $_SESSION['fullname']; ?></span>
-                                    <h5>Librarian</h5>
-                                </div>
-                            </a>
-                        </div>
+							<div id="profile" class="col-4">
+								<a href="#" class="info-column">
+									<?php
+									// Fetch user data from the database
+									$user_id = $_SESSION['idno']; // Ensure user_id is available from session
+									$query = "SELECT fullname, profile_picture FROM users WHERE idno = ?";
+									$stmt = $conn->prepare($query);
+									$stmt->bind_param("i", $user_id);
+									$stmt->execute();
+									$result = $stmt->get_result();
+
+									// Check if the user data is found
+									$user_data = $result->fetch_assoc();
+
+									$stmt->close();
+
+									// Determine the profile picture to use (from DB or default)
+									$profile_picture = isset($user_data) && !empty($user_data['profile_picture']) ? htmlspecialchars($user_data['profile_picture']) : './Images/Profile.svg';
+									?>
+									<img src="<?php echo $profile_picture; ?>" id="profile-image" alt="Profile" height="60" width="60" style="border-radius:50%;">
+									<div id="profile-info">
+										<span><?php echo htmlspecialchars($user_data['fullname']); ?></span>
+										<h5>Librarian</h5>
+									</div>
+								</a>
+							</div>
                     </div>
 
                     <div id="profile-dropdown" class="profile-dropdown">

@@ -49,13 +49,16 @@ $conn->close();
         <!-- Stacking 5 divs inside the Settingsbox class -->
         <div class="Settingsbox">
             <div class="Sbox global">
-                <img src="./Images/Profile.svg" width="100" height="100" alt="Profile Picture" id="book1">
+                <form method="POST" enctype="multipart/form-data" action="updateProfilePicture.php">
+                    <img src="<?php echo isset($user_data) ? htmlspecialchars($user_data['profile_picture']) : './Images/Profile.svg'; ?>" width="100" height="100" style="border-radius: 50%;"  alt="Profile Picture" id="book1">
+                    <div class="settings-buttons">
+                        <input type="file" name="profile_picture" id="profile_picture" accept="image/*">
+                        <button type="submit" class="update-btn">Change Profile Picture</button>
+                    </div>
+                </form>
                 <div class="prof-details">
                     <p id="Name"><?php echo isset($user_data) ? htmlspecialchars($user_data['fullname']) : ''; ?></p>
                     <p class="author">Librarian</p>
-                </div>
-                <div class="settings-buttons">
-                    <button class="change-btn">Change Profile</button>
                 </div>
             </div>
                                     
