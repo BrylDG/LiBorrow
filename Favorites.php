@@ -86,10 +86,6 @@
 				<?php foreach ($books as $book): ?>
 					<div class="book-container">
 						<div class="button-container">
-							<button id="<?php echo $book['BorrowStatus'] ?>">
-								<img src="<?php echo $book['BorrowIcon'] ?>" alt="Book status" class="book-status" id="bookstaticon" width="30" height="30">
-								Borrowed
-							</button>
 							<form action="RemoveFromFav.php" method="POST" style="display:inline;">
 								<input type="hidden" name="bookid" value="<?php echo htmlspecialchars($book['bookid']); ?>">
 								<input type="hidden" name="idno" value="<?php echo htmlspecialchars($_SESSION['idno']); ?>">
@@ -104,7 +100,21 @@
 						<img src="./Images/Rating Component.svg" alt="Rating" id="rating-image" width="150" height="150">
 						<p id="B-title"><?php echo htmlspecialchars($book['booktitle']); ?></p>
 						<p id="Book-Author"><?php echo htmlspecialchars($book['author']); ?></p>
-						<button id="borbtn2"><?php echo $book['BorrowButton']; ?></button>
+						<form action="borrowbook.php" method="POST" style="display:inline;">
+								<input type="hidden" name="bookid" value="<?php echo htmlspecialchars($book['bookid']); ?>">
+								<input type="hidden" name="fullname" value="<?php echo htmlspecialchars($user['fullname']); ?>">
+								<input type="hidden" name="booktitle" value="<?php echo htmlspecialchars($book['booktitle']); ?>">
+								<input type="hidden" name="author" value="<?php echo htmlspecialchars($book['author']); ?>">
+								<input type="hidden" name="bookimg" value="<?php echo htmlspecialchars($book['bookimg']); ?>">
+								
+								<?php if ($book['BorrowButton'] === 'BORROW'): ?>
+									<input type="hidden" name="action" value="borrow">
+									<button type="submit" id="borbtn2"><?php echo $book['BorrowButton']; ?></button>
+								<?php else: ?>
+									<input type="hidden" name="action" value="return">
+									<button type="submit" id="borbtn2">Return</button>
+								<?php endif; ?>
+							</form>
 					</div>
 				<?php endforeach; ?>
 			</div>
@@ -112,23 +122,6 @@
         </div>
     </div>
 
-    <script>
-        //wala ni gamit hehe
-        const titleElement = document.getElementById('Book-tittle2');
-
-        titleElement.addEventListener('click', () => {
-            if (titleElement.style.whiteSpace === 'normal') {
-                titleElement.style.whiteSpace = 'nowrap';
-                titleElement.style.overflow = 'hidden';
-                titleElement.style.maxWidth = '25px'; // Collapse to show only the first two letters
-            } else {
-                titleElement.style.whiteSpace = 'normal';
-                titleElement.style.overflow = 'visible';
-                titleElement.style.maxWidth = '200px'; // Expand to show the full title
-            }
-        });
-
-    </script>    
 </div>
 
 </body>

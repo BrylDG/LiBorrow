@@ -382,18 +382,24 @@ function submitComment(buttonElement) {
             });
     }
         //FAVORITES CONTENT
-        document.getElementById("button1").addEventListener("click", function(event) {
-            event.preventDefault();
-            fetch('./Favorites.php')    
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("body-content").innerHTML = data;
-                    document.title = "Favorites"; // Change the page title
-                    document.getElementById("page-title").innerText = "Favorites"; // Change the displayed title
-                    renderCharts();
-                })
-                .catch(error => console.error('Error fetching content:', error));
-        });
+       document.getElementById("button1").addEventListener("click", function(event) {
+        event.preventDefault();
+        fetch('./Favorites.php')    
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("body-content").innerHTML = data;
+                document.title = "Favorites"; // Change the page title
+                document.getElementById("page-title").innerText = "Favorites"; // Change the displayed title
+                renderCharts();
+				toggleSortMenu()
+            })
+            .catch(error => console.error('Error fetching content:', error));
+    });
+
+    function toggleSortMenu() {
+        const menu = document.getElementById('sort-menu');
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
 
 
         //BORROWED BOOKS CONTENT
