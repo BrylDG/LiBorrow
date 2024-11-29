@@ -31,30 +31,61 @@ $role = $_SESSION['isAdmin'];
     <link rel="stylesheet" href="./ViewDetailsPending.css">
     <link rel="stylesheet" href="./ViewDetailsAvailable.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>LiBorrow User's Dashboard</title>
 </head>
 <body>
-    <script>
-        <?php if (isset($_GET['message'])): ?>
-            <?php if ($_GET['message'] === 'added_successfully'): ?>
-                alert("Book added to favorites successfully!");
-            <?php elseif ($_GET['message'] === 'already_in_favorites'): ?>
-                alert("This book is already in your favorites!");
-            <?php elseif ($_GET['message'] === 'error'): ?>
-                alert("Error: <?php echo isset($_GET['error']) ? htmlspecialchars($_GET['error']) : 'Unknown error.'; ?>");
-            <?php endif; ?>
-        <?php endif; ?>
+	<script>
+		<?php if (isset($_GET['message'])): ?>
+			<?php if ($_GET['message'] === 'added_successfully'): ?>
+				Swal.fire({
+					icon: 'success',
+					title: 'Success!',
+					text: 'Book added to favorites successfully!'
+				});
+			<?php elseif ($_GET['message'] === 'already_in_favorites'): ?>
+				Swal.fire({
+					icon: 'warning',
+					title: 'Already in Favorites',
+					text: 'This book is already in your favorites!'
+				});
+			<?php elseif ($_GET['message'] === 'error'): ?>
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: '<?php echo isset($_GET['error']) ? htmlspecialchars($_GET['error']) : 'Unknown error.'; ?>'
+				});
+			<?php elseif ($_GET['message'] === 'book_returned'): ?>
+				Swal.fire({
+					icon: 'success',
+					title: 'Book Returned',
+					text: 'Book has been successfully returned!'
+				});
+			<?php endif; ?>
+		<?php endif; ?>
 
-        <?php if (isset($_GET['message'])): ?>
-        <?php if ($_GET['message'] === 'added_to_pendings'): ?>
-            alert("Book request successfully submitted!");
-        <?php elseif ($_GET['message'] === 'already_in_pendings'): ?>
-            alert("This book is already in pending request.");
-        <?php elseif ($_GET['message'] === 'error'): ?>
-            alert("Error: <?php echo isset($_GET['error']) ? htmlspecialchars($_GET['error']) : 'Unknown error.'; ?>");
-        <?php endif; ?>
-    <?php endif; ?>
-    </script>
+		<?php if (isset($_GET['message'])): ?>
+			<?php if ($_GET['message'] === 'added_to_pendings'): ?>
+				Swal.fire({
+					icon: 'success',
+					title: 'Request Submitted',
+					text: 'Book request successfully submitted!'
+				});
+			<?php elseif ($_GET['message'] === 'already_in_pendings'): ?>
+				Swal.fire({
+					icon: 'warning',
+					title: 'Already in Pending',
+					text: 'This book is already in pending request.'
+				});
+			<?php elseif ($_GET['message'] === 'error'): ?>
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: '<?php echo isset($_GET['error']) ? htmlspecialchars($_GET['error']) : 'Unknown error.'; ?>'
+				});
+			<?php endif; ?>
+		<?php endif; ?>
+	</script>
 	 <div class="container-fluid" style="padding: 0;">
 		<div class="row">
 			<div id="sidebar" class="col-2">
