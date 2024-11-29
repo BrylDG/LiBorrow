@@ -128,7 +128,7 @@ $result = $conn->query($sql);
                         </div>
                         <div class="pendbox global">
                             <div style="width: 50%; margin-right: 10%;">
-                                <img src="<?= htmlspecialchars('./Images/' . $row["bookimg"]) ?>" alt="Book Image" width="100" height="150">
+                                <img src="<?= htmlspecialchars($row["bookimg"]) ?>" alt="Book Image" width="100" height="150">
                             </div>
                             <div style="width: 150%">
                                 <p class="book-title"><?= htmlspecialchars($row["booktitle"]) ?></p>
