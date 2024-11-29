@@ -27,8 +27,10 @@ $result = mysqli_query($conn, $query);
 
 // Initialize an array to hold the counts
 $categoryCounts = [];
-while ($row = mysqli_fetch_assoc($result)) {
-    $categoryCounts[$row['main_category']] = $row['count'];
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $categoryCounts[$row['main_category']] = $row['count'];
+    }
 }
 
 $commentedBooksQuery = "
@@ -70,6 +72,8 @@ $recentBorrowQuery = "
 ";
 $recentBorrowResult = mysqli_query($conn, $recentBorrowQuery);
 $recentBook = mysqli_fetch_assoc($recentBorrowResult);
+
+$recommendedBooksResult = null;  // Initialize recommendedBooksResult as null
 
 if ($recentBook) {
     // Get the genre of the recently borrowed book
@@ -281,10 +285,10 @@ if ($recentBook) {
             <!-- RECOMMENDATIONS -->
             <div class="RecommendationsContainer">
 				<h1>Recommendations</h1>
-				<p id="BookSimilar">Books Similar to <a href="#"><?php echo htmlspecialchars($recentBook['booktitle']); ?></a></p>
+				<p id="BookSimilar">Books Similar to <a href="#"><?php echo isset($recentBook['booktitle']) ? htmlspecialchars($recentBook['booktitle']) : 'N/A'; ?></a></p>
 
 				<?php
-				if (mysqli_num_rows($recommendedBooksResult) > 0) {
+				if ($recommendedBooksResult && mysqli_num_rows($recommendedBooksResult) > 0) {
 					while ($recommendedBook = mysqli_fetch_assoc($recommendedBooksResult)) {
 						echo '<div class="RecommendedBook">';
 						echo '<img src="' . htmlspecialchars($recommendedBook['bookimg']) . '" id="RecommendationImage" height="150px" width="100px">';
