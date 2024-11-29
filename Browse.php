@@ -173,13 +173,16 @@
                             <p id="B-title"><?php echo htmlspecialchars($book['booktitle']); ?></p>
                             <p id="Book-Author"><?php echo htmlspecialchars($book['author']); ?></p>
                             <form action="BorrowBook.php" method="POST">
-                                <input type="hidden" name="bookid" value="<?php echo htmlspecialchars($book['bookid']); ?>">
-                                <input type="hidden" name="fullname" value="<?php echo htmlspecialchars($_SESSION['fullname']); ?>">
-                                <input type="hidden" name="booktitle" value="<?php echo htmlspecialchars($book['booktitle']); ?>">
-                                <input type="hidden" name="author" value="<?php echo htmlspecialchars($book['author']); ?>">
-                                <input type="hidden" name="bookimg" value="<?php echo htmlspecialchars($book['bookimg']); ?>">
-                                <button id="<?php echo $borrowed ? 'borbtn2' : 'borbtn' ?>">Borrow</button>
-                            </form>
+								<input type="hidden" name="bookid" value="<?php echo htmlspecialchars($book['bookid']); ?>">
+								<input type="hidden" name="fullname" value="<?php echo htmlspecialchars($_SESSION['fullname']); ?>">
+								<input type="hidden" name="booktitle" value="<?php echo htmlspecialchars($book['booktitle']); ?>">
+								<input type="hidden" name="author" value="<?php echo htmlspecialchars($book['author']); ?>">
+								<input type="hidden" name="bookimg" value="<?php echo htmlspecialchars($book['bookimg']); ?>">
+								<input type="hidden" name="action" value="<?php echo $borrowed ? 'return' : 'borrow'; ?>">
+								<button id="<?php echo $borrowed ? 'return-btn' : 'borrow-btn'; ?>">
+									<?php echo $borrowed ? 'Return' : 'Borrow'; ?>
+								</button>
+							</form>
                         </div>
                     <?php endforeach; ?>
                 </div>
