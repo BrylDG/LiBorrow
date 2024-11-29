@@ -13,8 +13,10 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User  '; // 
 $idno = isset($_SESSION['idno']) ? $_SESSION['idno'] : ''; // Assuming 'idno' is stored in session
 
 // Fetch data from `history` table for the logged-in user
-$sql = "SELECT bookid, booktitle, idno, fullname, borrowdate, duedate, status 
-        FROM history 
+$sql = "SELECT h.bookid, h.booktitle, h.idno, h.fullname, h.borrowdate, h.duedate, h.status, b.bookimg
+        FROM history h
+			JOIN books b
+			ON h.bookid=b.bookid
         WHERE idno = '$idno'";
 $result = $conn->query($sql);
 ?>
@@ -62,7 +64,7 @@ $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 echo "<div class='book-row'>
-                                    <p><img src='./Images/fw.svg' alt='book'> {$row['booktitle']}</p>
+                                    <p><img src='{$row['bookimg']}' alt='book' style='height='100px'; width='80px';'> {$row['booktitle']}</p>
                                     <p>{$row['fullname']}</p>
                                     <p>{$row['status']}</p>
                                     <p class='viewdetails'><a href='#' class='view-more' data-bookid='" . htmlspecialchars($row['bookid']) . "'>View more</a></p>
