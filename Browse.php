@@ -14,7 +14,7 @@ $search = isset($_GET['search']) ? "%" . $_GET['search'] . "%" : '%';
 $sort = isset($_GET['sort']) && $_GET['sort'] == 'desc' ? 'DESC' : 'ASC';
 $genre = isset($_GET['genre']) ? $_GET['genre'] : '';
 
-// Prepare the query
+// Prepare the query to get books with the selected genre
 $query = "SELECT b.bookid, b.booktitle, b.author, b.bookimg, GROUP_CONCAT(g.name SEPARATOR ', ') AS genres
           FROM books b
           JOIN bookgenres bg ON b.bookid = bg.bookid
@@ -77,8 +77,18 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
         
 			<div class="User Browsebox">
 				<div class="browse-genre" id="browse-books">
-					<h3 id="genre-heading">Genre</h3>
-					<!-- Carousel removed here -->
+					<h3 id="genre-heading">Filter by Genre</h3>
+					<select id="genre-dropdown" onchange="loadBooks()">
+						<option value="">Select Genre</option>
+						<!-- Dynamically load genres from the database -->
+						<?php
+							$genre_query = "SELECT DISTINCT g.name FROM genres g";
+							$genre_result = $conn->query($genre_query);
+							while ($genre = $genre_result->fetch_assoc()) {
+								echo "<option value='" . $genre['name'] . "'>" . $genre['name'] . "</option>";
+							}
+						?>
+					</select>
 				</div>
 			</div>
             

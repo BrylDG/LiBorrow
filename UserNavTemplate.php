@@ -235,38 +235,25 @@ $role = $_SESSION['isAdmin'];
                 .catch(error => console.error('Error fetching content:', error));
         });
 
-        //BROWSE CONTENT
- document.getElementById("buttonbrowse").addEventListener("click", function(event) {
-    event.preventDefault();
-    fetch('./Browse.php')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("body-content").innerHTML = data;
-            document.title = "Browse"; // Change the page title
-            document.getElementById("page-title").innerText = "Browse"; // Change the displayed title
-
-            // No need to initialize carousel anymore
-        })
-        .catch(error => console.error('Error fetching content:', error));
-});
-
-// Function to load books dynamically based on the genre
-document.addEventListener("DOMContentLoaded", function () {
-    const genreLinks = document.querySelectorAll('.genre-link');
-    genreLinks.forEach(link => {
-        link.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default link behavior
-
-            const genre = this.getAttribute('data-genre'); // Get the genre from data-attribute
-            loadBooks(genre); // Call loadBooks function with the selected genre
-        });
+        document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("buttonbrowse").addEventListener("click", function(event) {
+        event.preventDefault();
+        fetch('./Browse.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("body-content").innerHTML = data;
+                document.title = "Browse"; // Change the page title
+                document.getElementById("page-title").innerText = "Browse"; // Change the displayed title
+            })
+            .catch(error => console.error('Error fetching content:', error));
     });
 });
 
-// Function to load books
-function loadBooks(genre = '') {
+// Function to load books based on selected genre, search, and sort
+function loadBooks() {
     const searchInput = document.getElementById('search-input').value;
     const sortOption = document.getElementById('sort-dropdown').value;
+    const genre = document.getElementById('genre-dropdown').value;
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `Browse.php?search=${encodeURIComponent(searchInput)}&sort=${sortOption}&genre=${encodeURIComponent(genre)}&ajax=1`, true);
