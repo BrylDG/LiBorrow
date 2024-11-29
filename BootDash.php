@@ -105,7 +105,7 @@ $fullname = isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User '; // D
                                     if(!isset($_SESSION['idno'])) {
                                         echo "<p>No new notifications!<p>";
                                     } else {
-                                        $query = "SELECT message, time FROM req_notif ORDER BY time DESC LIMIT 3";
+                                        $query = "SELECT message, time FROM req_notif ORDER BY time DESC";
                                         $stmt = $conn->prepare($query);
                                         $stmt->execute();
                                         $result = $stmt->get_result();

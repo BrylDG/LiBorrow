@@ -143,7 +143,7 @@ $role = $_SESSION['isAdmin'];
                         echo "<p class='no-notification'>No new notifications!</p>";
                     } else {
                         $idno = $_SESSION['idno'];
-                        $query = "SELECT details, time FROM notification WHERE idno = ? ORDER BY time DESC LIMIT 3";
+                        $query = "SELECT details, time FROM notification WHERE idno = ? ORDER BY time DESC";
                         $stmt = $conn->prepare($query);
                         $stmt->bind_param("i", $idno);
                         $stmt->execute();
