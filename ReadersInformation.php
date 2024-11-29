@@ -77,7 +77,7 @@ function handleUserNotFound() {
                     <form action="updateUserInfo.php" method="POST">
                         <table class="Readersinfo-table">
                             <tr>
-                                <td style="font-weight: bold;">ID Number</td>
+                                <td style="font-weight: bold;">ID Number:</td>
                                 <td><input type="text" name="idno" value="<?php echo htmlspecialchars($user_data['idno']); ?>" readonly /></td>
                             </tr>
                             <tr>

@@ -64,10 +64,11 @@
 #td1 {
     overflow: hidden;
     height: 75vh;
+    width: 100%;
+    margin-top: 5%;
 }
 
 .browse-genre {
-    display: flex;
     width: 100%;
     align-items: center;
     margin: 5px;
@@ -129,6 +130,7 @@
     flex-wrap: wrap; /* Allows wrapping to a new line */
     gap: 20px; /* Adds space between the divs */
     justify-content: flex-start; /* Aligns the divs to the left */
+    height: 600px;
     padding: 20px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -290,7 +292,7 @@
 }
 
 /* Sort button */
-.sort-btn {
+#sort-dropdown {
     font-size: 16px;
     padding: 8px 20px;
     border-radius: 30px;
@@ -303,4 +305,9 @@
 
 .sort-btn img {
     margin: 0 5px;
+}
+
+.historytitle {
+    background-color: #ff6600;
+    color: white;
 }
