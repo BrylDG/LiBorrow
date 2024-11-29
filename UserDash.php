@@ -183,7 +183,9 @@ if ($recentBook) {
 					if (mysqli_num_rows($commentedBooksResult) > 0) {
 						while ($book = mysqli_fetch_assoc($commentedBooksResult)) {
 							echo '<div class="Books">';
+							echo '<a href="javascript:void(0);" onclick="viewDetails(' . $book['bookid'] . ')">';
 							echo '<img src="' . htmlspecialchars($book['bookimg']) . '" height="185px" width="125px">';
+							echo '</a>';
 							echo '<p class="Title">' . htmlspecialchars($book['booktitle']) . '</p>';
 							echo '<p class="Author">' . htmlspecialchars($book['author']) . '</p>';
 							echo '<img src="./Images/RatingComponent.svg" class="rating">';
@@ -205,7 +207,9 @@ if ($recentBook) {
 					if (mysqli_num_rows($newReleasesResult) > 0) {
 						while ($book = mysqli_fetch_assoc($newReleasesResult)) {
 							echo '<div class="Books">';
+							echo '<a href="javascript:void(0);" onclick="viewDetails(' . $book['bookid'] . ')">';
 							echo '<img src="' . htmlspecialchars($book['bookimg']) . '" height="185px" width="125px">';
+							echo '</a>';
 							echo '<p class="Title">' . htmlspecialchars($book['booktitle']) . '</p>';
 							echo '<p class="Author">' . htmlspecialchars($book['author']) . '</p>';
 							echo '<img src="./Images/RatingComponent.svg" class="rating">';
@@ -225,48 +229,49 @@ if ($recentBook) {
             <!-- MY BOOKS -->
 			<div class="MyBooksContainer">
 				<h1>My Books</h1>
-
 				<?php
 				if (mysqli_num_rows($borrowedBooksResult) > 0) {
 					while ($book = mysqli_fetch_assoc($borrowedBooksResult)) {
-						// Calculate the total borrow duration and remaining time
-						$borrowDate = new DateTime($book['borrowdate']);
+						// Get the current time
+						$currentTime = new DateTime();
+
+						// Convert the borrow date and due date to DateTime objects
 						$dueDate = new DateTime($book['duedate']);
-						$now = new DateTime();
+						$borrowDate = new DateTime($book['borrowdate']);
 
-						// Calculate the difference between now and the due date
-						$interval = $now->diff($dueDate);
+						// Calculate the difference in time between the current date and the due date
+						$remainingTimeInterval = $currentTime->diff($dueDate);
 
-						// If the due date has passed, set remaining time to "Overdue"
-						if ($interval->invert == 1) {
-							$remainingTime = 'Overdue';
-							$progress = 0;  // No progress for overdue books
+						// Initialize the remaining time variable
+						$remainingTime = '';
+
+						// Format the remaining time
+						if ($remainingTimeInterval->invert == 1) {
+							// Overdue (if due date is in the past)
+							$remainingTime = "Overdue by " . abs($remainingTimeInterval->format('%a days %h hrs %i mins'));
 						} else {
-							// Format remaining time as days, hours, minutes
-							$remainingTime = $interval->format('%a days %h hrs. %i mins left');
-
-							// Calculate progress percentage
-							$totalInterval = $borrowDate->diff($dueDate);
-							$totalMinutes = ($totalInterval->days * 24 * 60) + ($totalInterval->h * 60) + $totalInterval->i;
-							$elapsedMinutes = ($borrowDate->diff($now))->days * 24 * 60 + ($borrowDate->diff($now))->h * 60 + ($borrowDate->diff($now))->i;
-
-							// Avoid division by zero if there's no borrow period (e.g., if due date is the same as borrow date)
-							if ($totalMinutes > 0) {
-								$progress = ($elapsedMinutes / $totalMinutes) * 100;
-							} else {
-								$progress = 0;
-							}
+							// Remaining time (if due date is in the future)
+							$remainingTime = $remainingTimeInterval->format('%a days %h hrs %i mins left');
 						}
 
-						// Display the book and progress
+						// Calculate progress bar width (optional)
+						$totalDays = $borrowDate->diff($dueDate)->format('%a');
+						$elapsedDays = $borrowDate->diff($currentTime)->format('%a');
+						$progress = ($elapsedDays / $totalDays) * 100;
+
+						// Output the borrowed book details
 						echo '<div class="MyBook" id="Book' . $book['bookid'] . '">';
-						echo '<div class="BookImage"><img src="' . htmlspecialchars($book['bookimg']) . '" height="150px" width="100px"></div>';
+						echo '<div class="BookImage">';
+						echo '<a href="javascript:void(0);" onclick="viewDetails(' . $book['bookid'] . ')">';
+						echo '<img src="' . htmlspecialchars($book['bookimg']) . '" height="150px" width="100px">';
+						echo '</a>';
+						echo '</div>';
 						echo '<div class="BookDetails">';
 						echo '<p class="BookTitle">' . htmlspecialchars($book['booktitle']) . '</p>';
 						echo '<p class="BookAuthor">' . htmlspecialchars($book['author']) . '</p>';
 						echo '<img src="./Images/RatingComponent.svg" class="rating">';
 						echo '<br>';
-						echo '<a href="#" class="ViewDetailsButton">View Details</a>';
+						echo '<a href="javascript:void(0);" onclick="viewDetails(' . $book['bookid'] . ')">View Details</a>';
 						echo '<div class="ProgBarContainer">';
 						echo '<div class="progress">';
 						echo '<div class="progress-bar bg-warning" role="progressbar" style="width:' . $progress . '%" aria-valuenow="' . $progress . '" aria-valuemin="0" aria-valuemax="100"></div>';
@@ -280,18 +285,20 @@ if ($recentBook) {
 					echo '<p>No borrowed books available.</p>';
 				}
 				?>
+
 			</div>
 
             <!-- RECOMMENDATIONS -->
-            <div class="RecommendationsContainer">
+			<div class="RecommendationsContainer">
 				<h1>Recommendations</h1>
 				<p id="BookSimilar">Books Similar to <a href="#"><?php echo isset($recentBook['booktitle']) ? htmlspecialchars($recentBook['booktitle']) : 'N/A'; ?></a></p>
-
 				<?php
 				if ($recommendedBooksResult && mysqli_num_rows($recommendedBooksResult) > 0) {
 					while ($recommendedBook = mysqli_fetch_assoc($recommendedBooksResult)) {
 						echo '<div class="RecommendedBook">';
+						echo '<a href="javascript:void(0);" onclick="viewDetails(' . $recommendedBook['bookid'] . ')">';
 						echo '<img src="' . htmlspecialchars($recommendedBook['bookimg']) . '" id="RecommendationImage" height="150px" width="100px">';
+						echo '</a>';
 						echo '<p id="RecoBook">' . htmlspecialchars($recommendedBook['booktitle']) . '</p>';
 						echo '<p id="RecoAuthor">' . htmlspecialchars($recommendedBook['author']) . '</p>';
 						echo '<img src="./Images/RatingComponent.svg" id="BookRating">';
@@ -301,7 +308,6 @@ if ($recentBook) {
 					echo '<p>No similar books available.</p>';
 				}
 				?>
-
 				<button class="MoreButton">More Like This</button>
 			</div>
         </div>

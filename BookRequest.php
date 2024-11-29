@@ -47,7 +47,9 @@
             <div class="pendbox global" id="User-books">
                 <?php foreach ($books as $book): ?>
                 <div class="book-container" id="Request-Books">
+					<a href="javascript:void(0);" onclick="viewDetails(<?php echo $book['bookid']; ?>)">
                     <img src="<?php echo htmlspecialchars($book['bookimg']); ?>" alt="Book one" class="book-image" id="book-loc">
+					</a>
                     <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
                     <p id="B-title"><?php echo htmlspecialchars($book['booktitle']); ?></p>
                     <p id="Book-Author"><?php echo htmlspecialchars($book['author']); ?></p>

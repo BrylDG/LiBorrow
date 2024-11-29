@@ -61,8 +61,11 @@
                                     $timeLeft = $interval->days . " days " . $interval->h . " hrs " . $interval->i . " mins left";
                                 }
                             ?>
+							
                             <div class="Books">
+								<a href="javascript:void(0);" onclick="viewDetails(<?php echo $book['bookid']; ?>)">
                                 <img src="<?php echo htmlspecialchars($book['bookimg']); ?>" height="185px" width="140px">
+								</a>
                                 <div class="ProgBarContainer">
                                     <div class="progress" style="height: 10px;">
                                     <?php

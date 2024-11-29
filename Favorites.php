@@ -82,30 +82,32 @@
                 <img src="./Images/vec.svg" alt="Icon After" width="18" height="18"> <!-- Icon after text -->
             </button>
         </div>
-            <div class="pendbox global" id="User-books">
-                <?php foreach ($books as $book): ?>
-                    <div class="book-container">
-                        <div class="button-container">
-                            <button id="<?php echo $book['BorrowStatus'] ?>">
-                                <img src="<?php echo $book['BorrowIcon'] ?>" alt="Book status" class="book-status" id="bookstaticon" width="30" height="30">
-                                Borrowed
-                            </button>
-                            <form action="RemoveFromFav.php" method="POST" style="display:inline;">
-                                <input type="hidden" name="bookid" value="<?php echo htmlspecialchars($book['bookid']); ?>">
-                                <input type="hidden" name="idno" value="<?php echo htmlspecialchars($_SESSION['idno']); ?>">
-                                <button type="submit" id="addtofav-btn">
-                                    <img src="./Images/AddedtoFav.svg" alt="Book fav" class="book-fav">
-                                </button>
-                            </form>
-                        </div>
-                        <img src="<?php echo htmlspecialchars($book['bookimg']) ?>" alt="Book Thumbnail" class="book-image" id="book-opacity">
-                        <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
-                        <p id="B-title"><?php echo htmlspecialchars($book['booktitle']); ?></p>
-                        <p id="Book-Author"><?php echo htmlspecialchars($book['author']); ?></p>
-                        <button id="borbtn2"><?php echo $book['BorrowButton']; ?></button>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+            <div class="pendbox global" id="User -books">
+				<?php foreach ($books as $book): ?>
+					<div class="book-container">
+						<div class="button-container">
+							<button id="<?php echo $book['BorrowStatus'] ?>">
+								<img src="<?php echo $book['BorrowIcon'] ?>" alt="Book status" class="book-status" id="bookstaticon" width="30" height="30">
+								Borrowed
+							</button>
+							<form action="RemoveFromFav.php" method="POST" style="display:inline;">
+								<input type="hidden" name="bookid" value="<?php echo htmlspecialchars($book['bookid']); ?>">
+								<input type="hidden" name="idno" value="<?php echo htmlspecialchars($_SESSION['idno']); ?>">
+								<button type="submit" id="addtofav-btn">
+									<img src="./Images/AddedtoFav.svg" alt="Remove from favorites" class="book-fav">
+								</button>
+							</form>
+						</div>
+						<a href="javascript:void(0);" onclick="viewDetails(<?php echo $book['bookid']; ?>)">
+							<img src="<?php echo htmlspecialchars($book['bookimg']) ?>" alt="Book Thumbnail" class="book-image" id="book-opacity">
+						</a>
+						<img src="./Images/Rating Component.svg" alt="Rating" id="rating-image" width="150" height="150">
+						<p id="B-title"><?php echo htmlspecialchars($book['booktitle']); ?></p>
+						<p id="Book-Author"><?php echo htmlspecialchars($book['author']); ?></p>
+						<button id="borbtn2"><?php echo $book['BorrowButton']; ?></button>
+					</div>
+				<?php endforeach; ?>
+			</div>
             
         </div>
     </div>

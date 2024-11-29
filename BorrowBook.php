@@ -30,9 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $check_stmt->get_result();
 
             if ($result->num_rows > 0) {
+                $_SESSION['message'] = 'already_in_pendings';
                 $check_stmt->close();
                 $conn->close();
-                header("Location: UserNavTemplate.php?message=already_in_pendings");
+                header("Location: UserNavTemplate.php");
                 exit();
             }
 
@@ -44,21 +45,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($stmt->execute()) {
                 $conn->query($sendNotif);
+                $_SESSION['message'] = 'added_to_pendings';
                 $stmt->close();
                 $conn->close();
-                header("Location: UserNavTemplate.php?message=added_to_pendings");
+                header("Location: UserNavTemplate.php");
                 exit();
             } else {
                 $error_message = $stmt->error;
+                $_SESSION['message'] = 'error';
+                $_SESSION['error'] = $error_message;
                 $stmt->close();
                 $conn->close();
-                header("Location: UserNavTemplate.php?message=error&error=" . urlencode($error_message));
+                header("Location: UserNavTemplate.php");
                 exit();
             }
         } elseif ($action === 'return') {
             // Insert data into the returns table
-            $return_query = "INSERT INTO returns (fullname, idno,datereturned, bookid, booktitle, author, bookimg,borrowdate,duedate) 
-                             SELECT fullname, idno, NOW(), bookid, booktitle, author, bookimg,borrowdate,duedate 
+            $return_query = "INSERT INTO returns (fullname, idno, datereturned, bookid, booktitle, author, bookimg, borrowdate, duedate) 
+                             SELECT fullname, idno, NOW(), bookid, booktitle, author, bookimg, borrowdate, duedate 
                              FROM borrows 
                              WHERE bookid = ? AND idno = ?";
             $delete_query = "DELETE FROM borrows WHERE bookid = ? AND idno = ?"; // Remove book from borrows table
@@ -73,24 +77,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $delete_stmt->bind_param("ii", $bookid, $idno);
 
                 if ($delete_stmt->execute()) {
+                    $_SESSION['message'] = 'book_returned';
                     $return_stmt->close();
                     $delete_stmt->close();
                     $conn->close();
-                    header("Location: UserNavTemplate.php?message=book_returned");
+                    header("Location: UserNavTemplate.php");
                     exit();
                 } else {
                     // Handle error on deleting from borrows
+                    $_SESSION['message'] = 'error';
+                    $_SESSION['error'] = $delete_stmt->error;
                     $delete_stmt->close();
                     $return_stmt->close();
                     $conn->close();
-                    header("Location: UserNavTemplate.php?message=error&error=" . urlencode($delete_stmt->error));
+                    header("Location: UserNavTemplate.php");
                     exit();
                 }
             } else {
                 // Handle error on inserting into returns
+                $_SESSION['message'] = 'error';
+                $_SESSION['error'] = $return_stmt->error;
                 $return_stmt->close();
                 $conn->close();
-                header("Location: UserNavTemplate.php?message=error&error=" . urlencode($return_stmt->error));
+                header("Location: UserNavTemplate.php");
                 exit();
             }
         }
