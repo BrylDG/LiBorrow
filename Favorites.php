@@ -82,7 +82,7 @@
                 <img src="./Images/vec.svg" alt="Icon After" width="18" height="18"> <!-- Icon after text -->
             </button>
         </div>
-            <div class="pendbox global" id="User -books">
+            <div class="pendbox global" id="User-books">
 				<?php foreach ($books as $book): ?>
 					<div class="book-container">
 						<div class="button-container">
@@ -102,10 +102,11 @@
 						<p id="Book-Author"><?php echo htmlspecialchars($book['author']); ?></p>
 						<form action="borrowbook.php" method="POST" style="display:inline;">
 								<input type="hidden" name="bookid" value="<?php echo htmlspecialchars($book['bookid']); ?>">
-								<input type="hidden" name="fullname" value="<?php echo htmlspecialchars($user['fullname']); ?>">
+								<input type="hidden" name="fullname" value="<?php echo htmlspecialchars($_SESSION['fullname']); ?>">
 								<input type="hidden" name="booktitle" value="<?php echo htmlspecialchars($book['booktitle']); ?>">
 								<input type="hidden" name="author" value="<?php echo htmlspecialchars($book['author']); ?>">
 								<input type="hidden" name="bookimg" value="<?php echo htmlspecialchars($book['bookimg']); ?>">
+								<input type="hidden" name="action" value="<?php echo $borrowed ? 'return' : 'borrow'; ?>">
 								
 								<?php if ($book['BorrowButton'] === 'BORROW'): ?>
 									<input type="hidden" name="action" value="borrow">
