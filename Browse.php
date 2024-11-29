@@ -1,37 +1,50 @@
 <?php
-    session_start();
-    include('connection.php');
-	header('Content-Type: application/json');
-	
-	if (!isset($_SESSION['fullname'])) {
+session_start();
+include('connection.php');
+header('Content-Type: application/json');
+
+if (!isset($_SESSION['fullname'])) {
     // Redirect to login page if not logged in
     header("Location: login.php");
     exit();
 }
-    // Get the search and sort parameters from the GET request
-    $search = isset($_GET['search']) ? "%" . $_GET['search'] . "%" : '%';
-    $sort = isset($_GET['sort']) && $_GET['sort'] == 'desc' ? 'DESC' : 'ASC';
 
-    // Prepare the query
-    $query = "SELECT b.bookid, b.booktitle, b.author, b.bookimg, GROUP_CONCAT(g.name SEPARATOR ', ') AS genres
-              FROM books b
-              JOIN bookgenres bg ON b.bookid = bg.bookid
-              JOIN genres g ON bg.genreid = g.genreid
-              WHERE b.booktitle LIKE ?
-              GROUP BY b.bookid
-              ORDER BY b.booktitle $sort";
-    $stmt = $conn->prepare($query);
+// Get the search, sort, and genre parameters from the GET request
+$search = isset($_GET['search']) ? "%" . $_GET['search'] . "%" : '%';
+$sort = isset($_GET['sort']) && $_GET['sort'] == 'desc' ? 'DESC' : 'ASC';
+$genre = isset($_GET['genre']) ? $_GET['genre'] : '';
+
+// Prepare the query
+$query = "SELECT b.bookid, b.booktitle, b.author, b.bookimg, GROUP_CONCAT(g.name SEPARATOR ', ') AS genres
+          FROM books b
+          JOIN bookgenres bg ON b.bookid = bg.bookid
+          JOIN genres g ON bg.genreid = g.genreid
+          WHERE b.booktitle LIKE ?";
+
+if ($genre) {
+    $query .= " AND g.name = ?";
+}
+
+$query .= " GROUP BY b.bookid ORDER BY b.booktitle $sort";
+
+$stmt = $conn->prepare($query);
+if ($genre) {
+    $stmt->bind_param("ss", $search, $genre);
+} else {
     $stmt->bind_param("s", $search);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $books = $result->fetch_all(MYSQLI_ASSOC);
+}
 
-    // Return data as JSON
-    if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
-        echo json_encode(['books' => $books]);
-        exit();
-    }
+$stmt->execute();
+$result = $stmt->get_result();
+$books = $result->fetch_all(MYSQLI_ASSOC);
+
+// Return data as JSON
+if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
+    echo json_encode(['books' => $books]);
+    exit();
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,52 +78,7 @@
 			<div class="User Browsebox">
 				<div class="browse-genre" id="browse-books">
 					<h3 id="genre-heading">Genre</h3>
-					<div class="carousel-container">
-						<div class="carousel">
-							<div class="carousel-item">
-								<a href="Browse.php?genre=Romance Fiction" id="function">
-									<div class="icon-container">
-										<img src="./images/Genre-Romance.svg" alt="Romance Genre" class="genre-icon">
-										<p class="icon-label">Romance</p>
-									</div>
-								</a>
-								<a href="Browse.php?genre=Horror Fiction" id="function">
-									<div class="icon-container">
-										<img src="./images/Horror.svg" alt="Horror Genre" class="genre-icon">
-										<p class="icon-label">Horror</p>
-									</div>
-								</a>
-								<a href="Browse.php?genre=History Fiction" id="function">
-									<div class="icon-container">
-										<img src="./images/Genre-Romance.svg" alt="Romance Genre" class="genre-icon">
-										<p class="icon-label">Romance</p>
-									</div>
-								</a>
-								<a href="Browse.php?genre=Cat Fiction" id="function">
-									<div class="icon-container">
-										<img src="./images/Horror.svg" alt="Horror Genre" class="genre-icon">
-										<p class="icon-label">Horror</p>
-									</div>
-								</a>
-							</div>
-							<div class="carousel-item">
-								<a href="Browse.php?genre=Romance Fiction" id="function">
-									<div class="icon-container">
-										<img src="./images/Genre-Romance.svg" alt="Romance Genre" class="genre-icon">
-										<p class="icon-label">Romance</p>
-									</div>
-								</a>
-								<a href="Browse.php?genre=Horror Fiction" id="function">
-									<div class="icon-container">
-										<img src="./images/Horror.svg" alt="Horror Genre" class="genre-icon">
-										<p class="icon-label">Horror</p>
-									</div>
-								</a>
-							</div>						
-						</div>
-						<button class="carousel-button prev" onclick="moveCarousel(-1)">&#10094;</button>
-						<button class="carousel-button next" onclick="moveCarousel(1)">&#10095;</button>
-					</div>
+					<!-- Carousel removed here -->
 				</div>
 			</div>
             

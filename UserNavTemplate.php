@@ -36,44 +36,56 @@ $role = $_SESSION['isAdmin'];
 </head>
 <body>
     <script>
-        <?php if (isset($_SESSION['message'])): ?>
-            <?php if ($_SESSION['message'] === 'added_to_pendings'): ?>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Request Submitted',
-                    text: 'Book request successfully submitted!'
-                });
-            <?php elseif ($_SESSION['message'] === 'already_in_pendings'): ?>
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Already in Pending',
-                    text: 'This book is already in pending request.'
-                });
-            <?php elseif ($_SESSION['message'] === 'book_returned'): ?>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Book Returned',
-                    text: 'Book has been successfully returned!'
-                });
-            <?php elseif ($_SESSION['message'] === 'error'): ?>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: '<?php echo isset($_SESSION['error']) ? htmlspecialchars($_SESSION['error']) : 'Unknown error.'; ?>'
-                });
-            <?php elseif ($_SESSION['message'] === 'already_in_pendings'): ?>
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Already in Pending',
-                    text: 'This book is already in pending request.'
-                });
-            <?php endif; ?>
+		<?php if (isset($_SESSION['message'])): ?>
+			<?php if ($_SESSION['message'] === 'added_to_favorites'): ?>
+				Swal.fire({
+					icon: 'success',
+					title: 'Added to Favorites',
+					text: 'The book has been added to your favorites list!'
+				});
+			<?php elseif ($_SESSION['message'] === 'already_in_favorites'): ?>
+				Swal.fire({
+					icon: 'warning',
+					title: 'Already in Favorites',
+					text: 'This book is already in your favorites list.'
+				});
+			<?php elseif ($_SESSION['message'] === 'removed_from_favorites'): ?>
+            Swal.fire({
+                icon: 'success',
+                title: 'Removed from Favorites',
+                text: 'The book has been removed from your favorites list.'
+            });
+			<?php elseif ($_SESSION['message'] === 'added_to_pendings'): ?>
+				Swal.fire({
+					icon: 'success',
+					title: 'Request Submitted',
+					text: 'Book request successfully submitted!'
+				});
+			<?php elseif ($_SESSION['message'] === 'already_in_pendings'): ?>
+				Swal.fire({
+					icon: 'warning',
+					title: 'Already in Pending',
+					text: 'This book is already in pending request.'
+				});
+			<?php elseif ($_SESSION['message'] === 'book_returned'): ?>
+				Swal.fire({
+					icon: 'success',
+					title: 'Book Returned',
+					text: 'Book has been successfully returned!'
+				});
+			<?php elseif ($_SESSION['message'] === 'error'): ?>
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: '<?php echo isset($_SESSION['error']) ? htmlspecialchars($_SESSION['error']) : 'Unknown error.'; ?>'
+				});
+			<?php endif; ?>
 
-            // Clear the message after displaying it
-            <?php unset($_SESSION['message']); ?>
-            <?php unset($_SESSION['error']); ?>
-        <?php endif; ?>
-    </script>
+			// Clear the message after displaying it
+			<?php unset($_SESSION['message']); ?>
+			<?php unset($_SESSION['error']); ?>
+		<?php endif; ?>
+	</script>
 	 <div class="container-fluid" style="padding: 0;">
 		<div class="row">
 			<div id="sidebar" class="col-2">
@@ -224,115 +236,92 @@ $role = $_SESSION['isAdmin'];
         });
 
         //BROWSE CONTENT
-    document.getElementById("buttonbrowse").addEventListener("click", function(event) {
-        event.preventDefault();
-        fetch('./Browse.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("body-content").innerHTML = data;
-                document.title = "Browse"; // Change the page title
-                document.getElementById("page-title").innerText = "Browse"; // Change the displayed title
-                
-                // Initialize the carousel after content is loaded
-                initializeCarousel();
-            })
-            .catch(error => console.error('Error fetching content:', error));
+ document.getElementById("buttonbrowse").addEventListener("click", function(event) {
+    event.preventDefault();
+    fetch('./Browse.php')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("body-content").innerHTML = data;
+            document.title = "Browse"; // Change the page title
+            document.getElementById("page-title").innerText = "Browse"; // Change the displayed title
+
+            // No need to initialize carousel anymore
+        })
+        .catch(error => console.error('Error fetching content:', error));
+});
+
+// Function to load books dynamically based on the genre
+document.addEventListener("DOMContentLoaded", function () {
+    const genreLinks = document.querySelectorAll('.genre-link');
+    genreLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+
+            const genre = this.getAttribute('data-genre'); // Get the genre from data-attribute
+            loadBooks(genre); // Call loadBooks function with the selected genre
+        });
     });
+});
 
-    // Function to move the carousel
-    function moveCarousel(direction) {
-        const carousel = document.querySelector('.carousel');
-        const items = document.querySelectorAll('.carousel-item');
-        const totalItems = items.length;
+// Function to load books
+function loadBooks(genre = '') {
+    const searchInput = document.getElementById('search-input').value;
+    const sortOption = document.getElementById('sort-dropdown').value;
 
-        let currentIndex = 0; // Define currentIndex here
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `Browse.php?search=${encodeURIComponent(searchInput)}&sort=${sortOption}&genre=${encodeURIComponent(genre)}&ajax=1`, true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            const booksContainer = document.querySelector('.userbooks-container');
+            booksContainer.innerHTML = ''; // Clear existing books
 
-        currentIndex += direction;
+            response.books.forEach(book => {
+                const bookElement = document.createElement('div');
+                bookElement.classList.add('book-container');
 
-        // Loop back if we go out of bounds
-        if (currentIndex < 0) {
-            currentIndex = totalItems - 1;
-        } else if (currentIndex >= totalItems) {
-            currentIndex = 0;
-        }
+                const bookImageLink = `<img src="${book.bookimg}" alt="Book Thumbnail" width="100" height="150" class="book-thumbnail" data-bookid="${book.bookid}" />`;
 
-        // Move the carousel
-        const offset = -currentIndex * 100; // Adjust this value based on your item width
-        carousel.style.transform = `translateX(${offset}%)`;
-    }
-
-    // Function to initialize the carousel
-    function initializeCarousel() {
-        // Add event listeners to carousel buttons
-        document.querySelector('.prev').addEventListener('click', function() {
-            moveCarousel(-1);
-        });
-
-        document.querySelector('.next').addEventListener('click', function() {
-            moveCarousel(1);
-        });
-    }
-
-    // Function to load books
-    function loadBooks() {
-        const searchInput = document.getElementById('search-input').value;
-        const sortOption = document.getElementById('sort-dropdown').value;
-
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', `Browse.php?search=${encodeURIComponent(searchInput)}&sort=${sortOption}&ajax=1`, true);
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                const response = JSON.parse(xhr.responseText);
-                const booksContainer = document.querySelector('.userbooks-container');
-                booksContainer.innerHTML = ''; // Clear existing books
-
-                response.books.forEach(book => {
-                    const bookElement = document.createElement('div');
-                    bookElement.classList.add('book-container');
-
-                    // Create the clickable book image
-                    const bookImageLink = `<img src="${book.bookimg}" alt="Book Thumbnail" width="100" height="150" class="book-thumbnail" data-bookid="${book.bookid}" />`;
-
-                    bookElement.innerHTML = `
-                        <div class="button-container">
-                            <button id="${book.borrowed ? 'stats-btn2' : 'stats-btn'}">
-                                <img src="${book.borrowed ? './Images/Check.svg' : './Images/Unavalable.svg'}" alt="Book status" class="book-status" width="30" height="30">
-                                Borrowed
-                            </button>
-                            <form action="AddToFav.php" method="POST">
-                                <input type="hidden" name="bookid" value="${book.bookid}">
-                                <input type="hidden" name="idno" value="${book.idno}">
-                                <input type="hidden" name="booktitle" value="${book.booktitle}">
-                                <input type="hidden" name="author" value="${book.author}">
-                                <input type="hidden" name="bookimg" value="${book.bookimg}">
-                                <button type="submit" id="addtofav-btn">
-                                    <img src="${book.favorite ? './Images/AddedtoFav.svg' : './Images/fav.svg'}" alt="Book fav" class="book-fav">
-                                </button>
-                            </form>
-                        </div>
-                        ${bookImageLink}
-                        <p id="B-title">${book.booktitle}</p>
-                        <p id="Book-Author">${book.author}</p>
-                        <form action="BorrowBook.php" method="POST">
+                bookElement.innerHTML = `
+                    <div class="button-container">
+                        <button id="${book.borrowed ? 'stats-btn2' : 'stats-btn'}">
+                            <img src="${book.borrowed ? './Images/Check.svg' : './Images/Unavalable.svg'}" alt="Book status" class="book-status" width="30" height="30">
+                            Borrowed
+                        </button>
+                        <form action="AddToFav.php" method="POST">
                             <input type="hidden" name="bookid" value="${book.bookid}">
-                            <button id="${book.borrowed ? 'borbtn2' : 'borbtn'}">Borrow</button>
+                            <input type="hidden" name="idno" value="${book.idno}">
+                            <input type="hidden" name="booktitle" value="${book.booktitle}">
+                            <input type="hidden" name="author" value="${book.author}">
+                            <input type="hidden" name="bookimg" value="${book.bookimg}">
+                            <button type="submit" id="addtofav-btn">
+                                <img src="${book.favorite ? './Images/AddedtoFav.svg' : './Images/fav.svg'}" alt="Book fav" class="book-fav">
+                            </button>
                         </form>
-                    `;
-                    booksContainer.appendChild (bookElement);
-                });
+                    </div>
+                    ${bookImageLink}
+                    <p id="B-title">${book.booktitle}</p>
+                    <p id="Book-Author">${book.author}</p>
+                    <form action="BorrowBook.php" method="POST">
+                        <input type="hidden" name="bookid" value="${book.bookid}">
+                        <button id="${book.borrowed ? 'borbtn2' : 'borbtn'}">Borrow</button>
+                    </form>
+                `;
+                booksContainer.appendChild(bookElement);
+            });
 
-                // Add event listeners to each book image
-                const bookImages = document.querySelectorAll('.book-thumbnail');
-                bookImages.forEach(image => {
-                    image.addEventListener('click', function(event) {
-                        const bookid = this.getAttribute('data-bookid');
-                        viewDetails(bookid); // Dynamically load book details
-                    });
+            // Add event listeners to each book image
+            const bookImages = document.querySelectorAll('.book-thumbnail');
+            bookImages.forEach(image => {
+                image.addEventListener('click', function(event) {
+                    const bookid = this.getAttribute('data-bookid');
+                    viewDetails(bookid); // Dynamically load book details
                 });
-            }
-        };
-        xhr.send();
-    }
+            });
+        }
+    };
+    xhr.send();
+}
 
 
 function submitComment(buttonElement) {

@@ -26,7 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result->num_rows > 0) {
             $check_stmt->close();
             $conn->close();
-            header("Location: UserNavTemplate.php?message=already_in_favorites");
+            $_SESSION['message'] = 'already_in_favorites'; // Set message for favorites
+            header("Location: UserNavTemplate.php");
             exit();
         }
 
@@ -38,16 +39,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($insert_stmt->execute()) {
             $insert_stmt->close();
             $conn->close();
-            header("Location: UserNavTemplate.php?message=added_successfully");
+            $_SESSION['message'] = 'added_to_favorites'; // Set message for successful addition
+            header("Location: UserNavTemplate.php");
             exit();
         } else {
             $error_message = $insert_stmt->error;
             $insert_stmt->close();
             $conn->close();
-            header("Location: UserNavTemplate.php?message=error&error=" . urlencode($error_message));
+            $_SESSION['message'] = 'error';
+            $_SESSION['error'] = $error_message;
+            header("Location: UserNavTemplate.php");
             exit();
         }
     }
 }
 header("Location: UserNavTemplate.php");
 exit();
+?>

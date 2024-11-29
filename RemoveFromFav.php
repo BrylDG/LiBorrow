@@ -16,15 +16,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bookid']) && isset($_
     $stmt->bind_param("ii", $bookid, $idno);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Book removed from favorites successfully!'); window.location.href='UserNavTemplate.php';</script>";
+        // Success: Book removed from favorites
+        $_SESSION['message'] = 'removed_from_favorites';
+        $stmt->close();
+        header("Location: UserNavTemplate.php");
+        exit();
     } else {
-        echo "<script>alert('Failed to remove book from favorites. Please try again.'); window.location.href='UserNavTemplate.php';</script>";
+        // Error: Failed to remove book from favorites
+        $_SESSION['message'] = 'error';
+        $_SESSION['error'] = 'Failed to remove book from favorites. Please try again.';
+        $stmt->close();
+        header("Location: UserNavTemplate.php");
+        exit();
     }
-
-    $stmt->close();
 } else {
-    echo "<script>alert('Invalid request.'); window.location.href='UserNavTemplate.php';</script>";
+    $_SESSION['message'] = 'error';
+    $_SESSION['error'] = 'Invalid request.';
+    header("Location: UserNavTemplate.php");
+    exit();
 }
 
 $conn->close();
-?>
