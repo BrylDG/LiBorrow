@@ -13,11 +13,15 @@
     background-color: #f5f5f5;
 }
 
+.image-container {
+    display: flex;
+    align-items: center;
+}
+
 .prof-details {
     margin-left: 1em;
-    margin-right: 40em;
     margin-top: 1em;
-    width: 50em;
+    width: 110em;
 }
 
 .Settingsbox {
@@ -45,10 +49,12 @@
 
 .Sbox img {
     padding: 5px;
+
 }
 
 .Sbox {
     border-radius: 10px;
+    padding: 1%;
 }
 
 .global {
@@ -66,9 +72,7 @@
 
 .settings-buttons {
     position: relative;
-    display: flex;
-    gap: 10px;
-    right: 10em;
+    right: -5em;
 }
 
 .change-btn {
@@ -88,7 +92,7 @@
 }
 
 #book1 {
-    margin-left: 2em;
+    margin-right: 2em;
 }
 
 /* Additional inline CSS for inputs styling */
@@ -96,10 +100,26 @@
     margin-top: 20px;
 }
 
+.password-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
 .input-section label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+}
+
+.password-section input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
 .input-section input {
@@ -112,19 +132,19 @@
     box-sizing: border-box;
 }
 
-/* Flex container for password fields */
-.password-container {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
 .password-container .input-field {
     flex: 1;
 }
 
-.upbtn {
-    margin-top: 20em;
+.update-btn {
+    margin-top: 10px;
+    font-size: 16px;
+    padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    border: 1px solid #ff6600;
+    background-color: white;
+    color: #ff6600;
 }
 
 .usersave-btn,
@@ -138,6 +158,22 @@
     padding: 8px 20px;
     margin-bottom: 10px;
     width: 100px;
+}
+
+#cancelsetbtn {
+    padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    border: 1px solid #ff6600;
+    background-color: white;
+    color: #ff6600;
+
+    margin: 10px;
+    font-size: 16px;
+    border-radius: 30px;
+    padding: 8px 20px;
+    margin-bottom: 10px;
+    width: 100px
 }
 
 .usercancel-btn {

@@ -126,6 +126,16 @@ if (isset($_GET['bookid'])) {
             flex-wrap: wrap;
             justify-content: space-around;
         }
+        #similar-books-btn {
+            margin-top: 2%;
+            font-size: 12px;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            border: 1px solid #ff6600;
+            background-color: white;
+            color: #ff6600;
+        }
     </style>
 </head>
 <body>

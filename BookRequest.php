@@ -48,7 +48,7 @@
                 <?php foreach ($books as $book): ?>
                 <div class="book-container" id="Request-Books">
 					<a href="javascript:void(0);" onclick="viewDetails(<?php echo $book['bookid']; ?>)">
-                    <img src="<?php echo htmlspecialchars($book['bookimg']); ?>" alt="Book one" class="book-image" id="book-loc">
+                    <img src="<?php echo htmlspecialchars($book['bookimg']); ?>" alt="Book one" class="book-image" id="book-loc" width="100" height="150">
 					</a>
                     <img src="./Images/Rating Component.svg" alt="rating one" id="rating-image" width="150" height="150">
                     <p id="B-title"><?php echo htmlspecialchars($book['booktitle']); ?></p>
@@ -58,7 +58,7 @@
                         <input type="hidden" name="fullname" value="<?php echo htmlspecialchars($_SESSION['fullname']); ?>">
                         <input type="hidden" name="idno" value="<?php echo htmlspecialchars($_SESSION['idno']); ?>">
                         <input type="hidden" name="bookid" value="<?php echo htmlspecialchars($book['bookid']); ?>">
-                        <button id="borbtn2">Cancel</button>
+                        <button id="return-btn">Cancel</button>
                     </form>
                 </div>
                 <?php endforeach; ?>

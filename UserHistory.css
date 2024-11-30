@@ -103,10 +103,14 @@ hr {
 
 .historytitle p {
     font-weight: bold;
-    margin: 4% 245px 2% 40px;
+    margin: 2% 245px 2% 40px;
 }
 
-
+.historybody {
+    height: 600px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
 
 .book-row {
     display: flex;
@@ -115,7 +119,7 @@ hr {
     border-radius: 8px;
     margin: 2% 3% 3% 2.5%;
     padding: 3% 0% 0% 0%;
-
+    justify-content: space-between;
     background-color: white;
 }
 

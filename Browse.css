@@ -69,21 +69,31 @@
 }
 
 .browse-genre {
-    width: 100%;
+    display: flex;
+    width: 96%;
     align-items: center;
     margin: 5px;
     border-radius: 10px;
     background-color: white;
     padding: 20px;
     overflow: hidden; /* Prevent overflow */
+    margin-left: 18px;
 }
 
 #genre-heading {
-    flex-basis: 100%; /* Takes up full width, pushes icons down */
+    width: 90%;
     text-align: left;
     font-size: 24px;
-    margin-bottom: 10px; /* Space between header and icons */
     color: #757575;
+}
+
+#genre-dropdown {
+    font-size: 16px; padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    border: 1px solid #ff6600;
+    background-color: white;
+    color: #ff6600;
 }
 
 .icon-container {
@@ -119,10 +129,6 @@
     margin-top: 0.5em;
     color: #757575;
     margin-left: 1em;
-}
-
-#browse-books {
-    margin-right: 5em;
 }
 
 #User-books {
@@ -222,7 +228,7 @@
     opacity: 0.6;
 }
 
-#borbtn {
+#borrow-btn {
     border: 2px solid #ff6600;
     border-radius: 30px;
     padding: 8px 25px;
@@ -232,7 +238,12 @@
     opacity: 0.5;
 }
 
-#borbtn2 {
+#User-books a {
+    width: 100px;
+    height: 150px;
+}
+
+#return-btn {
     border: 2px solid white;
     border-radius: 30px;
     padding: 8px 25px;
@@ -241,10 +252,6 @@
     margin-bottom: 2em;
 }
 
-.book-image {
-    width: 65%; /* Image will fit the width of the container */
-    height: 200px; /* Maintain the aspect ratio */
-}
 
 .global {
     height: 18vh;

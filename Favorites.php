@@ -61,14 +61,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transactions Section</title>
-    <link rel="stylesheet" href="./TransactionsStyle.css"> <!-- Linking the CSS file here -->
-    <link rel="stylesheet" href="./Browse.css">
-</head>
+    <link rel="stylesheet" href="./Browse.ccs">
+    <link rel="stylesheet" href="./TransactionsStyle.css">
 <body>
 
 <div class="content-box" id="content2">
     <div class="container">
-        <div class="Userinput" id="search-bok">
+        <div class="Userinput" id="search-bok"  style="position: static;">
             <div class="search-bar">
                 <input type="text" placeholder=" Search...">
                 <span class="forsearch-icon">
@@ -86,6 +85,10 @@
 				<?php foreach ($books as $book): ?>
 					<div class="book-container">
 						<div class="button-container">
+                            <button id="<?php echo $borrowed ? 'stats-btn2' : 'stats-btn' ?>">
+                                <img src="<?php echo $borrowed ? './Images/Check.svg' : './Images/Unavalable.svg'; ?>" alt="Book status" class="book-status" id="bookstaticon" width="30" height="30">
+                                Borrowed
+                            </button>
 							<form action="RemoveFromFav.php" method="POST" style="display:inline;">
 								<input type="hidden" name="bookid" value="<?php echo htmlspecialchars($book['bookid']); ?>">
 								<input type="hidden" name="idno" value="<?php echo htmlspecialchars($_SESSION['idno']); ?>">
@@ -95,7 +98,7 @@
 							</form>
 						</div>
 						<a href="javascript:void(0);" onclick="viewDetails(<?php echo $book['bookid']; ?>)">
-							<img src="<?php echo htmlspecialchars($book['bookimg']) ?>" alt="Book Thumbnail" class="book-image" id="book-opacity">
+							<img src="<?php echo htmlspecialchars($book['bookimg']) ?>" alt="Book Thumbnail" class="book-image" id="book-opacity" width="100" height="150">
 						</a>
 						<img src="./Images/Rating Component.svg" alt="Rating" id="rating-image" width="150" height="150">
 						<p id="B-title"><?php echo htmlspecialchars($book['booktitle']); ?></p>
@@ -110,10 +113,10 @@
 								
 								<?php if ($book['BorrowButton'] === 'BORROW'): ?>
 									<input type="hidden" name="action" value="borrow">
-									<button type="submit" id="borbtn2"><?php echo $book['BorrowButton']; ?></button>
+									<button type="submit" id="borrow-btn"><?php echo $book['BorrowButton']; ?></button>
 								<?php else: ?>
 									<input type="hidden" name="action" value="return">
-									<button type="submit" id="borbtn2">Return</button>
+									<button type="submit" id="return-btn">Return</button>
 								<?php endif; ?>
 							</form>
 					</div>

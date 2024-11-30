@@ -41,16 +41,16 @@ $conn->close(); // Close the database connection
         <hr>
         <div class="Settingsbox">
             <div class="Sbox global">
-                <form method="POST" enctype="multipart/form-data" action="updateProfilePictureL.php">
+                <form method="POST" enctype="multipart/form-data" action="updateProfilePictureL.php" class="image-container">
                     <img src="<?php echo isset($user_data) ? htmlspecialchars($user_data['profile_picture']) : './Images/Profile.svg'; ?>" width="100" height="100" style="border-radius: 50%;"  alt="Profile Picture" id="book1">
-                    <div class="settings-buttons">
-                        <input type="file" name="profile_picture" id="profile_picture" accept="image/*">
-                        <button type="submit" class="update-btn">Change Profile Picture</button>
-                    </div>
                 </form>
                 <div class="prof-details">
                     <p id="Name"><?php echo isset($user_data) ? htmlspecialchars($user_data['fullname']) : ''; ?></p>
                     <p class="author">Reader</p>
+                </div>
+                <div class="settings-buttons">
+                        <input type="file" name="profile_picture" id="profile_picture" accept="image/*">
+                        <button type="submit" class="update-btn">Change Profile Picture</button>
                 </div>
             </div>
 
@@ -99,26 +99,27 @@ $conn->close(); // Close the database connection
                         </span>
                     </div>
                 </div>
-
                 <!-- Password Section -->
-                <label for="password">Current Password</label>
-                <div class="input-icon">
-                    <input type="password" id="password" name="password" value="<?php echo isset($user_data) ? htmlspecialchars($user_data['password']) : ''; ?>" readonly>
-                </div>
+                <div class="password-section">
+                    <label for="password">Current Password</label>
+                    <div class="input-icon">
+                        <input type="password" id="password" name="password" value="<?php echo isset($user_data) ? htmlspecialchars($user_data['password']) : ''; ?>" readonly>
+                    </div>
 
-                <label for="new_password">New Password</label>
-                <div class="input-icon">
-                    <input type="password" id="new-password" name="new-password">
-                </div>
+                    <label for="new_password">New Password</label>
+                    <div class="input-icon">
+                        <input type="password" id="new-password" name="new-password">
+                    </div>
 
-                <label for="confirm_password">Confirm New Password</label>
-                <div class="input-icon">
-                    <input type="password" id="confirm-password" name="confirm-password">
-                </div>
-                    
-                <div class="SaveCancel-btn">
-                    <button class="usersave-btn" type="submit">Save</button>
-                    <button class="userupdate-btn" onclick="disableEdit()" type="reset" id="cancelsetbtn">Cancel</button>
+                    <label for="confirm_password">Confirm New Password</label>
+                    <div class="input-icon">
+                        <input type="password" id="confirm-password" name="confirm-password">
+                    </div>
+                        
+                    <div class="SaveCancel-btn">
+                        <button class="usersave-btn" type="submit">Save</button>
+                        <button class="userupdate-btn" onclick="disableEdit()" type="reset" id="cancelsetbtn">Cancel</button>
+                    </div>
                 </div>
             </form>
         </div>
