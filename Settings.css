@@ -16,9 +16,8 @@
 
 .prof-details {
     margin-left: 1em;
-    margin-right: 40em;
     margin-top: 1em;
-    width: 50em;
+    width: 110em;
 }
 
 .Settingsbox {
@@ -51,6 +50,7 @@
 }
 .Sbox{
     border-radius: 10px;
+    padding: 1%;
 }
 
 
@@ -60,7 +60,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
 }
 
 #Name {
@@ -70,9 +69,7 @@
 
 .settings-buttons {
     position: relative;
-    display: flex;
-    gap: 10px;
-    right: 10em;
+    right: -5em;
 }
 
 .change-btn {
@@ -130,12 +127,20 @@
     flex: 1;
 }
 
-.upbtn {
-    margin-top: 20em;
+.update-btn {
+    margin-top: 10px;
+    font-size: 16px;
+    padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    border: 1px solid #ff6600;
+    background-color: white;
+    color: #ff6600;
 }
 
 .usersave-btn {
     border: none;
+    margin: 10px;
     font-size: 16px;
     border-radius: 30px;
     color: white;
@@ -153,13 +158,18 @@
 }
 
 #cancelsetbtn {
-    margin-left: 15px;
+    padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
     border: 1px solid #ff6600;
+    background-color: white;
+    color: #ff6600;
+    margin: 10px;
     font-size: 16px;
     border-radius: 30px;
-    color: #ff6600;
-    background-color: white;
-    padding: 2px 20px;
+    padding: 8px 20px;
+    margin-bottom: 10px;
+    width: 100px;
 }
 /* Styles for input fields with icons */
 .input-icon {
@@ -227,3 +237,19 @@
     cursor: pointer;
     color: #999;
 } */
+
+
+.password-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.password-section input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: white;
+    border-radius: 10px;
+    box-sizing: border-box;
+}

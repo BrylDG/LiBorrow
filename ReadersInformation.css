@@ -96,7 +96,6 @@
     
 }
 #banbtn{
-    margin-left: 15px ;
     border: 1px solid #ff6600;
     font-size: 16px;
     border-radius: 30px;
@@ -133,4 +132,111 @@
     height: 50vh;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+#Book-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    width: 60%;
+    margin: 20px auto;
+    border-radius: 10px;
+    font-family: 'Arial', sans-serif;
+}
+
+.input-container {
+    width: 100%;
+}
+
+.input-row {
+    display: flex;
+    gap: 5%;
+    width: 100%;
+}
+
+
+#Book-details h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+#Book-details input,
+#Book-details select,
+#Book-details textarea {
+    width: 100%;
+    font-size: 16px;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+
+    border-radius: 30px;
+    cursor: pointer;
+    border: 1px solid #ff6600;
+    background-color: white;
+    color: #ff6600;
+}
+
+#Book-details label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: inline-block;
+    color: #555;
+}
+
+#Book-details .quantity-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#Book-details .quantity-container button {
+    background-color: #ff6600;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#Book-details .quantity-container input {
+    width: 50px;
+    text-align: center;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#Book-details button.submit-btn {
+    margin-top: 20px;
+    background-color: #ff6600;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#Book-details button.submit-btn:hover {
+    background-color: #e65c00;
+}
+
+.input-container label {
+    font-weight: bold;
+}
+
+.Bview {
+    padding: 5%;
+}
+
+
+.updatedelete-btn {
+    display: flex;
+    gap: 3%;
 }
