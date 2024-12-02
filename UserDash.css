@@ -236,6 +236,7 @@
         border-radius: 10px;
         text-align: center;
         padding: 10%;
+        overflow-y:scroll;
     }
 
     .MyBooksContainer h1 {

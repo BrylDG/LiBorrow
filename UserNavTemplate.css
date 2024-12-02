@@ -198,6 +198,9 @@ body, html {
 .notification-options {
     display: flex;
     flex-direction: column;
+    height: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .notification-item {

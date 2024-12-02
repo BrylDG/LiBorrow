@@ -208,6 +208,7 @@ body, html {
     flex-direction: column;
     height: 300px;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .notification-item {

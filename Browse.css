@@ -28,6 +28,25 @@
     z-index: 10;
 }
 
+#borbtn {
+    border: 2px solid #ff6600;
+    border-radius: 30px;
+    padding: 8px 25px;
+    color: #ff6600;
+    background-color: white;
+    margin-bottom: 2em;
+    opacity: 0.5;
+}
+
+#borbtn2 {
+    border: 2px solid white;
+    border-radius: 30px;
+    padding: 8px 25px;
+    color: white;
+    background-color: #ff6600;
+    margin-bottom: 2em;
+}
+
 .prev {
     left: 10px;
 }
